@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityPulse - Event Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="front/landingPage.html" class="logo">
+                <img src="assets/logo.png" alt="CityPulse Logo" style="height: 35px; margin-right: 10px;">
+                CityPulse
+            </a>
+            <nav class="main-nav">
+                <a href="cont.html">Post</a>
+                <a href="projects.html">Projects</a>
+                <a href="events.html" class="active">Events</a>
+                <a href="forums.html">Forums</a>
+                <a href="#">Offre d'emploi</a>
+
+                
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" style="text-decoration: none; color: var(--text-medium); margin-right: 10px;">Log In</a>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header" style="margin: 32px 0 16px;">
+            <h1>Register for Event</h1>
+            <p>Complete the form below to secure your spot</p>
+        </div>
+
+        <div class="card">
+            <form id="event-registration-form" action="registration-success.html" method="POST">
+                <div class="form-section">
+                    <h2 class="form-section-title">Personal Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name*</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name*</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address*</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Event Details</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="ticketType">Ticket Type*</label>
+                            <select id="ticketType" name="ticketType" class="form-control" required>
+                                <option value="">-- Select ticket type --</option>
+                                <option value="standard">Standard Ticket (€75)</option>
+                                <option value="premium">Premium Ticket (€125)</option>
+                                <option value="vip">VIP Ticket (€200)</option>
+                                <option value="student">Student Ticket (€40)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Payment Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method*</label>
+                            <select id="paymentMethod" name="paymentMethod" class="form-control" required>
+                                <option value="">-- Select payment method --</option>
+                                <option value="creditCard">Credit Card</option>
+                                <option value="bankTransfer">Bank Transfer</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="creditCardFields" class="form-grid">
+                        <div class="form-group">
+                            <label for="cardName">Name on Card*</label>
+                            <input type="text" id="cardName" name="cardName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number*</label>
+                            <input type="text" id="cardNumber" name="cardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date*</label>
+                            <input type="text" id="expiryDate" name="expiryDate" class="form-control" placeholder="MM/YY">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV*</label>
+                            <input type="text" id="cvv" name="cvv" class="form-control" placeholder="XXX">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="billingAddress">Billing Address*</label>
+                            <input type="text" id="billingAddress" name="billingAddress" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City*</label>
+                            <input type="text" id="city" name="city" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Postal Code*</label>
+                            <input type="text" id="postalCode" name="postalCode" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country*</label>
+                            <select id="country" name="country" class="form-control" required>
+                                <option value="">-- Select country --</option>
+                                <option value="fr">France</option>
+                                <option value="de">Germany</option>
+                                <option value="it">Italy</option>
+                                <option value="es">Spain</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="us">United States</option>
+                                <option value="ca">Canada</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group terms-group">
+                    <label for="terms" class="terms-label">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        I agree to the <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>*
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Complete Registration</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--text-dark); color: white; padding: 48px 0; margin-top: 48px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+                <div>
+                    <h3>CityPulse</h3>
+                    <p>Connect with urban planners, architects, and citizens to collaborate on innovative projects.</p>
+                </div>
+                <div>
+                    <h4>Resources</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">Urban Planning Guide</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Sustainable City Toolkit</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Community Engagement</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <a href="#" style="color: white;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p>&copy; 2025 CityPulse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+   
+   
+</body>
+</html>

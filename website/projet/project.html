@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CityPulse - Projects</title>
+  <link rel="stylesheet" href="style1.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  
+  <?php if (isset($_GET['success'])): ?>
+
+<?php endif; ?>
+</head>
+<body>
+
+   <!-- Bannière publicitaire -->
+   <div class="ad-container">
+    <div class="ad-content">
+        <span class="ad-message">📢 Nouveaux projets urbains ajoutés - Explorez-les maintenant!</span>
+        <span class="ad-message">🎉 Réduction de 20% sur les frais de soumission</span>
+        <span class="ad-message">🏆 Gagnez un audit urbain gratuit - Soumettez avant le 30/11</span>
+        <span class="ad-message">💡 Partagez vos idées pour améliorer votre quartier</span>
+        <span class="ad-message">🗳️ Votez pour le prochain projet à financer</span>
+        <span class="ad-message">👥 Forum sur les tendances urbaines ce jeudi</span>
+        
+        <span class="ad-message">📢 Nouveaux projets urbains ajoutés - Explorez-les maintenant!</span>
+        <span class="ad-message">🎉 Réduction de 20% sur les frais de soumission</span>
+        <span class="ad-message">🏆 Gagnez un audit urbain gratuit - Soumettez avant le 30/11</span>
+    </div>
+</div>
+
+
+  
+  <header>
+    <div class="container header-container">
+      <a href="../dashboard/creative_dashboard.php" class="logo">
+          <img src="logo.png" alt="CityPulse Logo" style="height: 35px; margin-right: 10px;">
+          
+      </a>
+      <nav class="main-nav">
+        <a href="../cont.html">Post</a>
+        <a href="project.html" class="active">Projects</a>
+        <a href="tasks.php">Tasks</a>
+        <a href="event.html">Events</a>
+        <a href="forums.html">Forums</a>
+        <a href="#">Offre d'emploi</a>
+      </nav>
+      <div class="auth-buttons">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0;">
+      <h1>My Projects</h1>
+      <button class="btn btn-primary" onclick="window.location.href='create project/createProject.html'"><i class="fas fa-plus"></i> New Project</button>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="dashboard-grid">
+      <div class="card stat-card">
+        <div class="stat-value">12</div>
+        <div class="stat-label">Projects Completed</div>
+        <div class="stat-growth growth-positive">+20% this year</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-value">87%</div>
+        <div class="stat-label">Citizen Engagement Rate</div>
+        <div class="stat-growth growth-positive">+8% increase</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-value">102</div>
+        <div class="stat-label">Contributors</div>
+        <div class="stat-growth growth-positive">+12 new</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Ongoing Projects</div>
+        <div class="stat-growth growth-positive">+2 this month</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active">Overview</div>
+      <div class="tab">My Contributions</div>
+      <div class="tab">Collaborations</div>
+      <a href="create project/projects.php" class="tab">Archived Projects</a>
+      <a href="calendar.php" class="tab">Calendrier</a>
+    </div>
+    
+
+    <!-- Project Type Distribution -->
+    <!--<div class="card">
+      <h2 class="card-title">Project Distribution by Theme</h2>-->
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Project Distribution by Theme</h2>
+        </div>
+        
+        <div class="distribution-container">
+          <!-- Donut Chart Visualization -->
+          <div class="chart-wrapper">
+            <svg width="200" height="200" viewBox="0 0 200 200" class="donut-chart">
+              <!-- Background circle -->
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#f5f5f5" stroke-width="16"></circle>
+              <!-- Segments (calculated for 40%, 30%, 20%, 10%) -->
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#4E79A7" stroke-width="16" stroke-dasharray="201 151.5" stroke-dashoffset="-50"></circle>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#F28E2B" stroke-width="16" stroke-dasharray="151.5 201" stroke-dashoffset="-251"></circle>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#59A14F" stroke-width="16" stroke-dasharray="100.5 252" stroke-dashoffset="-402.5"></circle>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#E15759" stroke-width="16" stroke-dasharray="50.5 302" stroke-dashoffset="-503"></circle>
+              <!-- Center text -->
+              <text x="100" y="100" text-anchor="middle" dominant-baseline="middle" font-size="24" font-weight="600">24</text>
+              <text x="100" y="125" text-anchor="middle" font-size="12">Projects</text>
+            </svg>
+          </div>
+          
+          <!-- Legend with clear percentages -->
+          <div class="legend-wrapper">
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #4E79A7;"></div>
+              <div class="legend-text">
+                <span class="legend-category">Urban Design</span>
+                <span class="legend-percentage">40%</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #F28E2B;"></div>
+              <div class="legend-text">
+                <span class="legend-category">Mobility</span>
+                <span class="legend-percentage">30%</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #59A14F;"></div>
+              <div class="legend-text">
+                <span class="legend-category">Green Spaces</span>
+                <span class="legend-percentage">20%</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #E15759;"></div>
+              <div class="legend-text">
+                <span class="legend-category">Community</span>
+                <span class="legend-percentage">10%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!--<div class="donut-chart">
+        <div class="chart-container">
+          <img src="/api/placeholder/400/300" alt="Project type donut chart">
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--primary);"></div>
+            <span>Urban Design (40%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--secondary);"></div>
+            <span>Mobility (30%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--accent);"></div>
+            <span>Green Spaces (20%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #FFD700;"></div>
+            <span>Community (10%)</span>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Active Projects -->
+    <div class="page-header">
+      <h2>Active Projects</h2>
+      <p>Projects you're involved in</p>
+    </div>
+
+    <!--consultation -->
+    <div class="card">
+      <h2 class="card-title">Project Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-step current">
+          <div class="circle"></div>
+          <span>Étude</span>
+        </div>
+        <div class="timeline-step">
+          <div class="circle"></div>
+          <span>Conception</span>
+        </div>
+        <div class="timeline-step">
+          <div class="circle"></div>
+          <span>Consultation</span>
+        </div>
+        <div class="timeline-step">
+          <div class="circle"></div>
+          <span>Chantier</span>
+        </div>
+        <div class="timeline-step">
+          <div class="circle"></div>
+          <span>Finalisation</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="goToNextStep()">Advance to Next Phase</button>
+    </div>
+
+    <div class="consultation">
+      <h2>Projects</h2>
+      <div class="project-list" id="projectList">
+          <!-- Projects will be loaded here dynamically -->
+      </div>
+      <div id="viewMoreContainer" style="display: none; text-align: center; margin-top: 20px;">
+          <a href="project-details.php" class="view-more-btn">View More</a>
+      </div>
+  </div>
+    
+    
+    
+
+
+    
+    
+
+    <!-- Discover Projects -->
+    <!--<div class="page-header" style="margin: 32px 0 16px;">
+      <h2>Discover Projects</h2>
+      <p>Popular initiatives in your region</p>
+    </div>
+
+    <div class="events-grid">
+      <div class="card">
+        <img src="/api/placeholder/400/200" alt="Project image" style="width: 100%; border-radius: 8px 8px 0 0;">
+        <div style="padding: 16px;">
+          <div class="event-title">Smart Mobility Strategy</div>
+          <div class="event-location">Barcelona, Spain</div>
+          <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+            <span style="background-color: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+              <i class="fas fa-users"></i> 143 Contributors
+            </span>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='contribute.html'">Contribute</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="/api/placeholder/400/200" alt="Project image" style="width: 100%; border-radius: 8px 8px 0 0;">
+        <div style="padding: 16px;">
+          <div class="event-title">Urban Forest Expansion</div>
+          <div class="event-location">Milan, Italy</div>
+          <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+            <span style="background-color: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+              <i class="fas fa-users"></i> 89 Contributors
+            </span>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='contribute.html'">Contribute</button>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Calendar View (initially hidden) -->
+    <div class="calendar-view" style="display: none;">
+      <div class="calendar-header">
+        <button class="btn btn-outline" onclick="previousMonth()"><i class="fas fa-chevron-left"></i></button>
+        <h2 id="currentMonth">January 2024</h2>
+        <button class="btn btn-outline" onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="calendar-grid">
+        <div class="calendar-weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="calendar-days" id="calendarDays">
+          <!-- Calendar days will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .calendar-view {
+        margin: 2rem 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+      }
+
+      .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        padding: 0.5rem;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .calendar-day.today {
+        background-color: #e3f2fd;
+      }
+
+      .calendar-day.other-month {
+        color: #ccc;
+      }
+
+      .project-band {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: var(--primary);
+        border-radius: 2px;
+      }
+
+      .project-band.start {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      .project-band.end {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+
+
+      .project-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .project-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background-color: #f5f5f5;
+        position: relative;
+    }
+
+    .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+
+    .project-image-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    }
+
+    .project-card:hover .project-image {
+        transform: scale(1.05);
+    }
+
+    .project-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .project-location {
+        color: #666;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .project-location i {
+        color: #4361ee;
+    }
+
+    .project-contributions {
+        color: #666;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .project-contributions i {
+        color: #F28E2B;
+    }
+
+    .view-details-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background-color: #4361ee;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-size: 0.9em;
+        margin-top: auto;
+    }
+
+    .view-detailse-btn:hover {
+        background-color: #3651d4;
+    }
+    
+
+    .contribute-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: linear-gradient(to right, #4CAF50, #2E7D32);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-size: 0.9em;
+        margin-top: 10px;
+    }
+
+    .contribute-btn:hover {
+        background-color: #3651d4;
+    }
+   
+    .task-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: linear-gradient(to right, #FF9800, #F57C00);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-size: 0.9em;
+        margin-top: 10px;
+    }
+
+    .task-btn:hover {
+        background-color: #F57C00;
+    }
+
+    .project-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .view-more-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4361ee;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .view-more-btn:hover {
+        background-color: #3651d4;
+    }
+    </style>
+
+    <script>
+      // ... existing JavaScript code ...
+
+      // Calendar functionality
+      let currentDate = new Date();
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      function updateCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        // Update month header
+        document.getElementById('currentMonth').textContent = `${months[month]} ${year}`;
+        
+        // Get first day of month
+        const firstDay = new Date(year, month, 1);
+        const startingDay = firstDay.getDay();
+        
+        // Get last day of month
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        
+        // Get last day of previous month
+        const prevLastDay = new Date(year, month, 0);
+        const daysInPrevMonth = prevLastDay.getDate();
+        
+        const calendarDays = document.getElementById('calendarDays');
+        calendarDays.innerHTML = '';
+        
+        // Add days from previous month
+        for (let i = startingDay - 1; i >= 0; i--) {
+          const day = document.createElement('div');
+          day.className = 'calendar-day other-month';
+          day.textContent = daysInPrevMonth - i;
+          calendarDays.appendChild(day);
+        }
+        
+        // Add days of current month
+        const today = new Date();
+        for (let i = 1; i <= daysInMonth; i++) {
+          const day = document.createElement('div');
+          day.className = 'calendar-day';
+          if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+            day.classList.add('today');
+          }
+          day.textContent = i;
+          
+          // Add project bands (example)
+          if (i === 15) {
+            const band = document.createElement('div');
+            band.className = 'project-band start';
+            band.style.top = '20%';
+            day.appendChild(band);
+          }
+          if (i === 20) {
+            const band = document.createElement('div');
+            band.className = 'project-band end';
+            band.style.top = '20%';
+            day.appendChild(band);
+          }
+          
+          calendarDays.appendChild(day);
+        }
+        
+        // Add days from next month
+        const remainingDays = 42 - (startingDay + daysInMonth);
+        for (let i = 1; i <= remainingDays; i++) {
+          const day = document.createElement('div');
+          day.className = 'calendar-day other-month';
+          day.textContent = i;
+          calendarDays.appendChild(day);
+        }
+      }
+
+      function previousMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateCalendar();
+      }
+
+      function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateCalendar();
+      }
+
+      // Initialize calendar
+      updateCalendar();
+
+      // Tab switching functionality
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          // Add active class to clicked tab
+          tab.classList.add('active');
+          
+          // Show/hide calendar view
+          const calendarView = document.querySelector('.calendar-view');
+          if (tab.textContent === 'Calendrier') {
+            calendarView.style.display = 'block';
+          } else {
+            calendarView.style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </main>
+
+  
+  
+
+  <!-- Footer -->
+  <footer style="background-color: var(--text-dark); color: white; padding: 48px 0; margin-top: 48px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+        <div>
+          <h3>CityPulse</h3>
+          <p>Collaborate on sustainable and inclusive urban projects with citizens and professionals.</p>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="#" style="color: white;">Toolkits</a></li>
+            <li><a href="#" style="color: white;">Open Data</a></li>
+            <li><a href="#" style="color: white;">Planning Laws</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="#" style="color: white;">About Us</a></li>
+            <li><a href="#" style="color: white;">Blog</a></li>
+            <li><a href="#" style="color: white;">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <div style="display: flex; gap: 16px;">
+            <a href="#" style="color: white;"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-linkedin"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-instagram"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2025 CityPulse. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="index.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityPulse - Urban Planning Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <a href="front/landingPage.html" class="logo">
+        <img src="assets/logo.png" alt="CityPulse Logo" style="height: 35px; margin-right: 10px;">
+        
+      </a>
+      <nav class="main-nav">
+        <a href="cont.html" class="active">post</a>
+        <a href="event.html">Events</a>
+        <a href="forums.html">Forums</a>
+        <a href="projet/project.html">Project</a>
+        <a href="#">Offre d'emploi</a>
+
+        
+      </nav>
+      <div class="auth-buttons">
+        <a href="login.html" style="text-decoration: none; color: var(--text-medium); margin-right: 10px;">Log In</a>
+        <button class="btn btn-primary">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="row" style="display: flex; gap: 20px; margin-top: 20px;">
+      <!-- Left Column - Profile Section -->
+      <div class="card" style="width: 25%;">
+        <div style="text-align: center;">
+          <h3>Profil</h3>
+          <div class="profile-avatar"></div>
+          <h4 class="profile-name">Sophie Durand</h4>
+          <p class="profile-title">Architecte Urbaniste</p>
+          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+            <button class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">Modifier</button>
+            <button class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;">Messages</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <h4>Mes Groupes</h4>
+          <div class="group-item">
+            <div class="group-avatar"></div>
+            <div class="group-info">
+              <p class="group-name">Urbanisme durable</p>
+              <p class="group-meta">67 membres</p>
+            </div>
+          </div>
+          <div class="group-item">
+            <div class="group-avatar"></div>
+            <div class="group-info">
+              <p class="group-name">Mobilité urbaine</p>
+              <p class="group-meta">45 800 membres</p>
+            </div>
+          </div>
+          <div class="group-item">
+            <div class="group-avatar"></div>
+            <div class="group-info">
+              <p class="group-name">Économie solidaire</p>
+              <p class="group-meta">12 400 membres</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <h4>Événements à venir</h4>
+          <div class="event-item">
+            <p class="event-date"><i class="far fa-calendar"></i> 15 mars 2025</p>
+            <p class="event-title">Forum de l'urbanisme durable</p>
+            <p class="event-location">Paris, France</p>
+          </div>
+          <div class="event-item">
+            <p class="event-date"><i class="far fa-calendar"></i> 28 mai 2025</p>
+            <p class="event-title">Web-salon: Villes intelligentes</p>
+            <p class="event-location">En ligne</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Column - Feed -->
+      <div style="width: 50%;">
+        <!-- Post creation -->
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="profile-avatar" style="width: 40px; height: 40px;"></div>
+            <div style="flex: 1;">
+              <input type="text" class="form-control" placeholder="Partagez une idée ou l'urbanisme..." style="margin-bottom: 10px;">
+              <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); color: var(--text-medium);">Photo</button>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); color: var(--text-medium);">Document</button>
+                <button class="btn btn-primary" style="margin-left: auto;">Publier</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feed filters -->
+        <div style="display: flex; margin: 15px 0;">
+          <button class="tab active" style="background: none; border: none;">Populaire</button>
+          <button class="tab" style="background: none; border: none;">Récent</button>
+          <button class="tab" style="background: none; border: none;">Suivi</button>
+        </div>
+
+        <!-- Post 1 -->
+        <div class="post-container">
+          <div class="vote-buttons">
+            <button class="vote-button"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">45</span>
+            <button class="vote-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="post-content">
+            <div class="post-header">
+              <div class="profile-avatar" style="width: 40px; height: 40px;"></div>
+              <div class="post-meta">
+                <h4 class="post-author">Martin Dubois</h4>
+                <p class="post-time">il y a 3 heures</p>
+              </div>
+            </div>
+            <h3 class="post-title">Réaménagement du quartier Saint-Michel</h3>
+            <p>Je travaille sur un projet de réaménagement urbain pour transformer un ancien quartier industriel en espace mixte. Voici les premières esquisses...</p>
+            <div class="card" style="background-color: #f1f1f1; margin: 10px 0;"></div>
+            <div class="post-actions">
+              <div style="display: flex; gap: 5px;">
+                <button class="action-button"><i class="far fa-comment"></i> 10</button>
+                <button class="action-button"><i class="far fa-bookmark"></i></button>
+                <button class="action-button">Partager</button>
+              </div>
+              <div>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Réaménagement</button>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Espace public</button>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Mixité</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="post-container">
+          <div class="vote-buttons">
+            <button class="vote-button"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">78</span>
+            <button class="vote-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="post-content">
+            <div class="post-header">
+              <div class="profile-avatar" style="width: 40px; height: 40px;"></div>
+              <div class="post-meta">
+                <h4 class="post-author">Claire Torres</h4>
+                <p class="post-time">il y a 8 heures</p>
+              </div>
+              <span style="margin-left: auto; font-size: 12px; color: var(--primary);">Article</span>
+            </div>
+            <h3 class="post-title">Les défis de la mobilité douce dans les grandes métropoles</h3>
+            <p>Comment intégrer efficacement les pistes cyclables et les voies piétonnes dans des tissus urbains denses ? Analyse du cas de Copenhague. Améliorons le Paris...</p>
+            <div class="post-actions">
+              <div style="display: flex; gap: 5px;">
+                <button class="action-button"><i class="far fa-comment"></i> 23</button>
+                <button class="action-button"><i class="far fa-bookmark"></i></button>
+                <button class="action-button">Partager</button>
+              </div>
+              <div>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Mobilité</button>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Vélo</button>
+                <button class="btn" style="background: none; border: 1px solid var(--border-color); font-size: 12px; padding: 5px 10px;">Piétons</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Forums & Resources -->
+      <div style="width: 25%;">
+        <!-- Popular Forums -->
+        <div class="card">
+          <h3>Forums populaires</h3>
+          <div class="group-item">
+            <div class="group-avatar" style="background-color: var(--primary-light);"></div>
+            <div class="group-info">
+              <p class="group-name">Urbanisme tactique</p>
+              <p class="group-meta">37 discussions actives</p>
+            </div>
+          </div>
+          <div class="group-item">
+            <div class="group-avatar" style="background-color: var(--primary-light);"></div>
+            <div class="group-info">
+              <p class="group-name">Rénovation énergétique</p>
+              <p class="group-meta">28 discussions actives</p>
+            </div>
+          </div>
+          <div class="group-item">
+            <div class="group-avatar" style="background-color: var(--primary-light);"></div>
+            <div class="group-info">
+              <p class="group-name">Participation citoyenne</p>
+              <p class="group-meta">29 discussions actives</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="card">
+          <h3>Suggestions</h3>
+          <p style="color: var(--text-light); font-size: 12px;">Personnes à suivre</p>
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 15px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="profile-avatar" style="width: 40px; height: 40px;"></div>
+              <div>
+                <p style="font-weight: 500; margin: 0;">Marie Lambert</p>
+                <p style="color: var(--text-light); font-size: 12px; margin: 0;">Paysagiste</p>
+              </div>
+            </div>
+            <button class="btn btn-outline" style="font-size: 12px; padding: 4px 12px;">Suivre</button>
+          </div>
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 15px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="profile-avatar" style="width: 40px; height: 40px;"></div>
+              <div>
+                <p style="font-weight: 500; margin: 0;">Lucas Renaud</p>
+                <p style="color: var(--text-light); font-size: 12px; margin: 0;">Paysagiste</p>
+              </div>
+            </div>
+            <button class="btn btn-outline" style="font-size: 12px; padding: 4px 12px;">Suivre</button>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="card">
+          <h3>Ressources</h3>
+          <div class="group-item">
+            <div class="group-avatar" style="background-color: #f1f1f1; display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 10px; color: var(--text-medium);">PDF</span>
+            </div>
+            <div class="group-info">
+              <p class="group-name">Bibliothèque de modèles 3D</p>
+              <p class="group-meta">20 éléments</p>
+            </div>
+          </div>
+          <div class="group-item">
+            <div class="group-avatar" style="background-color: #f1f1f1; display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 10px; color: var(--text-medium);">PDF</span>
+            </div>
+            <div class="group-info">
+              <p class="group-name">Réglementations urbanistiques</p>
+              <p class="group-meta"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background-color: var(--text-dark); color: white; padding: 48px 0; margin-top: 48px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+        <div>
+          <h3>CityPulse</h3>
+          <p>Connect with urban planners, architects, and citizens to collaborate on innovative projects.</p>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="#" style="color: white; text-decoration: none;">Urban Planning Guide</a></li>
+            <li><a href="#" style="color: white; text-decoration: none;">Sustainable City Toolkit</a></li>
+            <li><a href="#" style="color: white; text-decoration: none;">Community Engagement</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+            <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+            <li><a href="#" style="color: white; text-decoration: none;">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <div style="display: flex; gap: 16px; margin-top: 8px;">
+            <a href="#" style="color: white;"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-linkedin"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-instagram"></i></a>
+            <a href="#" style="color: white;"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2025 CityPulse. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

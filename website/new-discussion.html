@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityPulse - New Discussion</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="front/landingPage.html" class="logo">
+                <img src="assets/logo.png" alt="CityPulse Logo" style="height: 45px; margin-right: 10px;">
+                CityPulse
+            </a>
+            <nav class="main-nav">
+                <a href="cont.html">Post</a>
+                <a href="event.html">Events</a>
+                <a href="forums.html" class="active">Forums</a>
+                <a href="projet/project.html">Project</a>
+                <a href="#">Offre d'emploi</a>
+
+                
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" style="text-decoration: none; color: var(--text-medium); margin-right: 10px;">Log In</a>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header" style="margin: 24px 0;">
+            <h1>Start a New Discussion</h1>
+            <p>Share your thoughts and engage with the community</p>
+        </div>
+
+        <div class="card">
+            <form id="new-discussion-form" class="form-section">
+                <div class="form-group">
+                    <label for="discussionTitle">Title*</label>
+                    <input type="text" id="discussionTitle" name="discussionTitle" class="form-control" required 
+                           placeholder="What's your discussion about?">
+                </div>
+
+                <div class="form-group">
+                    <label for="discussionContent">Content*</label>
+                    <textarea id="discussionContent" name="discussionContent" class="form-control" rows="6" required 
+                              placeholder="Share your thoughts, ideas, or questions..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="discussionCategory">Category*</label>
+                    <select id="discussionCategory" name="discussionCategory" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="urban-planning">Urban Planning</option>
+                        <option value="sustainability">Sustainability</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="technology">Smart City Technology</option>
+                        <option value="community">Community Engagement</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="discussionTags">Tags</label>
+                    <input type="text" id="discussionTags" name="discussionTags" class="form-control" 
+                           placeholder="Add tags separated by commas (e.g., urban planning, sustainability)">
+                </div>
+
+                <div class="form-actions">
+                    <a href="forums.html" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create Discussion</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--text-dark); color: white; padding: 48px 0; margin-top: 48px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+                <div>
+                    <h3>CityPulse</h3>
+                    <p>Connect with urban planners, architects, and citizens to collaborate on innovative projects.</p>
+                </div>
+                <div>
+                    <h4>Resources</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">Urban Planning Guide</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Sustainable City Toolkit</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Community Engagement</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <a href="#" style="color: white;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p>&copy; 2025 CityPulse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+</body>
+</html> 
