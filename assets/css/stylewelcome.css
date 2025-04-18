@@ -1,0 +1,162 @@
+:root {
+    --primary: #23683B;
+    --primary-light: #3A8D5A;
+    --cream: #F5F1E9;
+    --black: #000000;
+    --gray: #8B919B;
+    --white: #FFFFFF;
+    --transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url('../images/naturelool.png') center/cover no-repeat fixed;
+    padding: 20px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 900px;
+    height: 400px;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.auth-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    transition: var(--transition);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.login-panel {
+    background-color: rgba(35, 104, 59, 0.9);
+    color: var(--cream);
+}
+
+.register-panel {
+    background-color: rgba(245, 241, 233, 0.9);
+    color: var(--primary);
+}
+
+.panel-content {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    transition: var(--transition);
+    position: absolute;
+}
+
+.default-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hover-content {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 25px;
+    color: inherit;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.btn {
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    border: 2px solid;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.btn-outline {
+    background: transparent;
+    color: inherit;
+    border-color: currentColor;
+}
+
+.login-panel .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+}
+
+.register-panel .btn-outline:hover {
+    background: rgba(35, 104, 59, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Hover Effects */
+.auth-panel:hover {
+    flex: 1.5;
+}
+
+.login-panel:hover {
+    background-color: rgba(35, 104, 59, 0.95);
+}
+
+.register-panel:hover {
+    background-color: rgba(245, 241, 233, 0.95);
+}
+
+.auth-panel:hover .default-content {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.auth-panel:hover .hover-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .auth-panel {
+        padding: 30px 20px;
+        min-height: 400px;
+    }
+    
+    .auth-panel:hover {
+        flex: 1;
+    }
+    
+    body {
+        background-attachment: scroll;
+    }
+}

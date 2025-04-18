@@ -1,0 +1,161 @@
+:root {
+    --primary: #23683B;
+    --primary-light: #3A8D5A;
+    --cream: #F5F1E9;
+    --black: #000000;
+    --gray: #8B919B;
+    --white: #FFFFFF;
+    --transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url('../images/naturelool.png') center/cover no-repeat fixed;
+    padding: 20px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    background-color: rgba(245, 241, 233, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    transform: translateY(0);
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+}
+
+.auth-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.auth-container h1 {
+    color: var(--primary);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    transform: translateY(0);
+    transition: var(--transition);
+}
+
+.auth-container:hover .form-group {
+    transform: translateY(-2px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(35, 104, 59, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary);
+    color: var(--cream);
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(35, 104, 59, 0.3);
+}
+
+.auth-container p {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--black);
+}
+
+.auth-container a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.auth-container a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.btn { animation: fadeInUp 0.6s ease-out 0.5s forwards; }
+.auth-container p { animation: fadeInUp 0.6s ease-out 0.6s forwards; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 30px;
+        margin: 20px;
+    }
+    
+    body {
+        background-attachment: scroll;
+    }
+}
