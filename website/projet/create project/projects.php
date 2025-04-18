@@ -211,6 +211,15 @@ $filteredProjects = array_filter($projects, function($project) use ($searchTerm,
             background: transparent;
         }
         
+        .button-ticket {
+            background: #28a745;
+            color: white;
+        }
+        
+        .button-ticket:hover {
+            background: #218838;
+        }
+        
         .button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -530,11 +539,22 @@ $filteredProjects = array_filter($projects, function($project) use ($searchTerm,
                                     <i class="fas fa-users"></i>
                                     <span><?= $project['teamSize'] ?? 'Not specified' ?></span>
                                 </div>
+                                <?php if (isset($project['is_paid'])): ?>
+                                <div class="meta-item">
+                                    <i class="<?= $project['is_paid'] ? 'fas fa-euro-sign' : 'fas fa-unlock' ?>"></i>
+                                    <span><?= $project['is_paid'] ? htmlspecialchars(number_format($project['ticket_price'], 2) . ' €') : 'Free Access' ?></span>
+                                </div>
+                                <?php endif; ?>
                             </div>
                             <div class="project-actions">
     <a href="project-details.php?id=<?= $project['id'] ?>" class="button button-primary">
         <i class="fas fa-eye"></i> View Details
     </a>
+    <?php if (isset($project['is_paid']) && $project['is_paid']): ?>
+    <a href="cart.php?action=add&project_id=<?= $project['id'] ?>" class="button button-ticket">
+        <i class="fas fa-ticket-alt"></i> Buy Ticket
+    </a>
+    <?php endif; ?>
     <button class="button button-support <?= $project['is_supported'] ? 'supported' : '' ?>" 
             data-project-id="<?= $project['id'] ?>">
         <i class="fas fa-heart"></i> 

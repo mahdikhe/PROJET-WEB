@@ -1,6 +1,20 @@
 <?php
 require_once('db.php');
 
+
+
+session_start();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $token = bin2hex(random_bytes(32));
+    if (!isset($_SESSION['form_token']) || $_SESSION['form_token'] !== ($_POST['form_token'] ?? '')) {
+        $_SESSION['form_token'] = $token;
+        // Traitement normal
+    } else {
+        // Formulaire déjà soumis
+        header("Location: project_success.php?id=" . $lastInsertId);
+        exit();
+    }
+}
 // Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -20,11 +34,25 @@ try {
         // Validate required fields
         $required = ['projectName', 'projectDescription', 'startDate', 'endDate', 
                     'projectLocation', 'projectCategory', 'projectTags', 'teamSize', 
-                    'projectVisibility', 'terms'];
+                    'projectVisibility', 'terms', 'isPaid'];
         
         foreach ($required as $field) {
-            if (empty($_POST[$field])) {
+            if (empty($_POST[$field]) && $field !== 'isPaid') { // isPaid can be 0 (which is empty in PHP)
                 throw new Exception("Required field '$field' is missing");
+            }
+        }
+
+        // Validate ticket price if project is paid
+        $isPaid = (int)$_POST['isPaid'];
+        $ticketPrice = 0.00;
+        
+        if ($isPaid === 1) {
+            if (empty($_POST['ticketPrice'])) {
+                throw new Exception("Ticket price is required for paid projects");
+            }
+            $ticketPrice = (float)$_POST['ticketPrice'];
+            if ($ticketPrice <= 0) {
+                throw new Exception("Ticket price must be greater than 0");
             }
         }
 
@@ -37,14 +65,16 @@ try {
         $projectCategory = $_POST['projectCategory'];
         $projectTags = htmlspecialchars($_POST['projectTags']);
         $teamSize = $_POST['teamSize'];
+        $projectVisibility = $_POST['projectVisibility'];
         
         // Handle image upload
         $imageDestination = handleImageUpload($_FILES['projectImage'] ?? null, $uploadDir);
         
-        // Insert into database
-       $sql = "INSERT INTO projects (projectName, projectDescription, startDate, endDate, 
-                projectLocation, projectCategory, projectTags, teamSize, projectImage, created_at) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        // Insert into database with new fields
+        $sql = "INSERT INTO projects (projectName, projectDescription, startDate, endDate, 
+                projectLocation, projectCategory, projectTags, teamSize, projectImage, 
+                is_paid, ticket_price, projectVisibility, created_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
         $stmt = $conn->prepare($sql);
         $success = $stmt->execute([
@@ -56,7 +86,10 @@ try {
             $projectCategory,
             $projectTags,
             $teamSize,
-            $imageDestination
+            $imageDestination,
+            $isPaid,
+            $ticketPrice,
+            $projectVisibility
         ]);
 
         if ($success) {
