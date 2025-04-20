@@ -96,3 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Refresh projects every 30 seconds
     setInterval(() => loadProjects(false), 30000);
 });
+
+
+
+
+
+
