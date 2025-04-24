@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -286,4 +287,294 @@
         }
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityPulse - Create New Event</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="newEvent.css">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="front/landingPage.html" class="logo">
+                <img src="assets/logo.png" alt="CityPulse Logo">
+                <span>CityPulse</span>
+            </a>
+            <nav class="main-nav">
+                <a href="cont.html">Post</a>
+                <a href="event.html" class="active">Events</a>
+                <a href="forums.html">Forums</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" class="login-link">Log In</a>
+                <button class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Create New Event</h1>
+            <p>Fill in the details below to create a compelling event for your community</p>
+        </div>
+
+        <div class="card">
+            <!-- Error message display -->
+            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+            
+            <form id="create-event-form" action="eventNew.php" method="POST">
+                
+                <!-- Event Basic Information -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Event Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title*</label>
+                            <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter a descriptive title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventType">Event Type*</label>
+                            <select id="eventType" name="eventType" class="form-control" required>
+                                <option value="">-- Select event type --</option>
+                                <option value="workshop">Workshop</option>
+                                <option value="conference">Conference</option>
+                                <option value="seminar">Seminar</option>
+                                <option value="networking">Networking Event</option>
+                                <option value="forum">Forum</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Event Description*</label>
+                        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe your event in detail" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Date and Time -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Date and Time</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="startDate">Start Date*</label>
+                            <input type="date" id="startDate" name="startDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="startTime">Start Time*</label>
+                            <input type="time" id="startTime" name="startTime" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date*</label>
+                            <input type="date" id="endDate" name="endDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">End Time*</label>
+                            <input type="time" id="endTime" name="endTime" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location and Capacity -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Location and Attendance</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventFormat">Event Format*</label>
+                            <select id="eventFormat" name="eventFormat" class="form-control" required onchange="toggleLocationFields()">
+                                <option value="">-- Select format --</option>
+                                <option value="inPerson">In Person</option>
+                                <option value="online">Online</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="locationGroup">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" name="location" class="form-control" placeholder="Enter venue address">
+                        </div>
+                        <div class="form-group" id="onlineUrlGroup" style="display: none;">
+                            <label for="onlineUrl">Online Meeting URL</label>
+                            <input type="url" id="onlineUrl" name="onlineUrl" class="form-control" placeholder="Enter meeting link">
+                        </div>
+                        <div class="form-group">
+                            <label for="capacity">Maximum Capacity*</label>
+                            <input type="number" id="capacity" name="capacity" class="form-control" required min="1" placeholder="Number of attendees">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Ticket Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="ticketType">Ticket Type*</label>
+                            <select id="ticketType" name="ticketType" class="form-control" required onchange="togglePriceField()">
+                                <option value="">-- Select ticket type --</option>
+                                <option value="free">Free</option>
+                                <option value="paid">Paid</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="priceGroup" style="display: none;">
+                            <label for="price">Ticket Price (dt)</label>
+                            <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" placeholder="Enter ticket price">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.location.href='event.html'">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>CityPulse</h3>
+                    <p>Connect with urban planners, architects, and citizens to collaborate on innovative projects.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Urban Planning Guide</a></li>
+                        <li><a href="#">Sustainable City Toolkit</a></li>
+                        <li><a href="#">Community Engagement</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CityPulse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Display error message if present in URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.textContent = decodeURIComponent(error);
+                errorDiv.style.display = 'block';
+                
+                // Scroll to error message
+                errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            // Set default dates (today and tomorrow)
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            document.getElementById('startDate').valueAsDate = today;
+            document.getElementById('endDate').valueAsDate = tomorrow;
+        }
+
+        function toggleLocationFields() {
+            const format = document.getElementById('eventFormat').value;
+            const locationGroup = document.getElementById('locationGroup');
+            const onlineUrlGroup = document.getElementById('onlineUrlGroup');
+
+            if (format === 'online') {
+                locationGroup.style.display = 'none';
+                onlineUrlGroup.style.display = 'block';
+            } else if (format === 'hybrid') {
+                locationGroup.style.display = 'block';
+                onlineUrlGroup.style.display = 'block';
+            } else {
+                locationGroup.style.display = 'block';
+                onlineUrlGroup.style.display = 'none';
+            }
+        }
+
+        function togglePriceField() {
+            const ticketType = document.getElementById('ticketType').value;
+            const priceGroup = document.getElementById('priceGroup');
+            priceGroup.style.display = ticketType === 'paid' ? 'block' : 'none';
+            
+            // Clear price if ticket type is free
+            if (ticketType === 'free') {
+                document.getElementById('price').value = '';
+            }
+        }
+
+        // Form validation before submission
+        document.getElementById('create-event-form').addEventListener('submit', function(e) {
+            const eventFormat = document.getElementById('eventFormat').value;
+            const location = document.getElementById('location').value;
+            const onlineUrl = document.getElementById('onlineUrl').value;
+            const ticketType = document.getElementById('ticketType').value;
+            const price = document.getElementById('price').value;
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            
+            // Validate dates
+            if (endDate < startDate) {
+                e.preventDefault();
+                showError('End date cannot be before start date');
+                return;
+            }
+
+            // Validate location/online URL based on format
+            if (eventFormat === 'inPerson' && !location) {
+                e.preventDefault();
+                showError('Please enter a location for in-person event');
+            } else if (eventFormat === 'online' && !onlineUrl) {
+                e.preventDefault();
+                showError('Please enter an online meeting URL');
+            } else if (eventFormat === 'hybrid' && (!location || !onlineUrl)) {
+                e.preventDefault();
+                showError('Please enter both location and online meeting URL for hybrid event');
+            }
+
+            // Validate price for paid tickets
+            if (ticketType === 'paid' && !price) {
+                e.preventDefault();
+                showError('Please enter a ticket price');
+            }
+        });
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+>>>>>>> bb0192a77f41df7c722502d7c9fbaadb5c90f577
 </html>

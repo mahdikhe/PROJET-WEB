@@ -1,6 +1,11 @@
 <?php
+<<<<<<< HEAD
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/model/model.php';
+=======
+require_once 'C:\xampp\htdocs\test\config.php';
+require_once 'C:\xampp\htdocs\test\model\model.php';
+>>>>>>> bb0192a77f41df7c722502d7c9fbaadb5c90f577
 
 class EventController {
     private $pdo;
@@ -9,6 +14,7 @@ class EventController {
         $this->pdo = Config::getConnexion();
     }
 
+<<<<<<< HEAD
     public function getTotalEvents() {
         $sql = "SELECT COUNT(*) as count FROM events";
         try {
@@ -55,6 +61,8 @@ class EventController {
         }
     }
 
+=======
+>>>>>>> bb0192a77f41df7c722502d7c9fbaadb5c90f577
     public function listEvents() {
         $sql = "SELECT * FROM events ORDER BY start_date DESC, start_time DESC";
         try {
@@ -155,10 +163,13 @@ class EventController {
     }
 
     public function deleteEvent($event_id) {
+<<<<<<< HEAD
         // First delete all reservations for this event
         $this->deleteReservationsByEventId($event_id);
         
         // Then delete the event
+=======
+>>>>>>> bb0192a77f41df7c722502d7c9fbaadb5c90f577
         $sql = "DELETE FROM events WHERE event_id = :event_id";
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -179,6 +190,7 @@ class EventController {
             die('Error:' . $e->getMessage());
         }
     }
+<<<<<<< HEAD
     
     /* Reservation Management Methods */
     
@@ -320,5 +332,7 @@ class EventController {
             }
         }
     }
+=======
+>>>>>>> bb0192a77f41df7c722502d7c9fbaadb5c90f577
 }
 ?>
