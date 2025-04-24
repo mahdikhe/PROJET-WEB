@@ -27,6 +27,17 @@ if (!file_exists($uploadDir)) {
 
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Check if this is a duplicate submission
+        if (isset($_SESSION['last_project_submission']) && 
+            time() - $_SESSION['last_project_submission'] < 5) {
+            // This is likely a duplicate submission, redirect to the projects page
+            header("Location: projects.php");
+            exit();
+        }
+        
+        // Record this submission time
+        $_SESSION['last_project_submission'] = time();
+        
         // Create database connection using PDO
         $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -95,14 +106,17 @@ try {
         if ($success) {
             $lastInsertId = $conn->lastInsertId();
             
-            // Redirect to success page instead of sending JSON
-            header("Location: project_success.php?id=" . $lastInsertId);
-            exit();
+            // Always return JSON response for consistency
+            sendJsonResponse(true, "Project created successfully", [
+                'id' => $lastInsertId,
+                'name' => $projectName
+            ]);
         } else {
             throw new Exception("Failed to insert project into database");
         }
     }
 } catch (Exception $e) {
+    // Always return JSON response for consistency
     sendJsonResponse(false, $e->getMessage());
 }
 

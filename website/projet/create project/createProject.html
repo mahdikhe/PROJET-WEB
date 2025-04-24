@@ -611,55 +611,24 @@ select.error:focus {
       }
     });
 
-    // Add this to your form submission handler
-document.getElementById('projectForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    
-    fetch('save_project.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            // Dispatch event for new project
-            const newProjectEvent = new CustomEvent('newProject', {
-                detail: data.project
-            });
-            window.dispatchEvent(newProjectEvent);
-            
-            // Redirect to success page or show success message
-            window.location.href = 'project.html?success=true';
+    // Function to toggle ticket price field visibility
+    function toggleTicketPrice() {
+        const isPaid = document.getElementById('isPaid').value;
+        const ticketPriceGroup = document.getElementById('ticketPriceGroup');
+        
+        if (isPaid === '1') {
+            ticketPriceGroup.style.display = 'block';
+            document.getElementById('ticketPrice').setAttribute('required', 'required');
         } else {
-            alert('Failed to create project');
+            ticketPriceGroup.style.display = 'none';
+            document.getElementById('ticketPrice').removeAttribute('required');
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        //alert('An error occurred while saving the project');
-    });
-});
-
-// Function to toggle ticket price field visibility
-function toggleTicketPrice() {
-    const isPaid = document.getElementById('isPaid').value;
-    const ticketPriceGroup = document.getElementById('ticketPriceGroup');
-    
-    if (isPaid === '1') {
-        ticketPriceGroup.style.display = 'block';
-        document.getElementById('ticketPrice').setAttribute('required', 'required');
-    } else {
-        ticketPriceGroup.style.display = 'none';
-        document.getElementById('ticketPrice').removeAttribute('required');
     }
-}
 
-// Initialize the ticket price visibility on page load
-document.addEventListener('DOMContentLoaded', function() {
-    toggleTicketPrice();
-});
+    // Initialize the ticket price visibility on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleTicketPrice();
+    });
     </script>
 </main>
 

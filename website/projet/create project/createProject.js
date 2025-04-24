@@ -5,14 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         
+        // Disable the submit button to prevent multiple submissions
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+        
         // Validation du nom du projet
         const projectName = document.getElementById('projectName');
         if (!projectName.value.trim()) {
             showError(projectName, 'Le nom du projet est requis');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (projectName.value.length < 3) {
             showError(projectName, 'Le nom du projet doit contenir au moins 3 caractères');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -20,10 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectDescription = document.getElementById('projectDescription');
         if (!projectDescription.value.trim()) {
             showError(projectDescription, 'La description du projet est requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (projectDescription.value.length < 20) {
             showError(projectDescription, 'La description doit contenir au moins 20 caractères');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -34,18 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!startDate.value) {
             showError(startDate, 'La date de début est requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (startDate.value < today) {
             showError(startDate, 'La date de début ne peut pas être dans le passé');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (!endDate.value) {
             showError(endDate, 'La date de fin est requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (endDate.value < startDate.value) {
             showError(endDate, 'La date de fin doit être après la date de début');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -53,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectLocation = document.getElementById('projectLocation');
         if (!projectLocation.value.trim()) {
             showError(projectLocation, 'La localisation est requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -60,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectCategory = document.getElementById('projectCategory');
         if (!projectCategory.value) {
             showError(projectCategory, 'Veuillez sélectionner une catégorie');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -67,6 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectTags = document.getElementById('projectTags');
         if (!projectTags.value.trim()) {
             showError(projectTags, 'Veuillez ajouter au moins un tag');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -74,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectBudget = document.getElementById('projectBudget');
         if (!projectBudget.value || projectBudget.value < 100) {
             showError(projectBudget, 'Le budget minimum est de 100$');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -81,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const teamSize = document.getElementById('teamSize');
         if (!teamSize.value) {
             showError(teamSize, 'Veuillez sélectionner la taille de l\'équipe');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -92,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         if (!hasSelectedSkill) {
             showError(skills[0].parentElement, 'Veuillez sélectionner au moins une compétence requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -99,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectVisibility = document.getElementById('projectVisibility');
         if (!projectVisibility.value) {
             showError(projectVisibility, 'Veuillez sélectionner la visibilité du projet');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -106,6 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectImage = document.getElementById('projectImage');
         if (!projectImage.files.length) {
             showError(projectImage, 'Une image principale est requise');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         const file = projectImage.files[0];
@@ -114,10 +151,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!allowedTypes.includes(file.type)) {
             showError(projectImage, 'Format d\'image non supporté. Utilisez JPEG, PNG ou GIF');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
         if (file.size > maxSize) {
             showError(projectImage, 'L\'image ne doit pas dépasser 5MB');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -131,10 +172,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
                 if (!allowedFileTypes.includes(fileExtension)) {
                     showError(additionalFiles, 'Format de fichier non supporté. Utilisez PDF, DOC, DOCX, PPT ou PPTX');
+                    submitButton.disabled = false;
+                    submitButton.textContent = '🚀 Launch Project';
                     return;
                 }
                 if (file.size > maxFileSize) {
                     showError(additionalFiles, 'Les fichiers ne doivent pas dépasser 10MB chacun');
+                    submitButton.disabled = false;
+                    submitButton.textContent = '🚀 Launch Project';
                     return;
                 }
             }
@@ -144,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectWebsite = document.getElementById('projectWebsite');
         if (projectWebsite.value && !isValidUrl(projectWebsite.value)) {
             showError(projectWebsite, 'Veuillez entrer une URL valide');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
@@ -151,11 +198,57 @@ document.addEventListener('DOMContentLoaded', function() {
         const terms = document.querySelector('input[name="terms"]');
         if (!terms.checked) {
             showError(terms, 'Vous devez accepter les conditions d\'utilisation');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
             return;
         }
 
         // Si toutes les validations passent, soumettre le formulaire
-        form.submit();
+        // Utiliser FormData pour envoyer les données du formulaire
+        const formData = new FormData(form);
+        
+        // Ajouter un timestamp pour éviter les soumissions multiples
+        formData.append('submission_time', new Date().getTime());
+        
+        // Envoyer le formulaire via fetch
+        fetch('save_project.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            try {
+                const result = JSON.parse(data);
+                if (result.success) {
+                    // Rediriger vers la page de succès
+                    window.location.href = 'project_success.php?id=' + result.project.id;
+                } else {
+                    alert('Erreur: ' + result.message);
+                    submitButton.disabled = false;
+                    submitButton.textContent = '🚀 Launch Project';
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                // Si la réponse n'est pas du JSON, c'est probablement une redirection
+                // Le navigateur devrait suivre automatiquement la redirection
+                // Mais pour être sûr, réactivons le bouton après un délai
+                setTimeout(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = '🚀 Launch Project';
+                }, 5000); // 5 secondes de délai
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Une erreur est survenue lors de la soumission du formulaire');
+            submitButton.disabled = false;
+            submitButton.textContent = '🚀 Launch Project';
+        });
     });
 
     // Fonction pour afficher les erreurs

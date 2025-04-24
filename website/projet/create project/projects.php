@@ -4,7 +4,17 @@
 include('db.php');
 session_start();
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+$userId = $isLoggedIn ? $_SESSION['user_id'] : 0;
+
+// Debugging: Log the session data
+error_log("Session data in projects.php: " . print_r($_SESSION, true));
+error_log("User logged in: " . ($isLoggedIn ? 'Yes' : 'No'));
 
 // Fonction pour construire les URLs de tri
 function buildSortUrl($field, $order) {
@@ -33,7 +43,6 @@ if (!in_array($sortOrder, $allowedOrders)) {
 }
 
 // Requête SQL avec tri
-$userId = $_SESSION['user_id'] ?? 0;
 $projects = [];
 
 $query = "SELECT p.*, 
@@ -634,14 +643,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     try {
+      console.log("Sending delete request for projects:", selectedProjects);
+      
       const response = await fetch('delete-projects.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectIds: selectedProjects })
       });
 
-      const result = await response.json();
-      console.log("DELETE RESULT:", result);
+      console.log("Response status:", response.status);
+      console.log("Response headers:", response.headers);
+      
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+      
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Error parsing JSON response:", e);
+        alert("Error: Invalid response from server");
+        return;
+      }
+      
+      console.log("Parsed response:", result);
 
       if (result.success) {
         // Supprimer les cartes du DOM
@@ -669,6 +694,13 @@ document.addEventListener('DOMContentLoaded', function () {
       e.stopPropagation(); // évite de déclencher le clic sur la carte
 
       const projectId = this.dataset.projectId;
+      
+      // Check if user is logged in
+      <?php if (!$isLoggedIn): ?>
+        alert('You need to be logged in to support a project. Please log in or sign up.');
+        window.location.href = 'login.html';
+        return;
+      <?php endif; ?>
 
       try {
         const response = await fetch('support-project.php', {
@@ -676,6 +708,10 @@ document.addEventListener('DOMContentLoaded', function () {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `projectId=${projectId}`
         });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
         const result = await response.json();
         console.log("SUPPORT RESULT:", result);
@@ -688,9 +724,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
           supportText.textContent = result.is_supported ? 'Supported' : 'Support';
           countElement.textContent = `(${result.supporters_count})`;
+        } else {
+          console.error('Support error:', result.message);
+          alert('Error: ' + result.message);
         }
       } catch (error) {
         console.error('Support error:', error);
+        alert('An error occurred while processing your support request');
       }
     });
   });

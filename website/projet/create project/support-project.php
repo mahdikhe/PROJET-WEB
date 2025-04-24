@@ -1,13 +1,22 @@
 <?php
 include('db.php');
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
 
+    // Debugging: Log the session data
+    error_log("Session data: " . print_r($_SESSION, true));
+    error_log("POST data: " . print_r($_POST, true));
+
     // Validate user authentication
     if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+        error_log("User not authenticated");
         echo json_encode(['status' => 'error', 'message' => 'User not authenticated']);
         exit;
     }
@@ -17,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = intval($_SESSION['user_id']);
 
     if (!$projectId || $projectId <= 0) {
+        error_log("Invalid project ID: " . $projectId);
         echo json_encode(['status' => 'error', 'message' => 'Invalid project ID']);
         exit;
     }
@@ -39,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(2, $userId, PDO::PARAM_INT);
             $stmt->execute();
             $action = 'unsupported';
+            error_log("Support removed for projectId: $projectId, userId: $userId");
         } else {
             // If not supported, add the support
             $stmt = $conn->prepare("INSERT INTO project_supporters (project_id, user_id) VALUES (?, ?)");
@@ -46,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(2, $userId, PDO::PARAM_INT);
             $stmt->execute();
             $action = 'supported';
+            error_log("Support added for projectId: $projectId, userId: $userId");
         }
 
         // Update the supporters count in the projects table
@@ -60,14 +72,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Get the updated supporters count
         $supportersCount = getSupportersCount($conn, $projectId);
+        error_log("Updated supporters count for projectId: $projectId, count: $supportersCount");
 
         // Return the response
-        echo json_encode([
+        $response = [
             'status' => 'success',
             'action' => $action,
             'is_supported' => ($action === 'supported'),
             'supporters_count' => $supportersCount
-        ]);
+        ];
+        error_log("Sending response: " . json_encode($response));
+        echo json_encode($response);
     } catch (Exception $e) {
         // Debugging: Log the error message
         error_log("Error in support-project.php: " . $e->getMessage());
