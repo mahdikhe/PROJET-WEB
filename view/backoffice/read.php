@@ -1,7 +1,7 @@
 <?php
-include "../../config.php";
-include "../../model/model.php";
-include "../../controller/conttroler.php";
+include_once dirname(dirname(__DIR__)) . "/config.php";
+include_once dirname(dirname(__DIR__)) . "/model/model.php";
+include_once dirname(dirname(__DIR__)) . "/controller/conttroler.php";
 
 try {
     $eventController = new EventController();
@@ -29,7 +29,7 @@ try {
                 $eventData['end_date'],
                 $eventData['end_time'],
                 $eventData['event_format'],
-                $eventData['location'],
+                $eventData['location'] ?? '',
                 $eventData['online_url'] ?? '',
                 (int)$eventData['capacity'],
                 $eventData['ticket_type'],
@@ -69,7 +69,7 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="stylse.css">
+    <link rel="stylesheet" href="ui.css">
     <style>
         .alert {
             padding: 15px;
@@ -179,10 +179,7 @@ try {
     </style>
 </head>
 <body>
-<button class="sidebar-toggle">
-    <i class="fas fa-bars"></i>
-</button>
-
+<!-- Sidebar -->
 <div class="sidebar">
     <div class="sidebar-logo">
         <h2>Event Manager</h2>
@@ -190,33 +187,28 @@ try {
     
     <ul class="sidebar-menu">
         <li>
-            <a href="dashboard.php" class="active">
+            <a href="dashboard.php">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
         </li>
         <li>
-            <a href="events.php">
+            <a href="read.php" class="active">
                 <i class="fas fa-calendar-check"></i> Events
             </a>
         </li>
         <li>
-            <a href="newEvent.html">
+            <a href="newEvent.php">
                 <i class="fas fa-plus-circle"></i> Create Event
             </a>
         </li>
         <li>
-            <a href="reports.php">
-                <i class="fas fa-chart-bar"></i> Reports
+            <a href="../frontoffice/events.php#reservations" target="_blank">
+                <i class="fas fa-ticket-alt"></i> View Reservations
             </a>
         </li>
         <li>
-            <a href="attendees.php">
-                <i class="fas fa-users"></i> Attendees
-            </a>
-        </li>
-        <li>
-            <a href="settings.php">
-                <i class="fas fa-cog"></i> Settings
+            <a href="../frontoffice/events.php" target="_blank">
+                <i class="fas fa-globe"></i> Public Portal
             </a>
         </li>
     </ul>
@@ -229,7 +221,14 @@ try {
         </div>
     </div>
 </div>
-    <div class="container">'; 
+
+<!-- Mobile toggle button -->
+<button class="sidebar-toggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Main content container -->
+<div class="container">';
 
     // Display success messages if exists
     if (isset($_GET['delete_success']) && $_GET['delete_success'] == "true") {
@@ -303,7 +302,7 @@ try {
                 $eventData['end_date'],
                 $eventData['end_time'],
                 $eventData['event_format'],
-                $eventData['location'],
+                $eventData['location'] ?? '',
                 $eventData['online_url'] ?? '',
                 (int)$eventData['capacity'],
                 $eventData['ticket_type'],
@@ -488,8 +487,8 @@ try {
         }
     });
     
-    // Modal Scripts
     document.addEventListener("DOMContentLoaded", function() {
+        // Modal Scripts
         // Open modal when View Details button is clicked
         const viewButtons = document.querySelectorAll(".view-details");
         viewButtons.forEach(button => {
@@ -526,27 +525,35 @@ try {
                 event.target.style.display = "none";
             }
         });
+
+        // Alert Messages
+        // Get all alert messages
+        const alerts = document.querySelectorAll(".alert");
+        
+        // If there are any alerts present, set a timeout to remove them after 3 seconds
+        if (alerts.length > 0) {
+            setTimeout(function() {
+                alerts.forEach(function(alert) {
+                    // Add fade-out animation
+                    alert.style.transition = "opacity 0.5s ease";
+                    alert.style.opacity = "0";
+                    
+                    // Remove the element after the fade-out animation completes
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                });
+            }, 3000); // 3 seconds
+        }
+
+        // Sidebar toggle functionality
+        const sidebarToggle = document.querySelector(".sidebar-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        
+        sidebarToggle.addEventListener("click", function() {
+            sidebar.classList.toggle("active");
+        });
     });
-    document.addEventListener("DOMContentLoaded", function() {
-    // Get all alert messages
-    const alerts = document.querySelectorAll(".alert");
-    
-    // If there are any alerts present, set a timeout to remove them after 3 seconds
-    if (alerts.length > 0) {
-        setTimeout(function() {
-            alerts.forEach(function(alert) {
-                // Add fade-out animation
-                alert.style.transition = "opacity 0.5s ease";
-                alert.style.opacity = "0";
-                
-                // Remove the element after the fade-out animation completes
-                setTimeout(function() {
-                    alert.remove();
-                }, 500);
-            });
-        }, 3000); // 3 seconds
-    }
-});
     </script>
 </body>
 </html>';

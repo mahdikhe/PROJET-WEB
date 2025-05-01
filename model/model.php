@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Class EventManager
+ * Handles all event-related operations including create, read, update, and delete
+ */
 class EventManager {
     private $pdo;
     private $lastError;
@@ -197,6 +200,74 @@ class Event {
     public function setPrice(float $price): self { 
         $this->price = $price; 
         return $this; 
+    }
+}
+
+/**
+ * Class Reservation
+ * Represents a reservation for an event
+ */
+class Reservation {
+    private ?int $reservation_id;
+    private int $event_id;
+    private string $guest_name;
+    private string $guest_email;
+    private int $seats_reserved;
+    private string $reservation_date;
+    
+    public function __construct(
+        int $event_id,
+        string $guest_name,
+        string $guest_email,
+        int $seats_reserved = 1,
+        string $reservation_date = '',
+        ?int $reservation_id = null
+    ) {
+        $this->reservation_id = $reservation_id;
+        $this->event_id = $event_id;
+        $this->guest_name = $guest_name;
+        $this->guest_email = $guest_email;
+        $this->seats_reserved = $seats_reserved;
+        $this->reservation_date = $reservation_date ?: date('Y-m-d H:i:s');
+    }
+    
+    // Getters
+    public function getReservationId(): ?int { return $this->reservation_id; }
+    public function getEventId(): int { return $this->event_id; }
+    public function getGuestName(): string { return $this->guest_name; }
+    public function getGuestEmail(): string { return $this->guest_email; }
+    public function getSeatsReserved(): int { return $this->seats_reserved; }
+    public function getReservationDate(): string { return $this->reservation_date; }
+    
+    // Setters
+    public function setReservationId(?int $reservation_id): self {
+        $this->reservation_id = $reservation_id;
+        return $this;
+    }
+    
+    public function setEventId(int $event_id): self {
+        $this->event_id = $event_id;
+        return $this;
+    }
+    
+    public function setGuestName(string $guest_name): self {
+        $this->guest_name = $guest_name;
+        return $this;
+    }
+    
+    public function setGuestEmail(string $guest_email): self {
+        $this->guest_email = $guest_email;
+        return $this;
+    }
+    
+    public function setSeatsReserved(int $seats_reserved): self {
+        $this->seats_reserved = $seats_reserved;
+        return $this;
+    }
+    
+    public function setReservationDate(string $reservation_date): self {
+        $this->reservation_date = $reservation_date;
+        return $this;
     }
 }
 ?>

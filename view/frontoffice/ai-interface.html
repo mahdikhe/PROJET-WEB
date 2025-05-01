@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event AI Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .ai-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .ai-card {
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .ai-result {
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin-top: 1rem;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container ai-container">
+        <h1 class="text-center mb-4">Event AI Assistant</h1>
+
+        <!-- Event Description Generator -->
+        <div class="card ai-card">
+            <div class="card-header">
+                <h5>Generate Event Description</h5>
+            </div>
+            <div class="card-body">
+                <form id="eventDescriptionForm">
+                    <div class="mb-3">
+                        <label class="form-label">Event Title</label>
+                        <input type="text" class="form-control" id="eventTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Event Date</label>
+                        <input type="datetime-local" class="form-control" id="eventDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" id="eventLocation" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Format</label>
+                        <select class="form-control" id="eventFormat" required>
+                            <option value="online">Online</option>
+                            <option value="in-person">In-Person</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Capacity</label>
+                        <input type="text" class="form-control" id="eventCapacity" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Description</button>
+                </form>
+                <div class="loading" id="descriptionLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="ai-result" id="descriptionResult"></div>
+            </div>
+        </div>
+
+        <!-- Event Recommendations -->
+        <div class="card ai-card">
+            <div class="card-header">
+                <h5>Get Event Recommendations</h5>
+            </div>
+            <div class="card-body">
+                <form id="recommendationsForm">
+                    <div class="mb-3">
+                        <label class="form-label">Your Interests (comma-separated)</label>
+                        <input type="text" class="form-control" id="userInterests" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Past Events (comma-separated)</label>
+                        <input type="text" class="form-control" id="pastEvents" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Available Time</label>
+                        <input type="text" class="form-control" id="availableTime" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Recommendations</button>
+                </form>
+                <div class="loading" id="recommendationsLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="ai-result" id="recommendationsResult"></div>
+            </div>
+        </div>
+
+        <!-- Feedback Analysis -->
+        <div class="card ai-card">
+            <div class="card-header">
+                <h5>Analyze Event Feedback</h5>
+            </div>
+            <div class="card-body">
+                <form id="feedbackForm">
+                    <div class="mb-3">
+                        <label class="form-label">Event Feedback (JSON format)</label>
+                        <textarea class="form-control" id="eventFeedback" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Analyze Feedback</button>
+                </form>
+                <div class="loading" id="feedbackLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="ai-result" id="feedbackResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { 
+            generateEventDescription, 
+            generateEventRecommendations, 
+            analyzeEventFeedback 
+        } from './ai-generator.js';
+
+        // Event Description Form
+        document.getElementById('eventDescriptionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loading = document.getElementById('descriptionLoading');
+            const result = document.getElementById('descriptionResult');
+            
+            loading.style.display = 'block';
+            result.textContent = '';
+
+            const eventDetails = {
+                title: document.getElementById('eventTitle').value,
+                date: document.getElementById('eventDate').value,
+                location: document.getElementById('eventLocation').value,
+                format: document.getElementById('eventFormat').value,
+                capacity: document.getElementById('eventCapacity').value
+            };
+
+            try {
+                const description = await generateEventDescription(eventDetails);
+                result.textContent = description;
+            } catch (error) {
+                result.textContent = 'Error generating description. Please try again.';
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        // Recommendations Form
+        document.getElementById('recommendationsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loading = document.getElementById('recommendationsLoading');
+            const result = document.getElementById('recommendationsResult');
+            
+            loading.style.display = 'block';
+            result.textContent = '';
+
+            const userPreferences = {
+                interests: document.getElementById('userInterests').value.split(',').map(i => i.trim()),
+                pastEvents: document.getElementById('pastEvents').value.split(',').map(e => e.trim()),
+                availableTime: document.getElementById('availableTime').value
+            };
+
+            try {
+                const recommendations = await generateEventRecommendations(userPreferences);
+                result.textContent = recommendations;
+            } catch (error) {
+                result.textContent = 'Error generating recommendations. Please try again.';
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        // Feedback Form
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loading = document.getElementById('feedbackLoading');
+            const result = document.getElementById('feedbackResult');
+            
+            loading.style.display = 'block';
+            result.textContent = '';
+
+            try {
+                const feedbackData = JSON.parse(document.getElementById('eventFeedback').value);
+                const analysis = await analyzeEventFeedback(feedbackData);
+                result.textContent = analysis;
+            } catch (error) {
+                result.textContent = 'Error analyzing feedback. Please check your JSON format and try again.';
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 

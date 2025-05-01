@@ -1,49 +1,46 @@
 <?php
 include_once dirname(dirname(__DIR__)) . "/config.php";
 include_once dirname(dirname(__DIR__)) . "/model/model.php";
-include_once dirname(dirname(__DIR__)) . "/controller/conttroler.php";
+include_once dirname(dirname(__DIR__)) . "/controller/controller.php";
 
 try {
     $eventController = new EventController();
     
-    // Get event_id from URL
-    $eventId = isset($_GET['event_id']) ? (int)$_GET['event_id'] : 0;
-    
-    if ($eventId <= 0) {
-        throw new Exception("Invalid event ID");
+    // Handle form submission
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $eventData = [
+            'title' => $_POST['eventTitle'] ?? '',
+            'type' => $_POST['eventType'] ?? '',
+            'description' => $_POST['description'] ?? '',
+            'start_date' => $_POST['startDate'] ?? '',
+            'start_time' => $_POST['startTime'] ?? '',
+            'end_date' => $_POST['endDate'] ?? '',
+            'end_time' => $_POST['endTime'] ?? '',
+            'format' => $_POST['eventFormat'] ?? '',
+            'location' => $_POST['location'] ?? '',
+            'online_url' => $_POST['onlineUrl'] ?? '',
+            'capacity' => $_POST['capacity'] ?? 0,
+            'ticket_type' => $_POST['ticketType'] ?? '',
+            'price' => $_POST['price'] ?? 0
+        ];
+        
+        $result = $eventController->createEvent($eventData);
+        
+        if ($result) {
+            header('Location: read.php?success=1');
+            exit;
+        } else {
+            header('Location: newEvent.php?error=Failed to create event');
+            exit;
+        }
     }
-    
-    // Get event details
-    $eventData = $eventController->getEvent($eventId);
-    
-    if (!$eventData) {
-        throw new Exception("Event not found");
-    }
-    
-    // Create Event object
-    $event = new Event(
-        $eventData['event_title'],
-        $eventData['event_type'],
-        $eventData['description'],
-        $eventData['start_date'],
-        $eventData['start_time'],
-        $eventData['end_date'],
-        $eventData['end_time'],
-        $eventData['event_format'],
-        $eventData['location'] ?? '',
-        $eventData['online_url'] ?? '',
-        (int)$eventData['capacity'],
-        $eventData['ticket_type'],
-        (float)$eventData['price'],
-        (int)$eventData['event_id']
-    );
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event - <?php echo htmlspecialchars($event->getEventTitle()); ?></title>
+    <title>Create New Event</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="ui.css">
@@ -99,17 +96,17 @@ try {
                 </a>
             </li>
             <li>
-                <a href="newEvent.php">
+                <a href="newEvent.php" class="active">
                     <i class="fas fa-plus-circle"></i> Create Event
                 </a>
             </li>
             <li>
-                <a href="../frontoffice/events.php#reservations">
-                    <i class="fas fa-ticket-alt"></i> Reservations
+                <a href="../frontoffice/events.php#reservations" target="_blank">
+                    <i class="fas fa-ticket-alt"></i> View Reservations
                 </a>
             </li>
             <li>
-                <a href="../frontoffice/events.php">
+                <a href="../frontoffice/events.php" target="_blank">
                     <i class="fas fa-globe"></i> Public Portal
                 </a>
             </li>
@@ -132,8 +129,8 @@ try {
     <!-- Main content container -->
     <div class="container">
         <div class="page-header">
-            <h1>Edit Event</h1>
-            <p>Update event details for "<?php echo htmlspecialchars($event->getEventTitle()); ?>"</p>
+            <h1>Create New Event</h1>
+            <p>Fill in the details below to create a new event</p>
         </div>
 
         <div class="card">
@@ -145,8 +142,7 @@ try {
                 </div>
                 <?php endif; ?>
                 
-                <form id="edit-event-form" action="updateEvent.php" method="POST">
-                    <input type="hidden" name="event_id" value="<?php echo $event->getEventId(); ?>">
+                <form id="create-event-form" action="newEvent.php" method="POST">
                     
                     <!-- Event Basic Information -->
                     <div class="form-section">
@@ -154,24 +150,24 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="eventTitle">Event Title*</label>
-                                <input type="text" id="eventTitle" name="eventTitle" class="form-control" value="<?php echo htmlspecialchars($event->getEventTitle()); ?>" required>
+                                <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter a descriptive title" required>
                             </div>
                             <div class="form-group">
                                 <label for="eventType">Event Type*</label>
                                 <select id="eventType" name="eventType" class="form-control" required>
                                     <option value="">-- Select event type --</option>
-                                    <option value="workshop" <?php echo $event->getEventType() === 'workshop' ? 'selected' : ''; ?>>Workshop</option>
-                                    <option value="conference" <?php echo $event->getEventType() === 'conference' ? 'selected' : ''; ?>>Conference</option>
-                                    <option value="seminar" <?php echo $event->getEventType() === 'seminar' ? 'selected' : ''; ?>>Seminar</option>
-                                    <option value="networking" <?php echo $event->getEventType() === 'networking' ? 'selected' : ''; ?>>Networking Event</option>
-                                    <option value="forum" <?php echo $event->getEventType() === 'forum' ? 'selected' : ''; ?>>Forum</option>
-                                    <option value="other" <?php echo $event->getEventType() === 'other' ? 'selected' : ''; ?>>Other</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="conference">Conference</option>
+                                    <option value="seminar">Seminar</option>
+                                    <option value="networking">Networking Event</option>
+                                    <option value="forum">Forum</option>
+                                    <option value="other">Other</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description">Event Description*</label>
-                            <textarea id="description" name="description" class="form-control" rows="4" required><?php echo htmlspecialchars($event->getDescription()); ?></textarea>
+                            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe your event in detail" required></textarea>
                         </div>
                     </div>
 
@@ -181,19 +177,19 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="startDate">Start Date*</label>
-                                <input type="date" id="startDate" name="startDate" class="form-control" value="<?php echo $event->getStartDate(); ?>" required>
+                                <input type="date" id="startDate" name="startDate" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="startTime">Start Time*</label>
-                                <input type="time" id="startTime" name="startTime" class="form-control" value="<?php echo $event->getStartTime(); ?>" required>
+                                <input type="time" id="startTime" name="startTime" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="endDate">End Date*</label>
-                                <input type="date" id="endDate" name="endDate" class="form-control" value="<?php echo $event->getEndDate(); ?>" required>
+                                <input type="date" id="endDate" name="endDate" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="endTime">End Time*</label>
-                                <input type="time" id="endTime" name="endTime" class="form-control" value="<?php echo $event->getEndTime(); ?>" required>
+                                <input type="time" id="endTime" name="endTime" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -206,21 +202,21 @@ try {
                                 <label for="eventFormat">Event Format*</label>
                                 <select id="eventFormat" name="eventFormat" class="form-control" required onchange="toggleLocationFields()">
                                     <option value="">-- Select format --</option>
-                                    <option value="inPerson" <?php echo $event->getEventFormat() === 'inPerson' ? 'selected' : ''; ?>>In Person</option>
-                                    <option value="online" <?php echo $event->getEventFormat() === 'online' ? 'selected' : ''; ?>>Online</option>
+                                    <option value="inPerson">In Person</option>
+                                    <option value="online">Online</option>
                                 </select>
                             </div>
-                            <div class="form-group" id="locationGroup" <?php echo $event->getEventFormat() === 'online' ? 'style="display: none;"' : ''; ?>>
+                            <div class="form-group" id="locationGroup">
                                 <label for="location">Location</label>
-                                <input type="text" id="location" name="location" class="form-control" value="<?php echo htmlspecialchars($event->getLocation()); ?>">
+                                <input type="text" id="location" name="location" class="form-control" placeholder="Enter venue address">
                             </div>
-                            <div class="form-group" id="onlineUrlGroup" <?php echo $event->getEventFormat() !== 'online' ? 'style="display: none;"' : ''; ?>>
+                            <div class="form-group" id="onlineUrlGroup" style="display: none;">
                                 <label for="onlineUrl">Online Meeting URL</label>
-                                <input type="url" id="onlineUrl" name="onlineUrl" class="form-control" value="<?php echo htmlspecialchars($event->getOnlineUrl()); ?>">
+                                <input type="url" id="onlineUrl" name="onlineUrl" class="form-control" placeholder="Enter meeting link">
                             </div>
                             <div class="form-group">
                                 <label for="capacity">Maximum Capacity*</label>
-                                <input type="number" id="capacity" name="capacity" class="form-control" value="<?php echo $event->getCapacity(); ?>" required min="1">
+                                <input type="number" id="capacity" name="capacity" class="form-control" required min="1" placeholder="Number of attendees">
                             </div>
                         </div>
                     </div>
@@ -233,13 +229,13 @@ try {
                                 <label for="ticketType">Ticket Type*</label>
                                 <select id="ticketType" name="ticketType" class="form-control" required onchange="togglePriceField()">
                                     <option value="">-- Select ticket type --</option>
-                                    <option value="free" <?php echo $event->getTicketType() === 'free' ? 'selected' : ''; ?>>Free</option>
-                                    <option value="paid" <?php echo $event->getTicketType() === 'paid' ? 'selected' : ''; ?>>Paid</option>
+                                    <option value="free">Free</option>
+                                    <option value="paid">Paid</option>
                                 </select>
                             </div>
-                            <div class="form-group" id="priceGroup" <?php echo $event->getTicketType() !== 'paid' ? 'style="display: none;"' : ''; ?>>
+                            <div class="form-group" id="priceGroup" style="display: none;">
                                 <label for="price">Ticket Price ($)</label>
-                                <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" value="<?php echo $event->getPrice(); ?>">
+                                <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" value="0" placeholder="Enter ticket price">
                             </div>
                         </div>
                     </div>
@@ -249,7 +245,7 @@ try {
                             <i class="fas fa-times"></i> Cancel
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Save Changes
+                            <i class="fas fa-check"></i> Create Event
                         </button>
                     </div>
                 </form>
@@ -257,7 +253,31 @@ try {
         </div>
     </div>
 
+    <script src="../functions.js"></script>
     <script>
+        // Initialize form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFormValidation('create-event-form', {
+                'eventTitle': { type: 'text', options: { minLength: 3 } },
+                'eventType': { type: 'text' },
+                'description': { type: 'text', options: { minLength: 10 } },
+                'startDate': { type: 'date' },
+                'startTime': { type: 'time' },
+                'endDate': { type: 'date' },
+                'endTime': { type: 'time' },
+                'eventFormat': { type: 'text' },
+                'location': { type: 'text' },
+                'onlineUrl': { type: 'url' },
+                'capacity': { type: 'number', options: { min: 1 } },
+                'ticketType': { type: 'text' },
+                'price': { type: 'number', options: { min: 0 } }
+            });
+            
+            // Setup date/time validation
+            setupDateTimeValidation('startDate', 'startTime');
+            setupDateTimeValidation('endDate', 'endTime');
+        });
+
         // Toggle location fields based on event format
         function toggleLocationFields() {
             const eventFormat = document.getElementById('eventFormat').value;
@@ -276,11 +296,6 @@ try {
                 onlineUrlGroup.style.display = 'none';
                 locationInput.required = true;
                 onlineUrlInput.required = false;
-            } else {
-                locationGroup.style.display = 'block';
-                onlineUrlGroup.style.display = 'block';
-                locationInput.required = true;
-                onlineUrlInput.required = true;
             }
         }
         
@@ -301,7 +316,7 @@ try {
         }
         
         // Validate end date/time is after start date/time
-        document.getElementById('edit-event-form').addEventListener('submit', function(e) {
+        document.getElementById('create-event-form').addEventListener('submit', function(e) {
             const startDate = new Date(document.getElementById('startDate').value + ' ' + document.getElementById('startTime').value);
             const endDate = new Date(document.getElementById('endDate').value + ' ' + document.getElementById('endTime').value);
             
@@ -340,4 +355,4 @@ try {
 </body>
 </html>';
 }
-?>
+?> 
