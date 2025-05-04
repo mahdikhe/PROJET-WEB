@@ -450,7 +450,7 @@ try {
                 <p class="page-subtitle">Viewing detailed information for project #<?= $project['id'] ?></p>
             </div>
             <div class="header-actions">
-                <a href="../../../../views/frontoffice/createProject/edit-project.php?id=<?= $project['id'] ?>" class="btn btn-primary">
+                <a href="../../../frontoffice/createProject/edit-project.php?id=<?= $project['id'] ?>" class="btn btn-primary">
                     <i class="fas fa-edit"></i> Edit Project
                 </a>
                 <a href="all_projects.php" class="btn btn-outline">
@@ -598,6 +598,14 @@ try {
                     endforeach;
                     ?>
                 </div>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($project['id'])): ?>
+            <div style="text-align:right; margin-top: 20px;">
+                <a href="../../../../views/frontoffice/tasks.php?project_id=<?= $project['id'] ?>" class="btn btn-primary">
+                    <i class="fas fa-tasks"></i> View Project Tasks
+                </a>
             </div>
             <?php endif; ?>
         </div>

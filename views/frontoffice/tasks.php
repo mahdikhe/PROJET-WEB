@@ -266,6 +266,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+// Fetch subtasks for each task to calculate progress
+function getTaskProgress($conn, $taskId) {
+    $stmt = $conn->prepare("SELECT COUNT(*) as total, SUM(is_completed) as completed FROM subtasks WHERE task_id = ?");
+    $stmt->execute([$taskId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total = (int)($row['total'] ?? 0);
+    $completed = (int)($row['completed'] ?? 0);
+    $progress = $total > 0 ? round(($completed / $total) * 100) : 0;
+    return [ 'progress' => $progress, 'completed' => $completed, 'total' => $total ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -845,7 +856,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 2px solid #e9ecef;
             border-radius: 10px;
             transition: all 0.3s ease;
-            font-size: 0.95em;
         }
 
         .invite-form-group input:focus,
@@ -1000,6 +1010,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: rgba(46, 204, 113, 0.1);
             margin-top: 10px;
         }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg,#4361ee,#3f37c9);
+            border-radius: 8px;
+            transition: width 0.5s cubic-bezier(.23,1.02,.32,1);
+        }
+    .tag-badge {
+        display: inline-block;
+        background: #e0e7ff;
+        color: #3f37c9;
+        border-radius: 12px;
+        padding: 2px 10px;
+        font-size: 0.85em;
+        font-weight: 500;
+        margin-right: 5px;
+        margin-bottom: 2px;
+    }
+    .task-tags { margin-bottom: 6px; }
     </style>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
@@ -1077,9 +1114,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <?php foreach ($tasksByStatus['To Do'] as $task): ?>
+                    <?php $progressData = getTaskProgress($conn, $task['id']); ?>
                     <div class="task-card priority-<?php echo strtolower($task['priority']); ?>" data-task-id="<?php echo $task['id']; ?>" onclick="openTaskDetails(<?php echo $task['id']; ?>)">
                         <div class="task-title"><?php echo htmlspecialchars($task['title']); ?></div>
+                        <div class="task-tags">
+                        <?php if (!empty($task['tags'])): ?>
+                            <?php foreach (explode(',', $task['tags']) as $tag): ?>
+                                <span class="tag-badge"><?php echo htmlspecialchars(trim($tag)); ?></span>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        </div>
+                        <div class="task-tags">
+                            <?php if (!empty($task['tags'])): ?>
+                                <?php foreach (explode(',', $task['tags']) as $tag): ?>
+                                    <span class="tag-badge"><?php echo htmlspecialchars(trim($tag)); ?></span>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                         <div class="task-description"><?php echo htmlspecialchars($task['description']); ?></div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" style="width:<?php echo $progressData['progress']; ?>%"></div>
+                        </div>
+                        <div style="font-size:0.85em; color:#888; margin-bottom:8px;">
+                            Progress: <?php echo $progressData['progress']; ?>% (<?php echo $progressData['completed']; ?>/<?php echo $progressData['total']; ?> subtasks)
+                        </div>
                         
                         <div class="task-meta">
                             <span class="task-priority priority-<?php echo strtolower($task['priority']); ?>"><?php echo $task['priority']; ?></span>
@@ -1114,6 +1172,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </ul>
                             </div>
                         </div>
+                        <div style="margin-top: 8px; text-align: right;">
+                            <a class="btn btn-outline" href="manage_task.php?task_id=<?php echo $task['id']; ?>">
+                                <i class="fas fa-cog"></i> Manage Task
+                            </a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -1126,9 +1189,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <?php foreach ($tasksByStatus['In Progress'] as $task): ?>
+                    <?php $progressData = getTaskProgress($conn, $task['id']); ?>
                     <div class="task-card priority-<?php echo strtolower($task['priority']); ?>" data-task-id="<?php echo $task['id']; ?>" onclick="openTaskDetails(<?php echo $task['id']; ?>)">
                         <div class="task-title"><?php echo htmlspecialchars($task['title']); ?></div>
                         <div class="task-description"><?php echo htmlspecialchars($task['description']); ?></div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" style="width:<?php echo $progressData['progress']; ?>%"></div>
+                        </div>
+                        <div style="font-size:0.85em; color:#888; margin-bottom:8px;">
+                            Progress: <?php echo $progressData['progress']; ?>% (<?php echo $progressData['completed']; ?>/<?php echo $progressData['total']; ?> subtasks)
+                        </div>
                         
                         <div class="task-meta">
                             <span class="task-priority priority-<?php echo strtolower($task['priority']); ?>"><?php echo $task['priority']; ?></span>
@@ -1163,6 +1233,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </ul>
                             </div>
                         </div>
+                        <div style="margin-top: 8px; text-align: right;">
+                            <a class="btn btn-outline" href="manage_task.php?task_id=<?php echo $task['id']; ?>">
+                                <i class="fas fa-cog"></i> Manage Task
+                            </a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -1175,9 +1250,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <?php foreach ($tasksByStatus['Review'] as $task): ?>
+                    <?php $progressData = getTaskProgress($conn, $task['id']); ?>
                     <div class="task-card priority-<?php echo strtolower($task['priority']); ?>" data-task-id="<?php echo $task['id']; ?>" onclick="openTaskDetails(<?php echo $task['id']; ?>)">
                         <div class="task-title"><?php echo htmlspecialchars($task['title']); ?></div>
                         <div class="task-description"><?php echo htmlspecialchars($task['description']); ?></div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" style="width:<?php echo $progressData['progress']; ?>%"></div>
+                        </div>
+                        <div style="font-size:0.85em; color:#888; margin-bottom:8px;">
+                            Progress: <?php echo $progressData['progress']; ?>% (<?php echo $progressData['completed']; ?>/<?php echo $progressData['total']; ?> subtasks)
+                        </div>
                         
                         <div class="task-meta">
                             <span class="task-priority priority-<?php echo strtolower($task['priority']); ?>"><?php echo $task['priority']; ?></span>
@@ -1212,6 +1294,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </ul>
                             </div>
                         </div>
+                        <div style="margin-top: 8px; text-align: right;">
+                            <a class="btn btn-outline" href="manage_task.php?task_id=<?php echo $task['id']; ?>">
+                                <i class="fas fa-cog"></i> Manage Task
+                            </a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -1224,9 +1311,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <?php foreach ($tasksByStatus['Done'] as $task): ?>
+                    <?php $progressData = getTaskProgress($conn, $task['id']); ?>
                     <div class="task-card priority-<?php echo strtolower($task['priority']); ?>" data-task-id="<?php echo $task['id']; ?>" onclick="openTaskDetails(<?php echo $task['id']; ?>)">
                         <div class="task-title"><?php echo htmlspecialchars($task['title']); ?></div>
                         <div class="task-description"><?php echo htmlspecialchars($task['description']); ?></div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" style="width:<?php echo $progressData['progress']; ?>%"></div>
+                        </div>
+                        <div style="font-size:0.85em; color:#888; margin-bottom:8px;">
+                            Progress: <?php echo $progressData['progress']; ?>% (<?php echo $progressData['completed']; ?>/<?php echo $progressData['total']; ?> subtasks)
+                        </div>
                         
                         <div class="task-meta">
                             <span class="task-priority priority-<?php echo strtolower($task['priority']); ?>"><?php echo $task['priority']; ?></span>
@@ -1256,6 +1350,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <li><a href="#" class="delete-action" onclick="confirmDeleteTask(event, <?php echo $task['id']; ?>)"><i class="fas fa-trash"></i> Delete Task</a></li>
                                 </ul>
                             </div>
+                        </div>
+                        <div style="margin-top: 8px; text-align: right;">
+                            <a class="btn btn-outline" href="manage_task.php?task_id=<?php echo $task['id']; ?>">
+                                <i class="fas fa-cog"></i> Manage Task
+                            </a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -1341,6 +1440,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label" for="title">Task Title*</label>
+                    <input type="text" class="form-control" id="title" name="title" >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="tags">Task Tags*</label>
                     <input type="text" class="form-control" id="title" name="title" >
                 </div>
                 
@@ -1477,82 +1581,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <script>
-        // Function to open invite friend modal
-        function openInviteFriendModal(event, taskId) {
-            event.stopPropagation();
-            document.getElementById('invite_task_id').value = taskId;
-            document.getElementById('inviteFriendForm').reset();
-            document.getElementById('email-error').textContent = '';
-            openModal('inviteFriendModal');
-        }
-
-        // Function to validate email
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        // Function to send invitation
-        function sendInvitation() {
-            const taskId = document.getElementById('invite_task_id').value;
-            const email = document.getElementById('friend_email').value;
-            const message = document.getElementById('invite_message').value;
-            const emailError = document.getElementById('email-error');
-
-            // Validate email
-            if (!email) {
-                emailError.textContent = 'L\'email est requis';
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-                emailError.textContent = 'Format d\'email invalide';
-                return;
-            }
-
-            emailError.textContent = '';
-
-            // Show loading state
-            const submitButton = document.querySelector('.invite-submit-btn');
-            const originalButtonText = submitButton.innerHTML;
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-
-            // Send invitation
-            fetch('send_invitation.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `task_id=${taskId}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    const form = document.getElementById('inviteFriendForm');
-                    form.innerHTML = `
-                        <div class="invite-success">
-                            <i class="fas fa-check-circle"></i>
-                            Invitation envoyée avec succès !
-                        </div>
-                    `;
-                    setTimeout(() => {
-                        closeModal('inviteFriendModal');
-                    }, 2000);
-                } else {
-                    throw new Error(data.message || 'Une erreur est survenue');
-                }
-            })
-            .catch(error => {
-                emailError.textContent = error.message || 'Une erreur est survenue lors de l\'envoi de l\'invitation';
-            })
-            .finally(() => {
-                // Reset button state
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
-            });
-        }
-        
         // Modal functionality
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
@@ -2027,12 +2055,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     },
                     body: params.toString()
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => Promise.reject(err));
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         addBotMessage(`✅ Task "${title}" has been created! Refresh the page to see it.`);
@@ -2231,4 +2254,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </script>
 </body>
-</html> 

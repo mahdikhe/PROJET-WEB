@@ -4,6 +4,19 @@ include 'C:/Users/Abderrahmen/Desktop/aa/platforme/config/Database.php';
 // Initialize the database connection
 $db = Database::getInstance();
 $conn = $db->getConnection();
+
+// Task statistics queries (use $conn instead of $pdo)
+$totalTasksQuery = "SELECT COUNT(*) as total FROM tasks";
+$totalTasksStmt = $conn->query($totalTasksQuery);
+$totalTasks = $totalTasksStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+$completedTasksQuery = "SELECT COUNT(*) as completed FROM tasks WHERE status = 'Done'";
+$completedTasksStmt = $conn->query($completedTasksQuery);
+$completedTasks = $completedTasksStmt->fetch(PDO::FETCH_ASSOC)['completed'];
+
+$overdueTasksQuery = "SELECT COUNT(*) as overdue FROM tasks WHERE due_date < CURDATE() AND status != 'Done'";
+$overdueTasksStmt = $conn->query($overdueTasksQuery);
+$overdueTasks = $overdueTasksStmt->fetch(PDO::FETCH_ASSOC)['overdue'];
 ?>
 
 <!DOCTYPE html>
@@ -1124,6 +1137,12 @@ $conn = $db->getConnection();
                         <span>Projects Timeline Analysis</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#task-stats-section" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
                 <div class="nav-divider"></div>
                 <li class="nav-item">
                     <a href="../../../../views/frontoffice/createProject/createProject.html" class="nav-link">
@@ -1411,7 +1430,7 @@ $conn = $db->getConnection();
         </div>
 
         <!-- Engagement Trend Chart -->
-        <div id="timeline-section" class="chart-card">
+        <div id="task-section" class="chart-card">
             <div class="chart-header">
                 <h3 class="chart-title">Projects Timeline Analysis</h3>
                 <div class="chart-tabs">
@@ -1423,6 +1442,41 @@ $conn = $db->getConnection();
                 <canvas id="engagementChart"></canvas>
             </div>
         </div>
+
+
+        <!-- Improved Task Statistics Section -->
+<section id="task-stats-section" class="task-stats-section" style="margin-bottom: 2rem;">
+    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700; color: var(--primary-color); letter-spacing: 1px;">Task Statistics</h2>
+    <div style="display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: flex-start;">
+        <div class="stat-card task-stat-card" style="min-width:220px; background: linear-gradient(135deg, #e0e7ff 60%, #f8fafc 100%); box-shadow: 0 4px 16px rgba(67,97,238,0.08); border-left: 6px solid #6c63ff;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-tasks stat-icon" style="color: #6c63ff; opacity: 1; font-size: 2.2rem; position: static;"></i>
+                <div>
+                    <div class="stat-title" style="font-size: 1.1rem; color: #6c63ff; font-weight: 600;">Total Tasks</div>
+                    <div class="stat-value" style="font-size: 2.3rem; color: #2c3e50; font-weight: 800;"><?php echo $totalTasks; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="stat-card task-stat-card" style="min-width:220px; background: linear-gradient(135deg, #e0ffe7 60%, #f8fafc 100%); box-shadow: 0 4px 16px rgba(67,238,138,0.08); border-left: 6px solid #4caf50;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-check-circle stat-icon" style="color: #4caf50; opacity: 1; font-size: 2.2rem; position: static;"></i>
+                <div>
+                    <div class="stat-title" style="font-size: 1.1rem; color: #4caf50; font-weight: 600;">Completed Tasks</div>
+                    <div class="stat-value" style="font-size: 2.3rem; color: #2c3e50; font-weight: 800;"><?php echo $completedTasks; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="stat-card task-stat-card" style="min-width:220px; background: linear-gradient(135deg, #fff7e7 60%, #f8fafc 100%); box-shadow: 0 4px 16px rgba(255,193,7,0.08); border-left: 6px solid #ff9800;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-exclamation-triangle stat-icon" style="color: #ff9800; opacity: 1; font-size: 2.2rem; position: static;"></i>
+                <div>
+                    <div class="stat-title" style="font-size: 1.1rem; color: #ff9800; font-weight: 600;">Overdue Tasks</div>
+                    <div class="stat-value" style="font-size: 2.3rem; color: #2c3e50; font-weight: 800;"><?php echo $overdueTasks; ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
         
         <!-- Add a new section for contributor locations after the engagement trend chart -->
         <div id="contributor-section" class="chart-card">
@@ -2155,7 +2209,7 @@ $conn = $db->getConnection();
     }
     
     function saveSettings(key, value) {
-        let settings = JSON.parse(localStorage.getItem('dashboardSettings') || '{}');
+               let settings = JSON.parse(localStorage.getItem('dashboardSettings') || '{}');
         settings[key] = value;
         localStorage.setItem('dashboardSettings', JSON.stringify(settings));
     }
@@ -3160,4 +3214,4 @@ function displayContributorsOnGoogleMap(map, contributors) {
 }
     </script>
 </body>
-</html> 
+</html>
