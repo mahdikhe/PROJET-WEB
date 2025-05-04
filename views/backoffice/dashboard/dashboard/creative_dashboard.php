@@ -1175,26 +1175,21 @@ $conn = $db->getConnection();
             <!-- Remplacez le bloc de code du budget par celui-ci -->
 <div class="stat-card">
     <i class="fas fa-dollar-sign stat-icon"></i>
-    <h3 class="stat-title">Total Budget</h3>
+    <h3 class="stat-title">Total Projets</h3>
     <div class="stat-value">
-        <?php 
-        try {
-            // Modification de la requête pour gérer les valeurs nulles
-            $query = $conn->query("SELECT COALESCE(SUM(NULLIF(projectBudget, 0)), 0) as total FROM projects");
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            $total = floatval($result['total']); // Conversion explicite en nombre
-            
-            if ($total > 0) {
-                // Formatage avec séparateur de milliers
-                echo number_format($total, 0, ',', ' ') . ' €';
-            } else {
-                echo "0 €";
-            }
-        } catch (PDOException $e) {
-            error_log("Erreur lors du calcul du budget total : " . $e->getMessage());
-            echo "0 €";
-        }
-        ?>
+    <?php 
+                try {
+                    $query = $conn->query("SELECT COUNT(*) as count FROM projects");
+                    $result = $query->fetch(PDO::FETCH_ASSOC);
+                    echo $result['count']; 
+                } catch (PDOException $e) {
+                    error_log("Error counting projects: " . $e->getMessage());
+                    echo "0";
+                }
+                ?>
+    </div>
+    <div class="stat-change">
+        <i class="fas fa-arrow-up trend-up"></i> 12% increase
     </div>
     <div class="stat-change">
         <?php
@@ -1244,7 +1239,7 @@ $conn = $db->getConnection();
         ?>
     </div>
 </div>
-            <div class="stat-card">
+<div class="stat-card">
                 <i class="fas fa-dollar-sign stat-icon"></i>
                 <h3 class="stat-title">Total Budget</h3>
                 <div class="stat-value">

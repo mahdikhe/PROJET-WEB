@@ -31,7 +31,7 @@ try {
 
     // Validate required fields
     $required = ['projectName', 'projectDescription', 'startDate', 'endDate', 
-                'projectLocation', 'projectCategory', 'projectTags', 'teamSize', 
+                'projectLocation', 'projectCategory', 'projectTags','projectBudget','fundingGoal', 'teamSize', 
                 'projectVisibility', 'terms', 'isPaid'];
     
     foreach ($required as $field) {
@@ -51,26 +51,60 @@ try {
     $db = Database::getInstance()->getConnection();
     
     // Insert project into database
-    $sql = "INSERT INTO projects (projectName, projectDescription, startDate, endDate, 
-            projectLocation, projectCategory, projectTags, teamSize, projectImage, 
-            is_paid, ticket_price, projectVisibility, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+    // First fix the SQL query - number of placeholders must match values
+$sql = "INSERT INTO projects (
+    projectName, 
+    projectDescription, 
+    startDate, 
+    endDate, 
+    projectLocation, 
+    projectCategory, 
+    projectTags,
+    projectBudget,
+    fundingGoal, 
+    teamSize, 
+    projectImage, 
+    is_paid, 
+    ticket_price, 
+    projectVisibility, 
+    created_at
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
-    $stmt = $db->prepare($sql);
-    $success = $stmt->execute([
-        htmlspecialchars($_POST['projectName']),
-        htmlspecialchars($_POST['projectDescription']),
-        $_POST['startDate'],
-        $_POST['endDate'],
-        htmlspecialchars($_POST['projectLocation']),
-        $_POST['projectCategory'],
-        htmlspecialchars($_POST['projectTags']),
-        $_POST['teamSize'],
-        $imageDestination,
-        (int)$_POST['isPaid'],
-        (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
-        $_POST['projectVisibility']
-    ]);
+$stmt = $db->prepare($sql);
+$success = $stmt->execute([
+    htmlspecialchars($_POST['projectName']),
+    htmlspecialchars($_POST['projectDescription']),
+    $_POST['startDate'],
+    $_POST['endDate'],
+    htmlspecialchars($_POST['projectLocation']),
+    $_POST['projectCategory'],
+    htmlspecialchars($_POST['projectTags']),
+    (float)$_POST['projectBudget'],    // Add budget
+    (float)$_POST['fundingGoal'],      // Add funding goal
+    $_POST['teamSize'],
+    $imageDestination,
+    (int)$_POST['isPaid'],
+    (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
+    $_POST['projectVisibility']
+]);
+
+$stmt = $db->prepare($sql);
+$success = $stmt->execute([
+    htmlspecialchars($_POST['projectName']),
+    htmlspecialchars($_POST['projectDescription']),
+    $_POST['startDate'],
+    $_POST['endDate'],
+    htmlspecialchars($_POST['projectLocation']),
+    $_POST['projectCategory'],
+    htmlspecialchars($_POST['projectTags']),
+    (float)$_POST['projectBudget'],    // Add budget
+    (float)$_POST['fundingGoal'],      // Add funding goal
+    $_POST['teamSize'],
+    $imageDestination,
+    (int)$_POST['isPaid'],
+    (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
+    $_POST['projectVisibility']
+]);
 
     if (!$success) {
         throw new Exception('Failed to save project to database');

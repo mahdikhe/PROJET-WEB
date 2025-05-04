@@ -184,17 +184,15 @@ try {
     $projects = $projectsStmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Filter tasks by project if a project is selected
-    // Replace the existing tasks query with:
-$tasksQuery = "SELECT tasks.*, projects.projectName FROM tasks 
-LEFT JOIN projects ON tasks.project_id = projects.id";
-if ($project_id) {
-$tasksQuery .= " WHERE tasks.project_id = :project_id";
-$tasksStmt = $conn->prepare($tasksQuery);
-$tasksStmt->bindParam(':project_id', $project_id);
-$tasksStmt->execute();
-} else {
-$tasksStmt = $conn->query($tasksQuery);
-}
+    $tasksQuery = "SELECT * FROM tasks";
+    if ($project_id) {
+        $tasksQuery .= " WHERE project_id = :project_id";
+        $tasksStmt = $conn->prepare($tasksQuery);
+        $tasksStmt->bindParam(':project_id', $project_id);
+        $tasksStmt->execute();
+    } else {
+        $tasksStmt = $conn->query($tasksQuery);
+    }
     
     $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -789,80 +787,219 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #3a56d4;
         }
 
-        /* Ajoutez ceci dans la section style */
-.invite-friend {
-    color: #4361ee;
-    font-weight: 500;
-}
+        /* Styles for invite friends feature */
+        .invite-friend-btn {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.3);
+        }
 
-.task-collaborators {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
+        .invite-friend-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+            background: linear-gradient(135deg, #3a56d4, #6207a3);
+        }
 
-.collaborator-avatar {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #4cc9f0;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7em;
-    cursor: pointer;
-    position: relative;
-}
+        .invite-friend-btn i {
+            font-size: 1.1em;
+        }
 
-.collaborator-avatar:hover::after {
-    content: attr(data-email);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.8em;
-    white-space: nowrap;
-}
+        #inviteFriendModal .modal-content {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
 
+        #inviteFriendModal .modal-title {
+            color: #4361ee;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-.project-name {
-    font-size: 0.8em;
-    color: #666;
-    margin-bottom: 5px;
-    padding: 2px 6px;
-    background-color: #f0f0f0;
-    border-radius: 3px;
-    display: inline-block;
-}
+        .invite-form-group {
+            margin-bottom: 20px;
+        }
 
-.project-name i {
-    margin-right: 4px;
-}
+        .invite-form-group label {
+            color: #2b2d42;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
 
+        .invite-form-group input,
+        .invite-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
 
-/* Ajoutez ces styles dans la section style existante */
-.error-input {
-    border-color: #dc3545 !important;
-    background-color: #fff8f8;
-}
+        .invite-form-group input:focus,
+        .invite-form-group textarea:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
 
-.error-message {
-    color: #dc3545;
-    font-size: 0.8em;
-    margin-top: 5px;
-}
+        .invite-submit-btn {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-/* Pour les champs obligatoires, ajoutez un astérisque */
-.form-label.required::after {
-    content: " *";
-    color: #dc3545;
-}
+        .invite-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+            background: linear-gradient(135deg, #3a56d4, #2a0b93);
+        }
+
+        .invite-submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .invite-error {
+            color: #ef233c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .invite-success {
+            color: #2ecc71;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(46, 204, 113, 0.1);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Styles for invite friends feature */
+        .invite-friend-btn {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .invite-friend-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .invite-friend-btn i {
+            font-size: 1.1em;
+        }
+
+        #inviteFriendModal .modal-content {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        #inviteFriendModal .modal-title {
+            color: #4361ee;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .invite-form-group {
+            margin-bottom: 20px;
+        }
+
+        .invite-form-group label {
+            color: #2b2d42;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .invite-form-group input,
+        .invite-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .invite-form-group input:focus,
+        .invite-form-group textarea:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .invite-submit-btn {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .invite-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .invite-error {
+            color: #ef233c;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .invite-success {
+            color: #2ecc71;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(46, 204, 113, 0.1);
+            margin-top: 10px;
+        }
     </style>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
@@ -943,9 +1080,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="task-card priority-<?php echo strtolower($task['priority']); ?>" data-task-id="<?php echo $task['id']; ?>" onclick="openTaskDetails(<?php echo $task['id']; ?>)">
                         <div class="task-title"><?php echo htmlspecialchars($task['title']); ?></div>
                         <div class="task-description"><?php echo htmlspecialchars($task['description']); ?></div>
-                        <div class="project-name" style="font-size: 0.8em; color: #666; margin-bottom: 5px;">
-        <i class="fas fa-project-diagram"></i> <?php echo htmlspecialchars($task['projectName']); ?>
-    </div>
                         
                         <div class="task-meta">
                             <span class="task-priority priority-<?php echo strtolower($task['priority']); ?>"><?php echo $task['priority']; ?></span>
@@ -975,6 +1109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="actions-menu" id="actions-menu-<?php echo $task['id']; ?>">
                                 <ul class="actions-menu-items">
                                     <li><a href="#" onclick="openEditTaskModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-edit"></i> Edit Task</a></li>
+                                    <li><a href="#" onclick="openInviteFriendModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-user-plus"></i> Inviter des amis</a></li>
                                     <li><a href="#" class="delete-action" onclick="confirmDeleteTask(event, <?php echo $task['id']; ?>)"><i class="fas fa-trash"></i> Delete Task</a></li>
                                 </ul>
                             </div>
@@ -1023,15 +1158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="actions-menu" id="actions-menu-<?php echo $task['id']; ?>">
                                 <ul class="actions-menu-items">
                                     <li><a href="#" onclick="openEditTaskModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-edit"></i> Edit Task</a></li>
+                                    <li><a href="#" onclick="openInviteFriendModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-user-plus"></i> Inviter des amis</a></li>
                                     <li><a href="#" class="delete-action" onclick="confirmDeleteTask(event, <?php echo $task['id']; ?>)"><i class="fas fa-trash"></i> Delete Task</a></li>
-                                    <li><a href="#"class="action-button invite-friend" onclick="openInviteFriendModal(event, <?php echo $task['id']; ?>)"> <i class="fas fa-user-plus"></i> Inviter des amis</li>
                                 </ul>
                             </div>
-                            
-</button>
-
-
-
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -1077,6 +1207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="actions-menu" id="actions-menu-<?php echo $task['id']; ?>">
                                 <ul class="actions-menu-items">
                                     <li><a href="#" onclick="openEditTaskModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-edit"></i> Edit Task</a></li>
+                                    <li><a href="#" onclick="openInviteFriendModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-user-plus"></i> Inviter des amis</a></li>
                                     <li><a href="#" class="delete-action" onclick="confirmDeleteTask(event, <?php echo $task['id']; ?>)"><i class="fas fa-trash"></i> Delete Task</a></li>
                                 </ul>
                             </div>
@@ -1121,6 +1252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="actions-menu" id="actions-menu-<?php echo $task['id']; ?>">
                                 <ul class="actions-menu-items">
                                     <li><a href="#" onclick="openEditTaskModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-edit"></i> Edit Task</a></li>
+                                    <li><a href="#" onclick="openInviteFriendModal(event, <?php echo $task['id']; ?>)"><i class="fas fa-user-plus"></i> Inviter des amis</a></li>
                                     <li><a href="#" class="delete-action" onclick="confirmDeleteTask(event, <?php echo $task['id']; ?>)"><i class="fas fa-trash"></i> Delete Task</a></li>
                                 </ul>
                             </div>
@@ -1168,6 +1300,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </main>
+
+    <!-- Invite Friend Modal -->
+    <div id="inviteFriendModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('inviteFriendModal')">&times;</span>
+            <h2 class="modal-title">Inviter un ami à cette tâche</h2>
+            
+            <form id="inviteFriendForm">
+                <input type="hidden" id="invite_task_id" name="task_id">
+                
+                <div class="invite-form-group">
+                    <label for="friend_email">Email de l'ami*</label>
+                    <input type="email" id="friend_email" name="email" required placeholder="exemple@email.com">
+                    <div class="invite-error" id="email-error"></div>
+                </div>
+                
+                <div class="invite-form-group">
+                    <label for="invite_message">Message personnel</label>
+                    <textarea id="invite_message" name="message" rows="4" placeholder="Écrivez un message motivant pour votre ami..."></textarea>
+                </div>
+                
+                <button type="button" class="invite-submit-btn" onclick="sendInvitation()">
+                    <i class="fas fa-paper-plane"></i> Envoyer l'invitation
+                </button>
+            </form>
+        </div>
+    </div>
+
+
     
     <!-- Create Task Modal -->
     <div id="createTaskModal" class="modal">
@@ -1175,7 +1336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span class="close" onclick="closeModal('createTaskModal')">&times;</span>
             <h2 class="modal-title">Create New Task</h2>
             
-            <form action="tasks.php" method="POST" id="createTaskForm" onsubmit="return validateTaskForm('createTaskForm')">
+            <form action="tasks.php" method="POST">
                 <input type="hidden" name="action" value="create_task">
                 
                 <div class="form-group">
@@ -1191,7 +1352,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="project_id">Project*</label>
-                        <select class="form-control" id="project_id" name="project_id" >
+                        <select class="form-control" id="project_id" name="project_id" required>
                             <option value="">Select a project</option>
                             <?php foreach ($projects as $project): ?>
                                 <option value="<?php echo $project['id']; ?>" <?php echo $project_id == $project['id'] ? 'selected' : ''; ?>>
@@ -1248,8 +1409,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
-
-
     
     <!-- Add Edit Task Modal -->
     <div id="editTaskModal" class="modal">
@@ -1316,35 +1475,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
-
-    <!-- Invite Friend Modal -->
-<div id="inviteFriendModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('inviteFriendModal')">&times;</span>
-        <h2 class="modal-title">Inviter un ami à cette tâche</h2>
-        
-        <form id="inviteFriendForm">
-            <input type="hidden" id="invite_task_id" name="task_id">
-            
-            <div class="form-group">
-                <label class="form-label" for="friend_email">Email de l'ami*</label>
-                <input type="email" class="form-control" id="friend_email" name="friend_email" >
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="invite_message">Message personnel (optionnel)</label>
-                <textarea class="form-control" id="invite_message" name="message" placeholder="Rejoins-moi sur cette tâche !"></textarea>
-            </div>
-            
-            <div class="button-group">
-                <button type="button" class="btn btn-primary" onclick="sendInvitation()">Envoyer l'invitation</button>
-                <button type="button" class="btn btn-outline" onclick="closeModal('inviteFriendModal')">Annuler</button>
-            </div>
-        </form>
-    </div>
-</div>
     
     <script>
+        // Function to open invite friend modal
+        function openInviteFriendModal(event, taskId) {
+            event.stopPropagation();
+            document.getElementById('invite_task_id').value = taskId;
+            document.getElementById('inviteFriendForm').reset();
+            document.getElementById('email-error').textContent = '';
+            openModal('inviteFriendModal');
+        }
+
+        // Function to validate email
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Function to send invitation
+        function sendInvitation() {
+            const taskId = document.getElementById('invite_task_id').value;
+            const email = document.getElementById('friend_email').value;
+            const message = document.getElementById('invite_message').value;
+            const emailError = document.getElementById('email-error');
+
+            // Validate email
+            if (!email) {
+                emailError.textContent = 'L\'email est requis';
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Format d\'email invalide';
+                return;
+            }
+
+            emailError.textContent = '';
+
+            // Show loading state
+            const submitButton = document.querySelector('.invite-submit-btn');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+
+            // Send invitation
+            fetch('send_invitation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `task_id=${taskId}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    const form = document.getElementById('inviteFriendForm');
+                    form.innerHTML = `
+                        <div class="invite-success">
+                            <i class="fas fa-check-circle"></i>
+                            Invitation envoyée avec succès !
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        closeModal('inviteFriendModal');
+                    }, 2000);
+                } else {
+                    throw new Error(data.message || 'Une erreur est survenue');
+                }
+            })
+            .catch(error => {
+                emailError.textContent = error.message || 'Une erreur est survenue lors de l\'envoi de l\'invitation';
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            });
+        }
+        
         // Modal functionality
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
@@ -1546,43 +1754,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Update task 
-        // Remplacez la fonction updateTask() existante par celle-ci
-function updateTask() {
-    if (!validateTaskForm('editTaskForm')) {
-        return; // Arrête l'exécution si la validation échoue
-    }
-
-    const form = document.getElementById('editTaskForm');
-    const formData = new FormData(form);
-    formData.append('action', 'update_task');
-    
-    const params = new URLSearchParams();
-    for (const [key, value] of formData.entries()) {
-        params.append(key, value);
-    }
-    
-    fetch('tasks.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: params.toString()
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            closeModal('editTaskModal');
-            window.location.reload();
-        } else {
-            showErrors([data.message]);
+        function updateTask() {
+            const form = document.getElementById('editTaskForm');
+            const formData = new FormData(form);
+            
+            // Add action parameter
+            formData.append('action', 'update_task');
+            
+            // Create URL-encoded string of parameters
+            const params = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+            
+            // Send AJAX request to update task
+            fetch('tasks.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: params.toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the modal
+                    closeModal('editTaskModal');
+                    
+                    // Reload the page to see changes
+                    // In a more advanced implementation, you would update the UI without reloading
+                    window.location.reload();
+                } else {
+                    alert('Error updating task: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showErrors(['Une erreur est survenue lors de la mise à jour de la tâche']);
-    });
-}
         
         // Confirm delete task
         function confirmDeleteTask(event, taskId) {
@@ -1687,59 +1895,37 @@ function updateTask() {
             });
             
             // Handle project selection and generating suggestions
-            // Update the chatbotAskButton click handler
-chatbotAskButton.addEventListener('click', function() {
-    const selectedProjectId = chatbotProjectSelect.value;
-    const selectedProjectName = chatbotProjectSelect.options[chatbotProjectSelect.selectedIndex].text;
-    
-    if (!selectedProjectId) {
-        addBotMessage('Please select a project first.');
-        return;
-    }
-    
-    // Add user message
-    addUserMessage(`I need task suggestions for project: ${selectedProjectName}`);
-    
-    // Simulate bot thinking with typing indicator
-    addBotMessage('Thinking of tasks for ' + selectedProjectName + '...', true);
-    
-    // Get project type from name
-    const projectType = getProjectType(selectedProjectName);
-    
-    // Call the API to get suggestions
-    fetch('get_task_suggestions.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({
-            projectType: projectType,
-            projectName: selectedProjectName
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Remove the typing indicator
-        const typingIndicator = chatbotMessages.querySelector('.typing-indicator');
-        if (typingIndicator) {
-            chatbotMessages.removeChild(typingIndicator.parentNode);
-        }
-        
-        if (data.success) {
-            // Display the suggestions
-            addSuggestions(data.suggestions, selectedProjectId);
-        } else {
-            addBotMessage('❌ Error: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        addBotMessage('❌ There was an error getting suggestions. Please try again.');
-    });
-});
-
-// You can remove the generateTaskSuggestions function as we're now using the API
+            chatbotAskButton.addEventListener('click', function() {
+                const selectedProjectId = chatbotProjectSelect.value;
+                const selectedProjectName = chatbotProjectSelect.options[chatbotProjectSelect.selectedIndex].text;
+                
+                if (!selectedProjectId) {
+                    addBotMessage('Please select a project first.');
+                    return;
+                }
+                
+                // Add user message
+                addUserMessage(`I need task suggestions for project: ${selectedProjectName}`);
+                
+                // Simulate bot thinking with typing indicator
+                addBotMessage('Thinking of tasks for ' + selectedProjectName + '...', true);
+                
+                // Get project type from name (for demo purposes)
+                const projectType = getProjectType(selectedProjectName);
+                
+                // Simulate API call with timeout
+                setTimeout(() => {
+                    // Remove the typing indicator
+                    const typingIndicator = chatbotMessages.querySelector('.typing-indicator');
+                    if (typingIndicator) {
+                        chatbotMessages.removeChild(typingIndicator.parentNode);
+                    }
+                    
+                    // Generate and display task suggestions
+                    const suggestions = generateTaskSuggestions(projectType);
+                    addSuggestions(suggestions, selectedProjectId);
+                }, 1000);
+            });
             
             // Helper function to add bot messages
             function addBotMessage(text, isTyping = false) {
@@ -1775,58 +1961,45 @@ chatbotAskButton.addEventListener('click', function() {
             
             // Helper function to add task suggestions
             function addSuggestions(suggestions, projectId) {
-    // Check if suggestions is an array
-    if (!Array.isArray(suggestions)) {
-        addBotMessage('❌ Unexpected format for suggestions. Please try again.');
-        return;
-    }
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message bot-message';
-    
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-    contentDiv.innerHTML = `<p>Here are some task suggestions for this project:</p>`;
-    
-    suggestions.forEach(suggestion => {
-        // Make sure suggestion has required fields
-        if (!suggestion.title || !suggestion.description || !suggestion.priority) {
-            console.warn('Invalid suggestion format:', suggestion);
-            return;
-        }
-        
-        const suggestionDiv = document.createElement('div');
-        suggestionDiv.className = 'suggestion-task';
-        suggestionDiv.innerHTML = `
-            <div><strong>${suggestion.title}</strong></div>
-            <div style="font-size: 0.9em; color: #666;">${suggestion.description}</div>
-            <div style="font-size: 0.8em; margin: 5px 0;">Priority: ${suggestion.priority}</div>
-            <button class="add-task-btn" data-title="${suggestion.title}" data-description="${suggestion.description}" data-priority="${suggestion.priority}" data-project-id="${projectId}">
-                <i class="fas fa-plus"></i> Add this task
-            </button>
-        `;
-        contentDiv.appendChild(suggestionDiv);
-    });
-    
-    messageDiv.appendChild(contentDiv);
-    chatbotMessages.appendChild(messageDiv);
-    
-    // Scroll to bottom
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    
-    // Add event listeners to the add task buttons
-    const addTaskButtons = chatbotMessages.querySelectorAll('.add-task-btn');
-    addTaskButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const taskTitle = this.getAttribute('data-title');
-            const taskDescription = this.getAttribute('data-description');
-            const taskPriority = this.getAttribute('data-priority');
-            const projectId = this.getAttribute('data-project-id');
-            
-            createTaskFromSuggestion(taskTitle, taskDescription, taskPriority, projectId);
-        });
-    });
-}
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = `<p>Here are some task suggestions for this project:</p>`;
+                
+                suggestions.forEach(suggestion => {
+                    const suggestionDiv = document.createElement('div');
+                    suggestionDiv.className = 'suggestion-task';
+                    suggestionDiv.innerHTML = `
+                        <div><strong>${suggestion.title}</strong></div>
+                        <div style="font-size: 0.9em; color: #666;">${suggestion.description}</div>
+                        <button class="add-task-btn" data-title="${suggestion.title}" data-description="${suggestion.description}" data-priority="${suggestion.priority}" data-project-id="${projectId}">
+                            <i class="fas fa-plus"></i> Add this task
+                        </button>
+                    `;
+                    contentDiv.appendChild(suggestionDiv);
+                });
+                
+                messageDiv.appendChild(contentDiv);
+                chatbotMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // Add event listeners to the add task buttons
+                const addTaskButtons = chatbotMessages.querySelectorAll('.add-task-btn');
+                addTaskButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const taskTitle = this.getAttribute('data-title');
+                        const taskDescription = this.getAttribute('data-description');
+                        const taskPriority = this.getAttribute('data-priority');
+                        const projectId = this.getAttribute('data-project-id');
+                        
+                        createTaskFromSuggestion(taskTitle, taskDescription, taskPriority, projectId);
+                    });
+                });
+            }
             
             // Create a task from suggestion
             function createTaskFromSuggestion(title, description, priority, projectId) {
@@ -1854,7 +2027,12 @@ chatbotAskButton.addEventListener('click', function() {
                     },
                     body: params.toString()
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         addBotMessage(`✅ Task "${title}" has been created! Refresh the page to see it.`);
@@ -2051,303 +2229,6 @@ chatbotAskButton.addEventListener('click', function() {
                 map.fitBounds(bounds, { padding: [50, 50] });
             }
         }
-
-
-
-
-
-
-        // Ouvrir le modal d'invitation
-function openInviteFriendModal(event, taskId) {
-    event.stopPropagation();
-    document.getElementById('invite_task_id').value = taskId;
-    openModal('inviteFriendModal');
-}
-
-// Envoyer l'invitation
-function sendInvitation() {
-    const taskId = document.getElementById('invite_task_id').value;
-    const email = document.getElementById('friend_email').value;
-    const message = document.getElementById('invite_message').value;
-    
-    if (!taskId) {
-        alert('Erreur: ID de tâche manquant');
-        return;
-    }
-
-    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        alert('Veuillez entrer une adresse email valide');
-        return;
-    }
-
-    // Désactiver le bouton d'envoi pour éviter les doubles soumissions
-    const submitButton = document.querySelector('#inviteFriendForm button[type="button"]');
-    if (submitButton) {
-        submitButton.disabled = true;
-    }
-    
-    // Envoyer la requête AJAX
-    fetch('send_invitation.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'include',
-        body: `task_id=${encodeURIComponent(taskId)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur réseau');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            alert('Invitation envoyée avec succès !');
-            closeModal('inviteFriendModal');
-            loadTaskCollaborators(taskId);
-        } else {
-            throw new Error(data.message || 'Échec de l\'envoi de l\'invitation');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert(error.message || 'Une erreur est survenue lors de l\'envoi de l\'invitation');
-    })
-    .finally(() => {
-        // Réactiver le bouton d'envoi
-        if (submitButton) {
-            submitButton.disabled = false;
-        }
-    });
-}
-
-// Charger les collaborateurs pour une tâche
-function loadTaskCollaborators(taskId) {
-    fetch('get_task_collaborators.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: `task_id=${taskId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            updateCollaboratorsDisplay(taskId, data.collaborators);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Mettre à jour l'affichage des collaborateurs
-function updateCollaboratorsDisplay(taskId, collaborators) {
-    const taskCard = document.querySelector(`.task-card[data-task-id="${taskId}"]`);
-    if (!taskCard) return;
-    
-    let collaboratorsContainer = taskCard.querySelector('.task-collaborators');
-    if (!collaboratorsContainer) {
-        collaboratorsContainer = document.createElement('div');
-        collaboratorsContainer.className = 'task-collaborators';
-        // Insérer avant les actions
-        taskCard.insertBefore(collaboratorsContainer, taskCard.querySelector('.task-actions'));
-    }
-    
-    collaboratorsContainer.innerHTML = '';
-    
-    collaborators.forEach(collaborator => {
-        const avatar = document.createElement('div');
-        avatar.className = 'collaborator-avatar';
-        avatar.textContent = collaborator.email.charAt(0).toUpperCase();
-        avatar.setAttribute('data-email', collaborator.email);
-        collaboratorsContainer.appendChild(avatar);
-    });
-}
-
-
-// Ajoutez ces fonctions juste avant la dernière balise 
-
-// Fonction principale de validation
-function validateTaskForm(formId) {
-    const form = document.getElementById(formId);
-    let isValid = true;
-
-    // Reset all error messages and highlights
-    form.querySelectorAll('.error-message').forEach(el => el.remove());
-    form.querySelectorAll('.error-input').forEach(el => el.classList.remove('error-input'));
-
-    // Liste des champs obligatoires (tous sauf status)
-    const requiredFields = [
-        { name: 'title', message: 'Le titre est obligatoire' },
-        { name: 'project_id', message: 'Le projet est obligatoire' },
-        { name: 'priority', message: 'La priorité est obligatoire' },
-        { name: 'assigned_to', message: 'L\'assignation est obligatoire' },
-        { name: 'due_date', message: 'La date d\'échéance est obligatoire' },
-        { name: 'estimated_hours', message: 'Les heures estimées sont obligatoires' }
-    ];
-
-    // Validation des champs obligatoires
-    requiredFields.forEach(field => {
-        const input = form.querySelector(`[name="${field.name}"]`);
-        if (input && !input.value.trim()) {
-            showFieldError(input, field.message);
-            isValid = false;
-        }
-    });
-
-    // Validation spécifique pour chaque champ
-    const title = form.querySelector('[name="title"]').value.trim();
-    if (title && (title.length < 3 || title.length > 100)) {
-        showFieldError(form.querySelector('[name="title"]'), 'Le titre doit contenir entre 3 et 100 caractères');
-        isValid = false;
-    }
-
-    const description = form.querySelector('[name="description"]').value.trim();
-    if (description && description.length > 500) {
-        showFieldError(form.querySelector('[name="description"]'), 'La description ne doit pas dépasser 500 caractères');
-        isValid = false;
-    }
-
-    const assignedTo = form.querySelector('[name="assigned_to"]').value.trim();
-    if (assignedTo && !isValidEmail(assignedTo)) {
-        showFieldError(form.querySelector('[name="assigned_to"]'), 'L\'email de la personne assignée n\'est pas valide');
-        isValid = false;
-    }
-
-    const dueDate = form.querySelector('[name="due_date"]').value;
-    if (dueDate) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const selectedDate = new Date(dueDate);
-        if (selectedDate < today) {
-            showFieldError(form.querySelector('[name="due_date"]'), 'La date d\'échéance ne peut pas être dans le passé');
-            isValid = false;
-        }
-    }
-
-    const estimatedHours = form.querySelector('[name="estimated_hours"]').value;
-    if (estimatedHours) {
-        const hours = parseFloat(estimatedHours);
-        if (isNaN(hours)) {
-            showFieldError(form.querySelector('[name="estimated_hours"]'), 'Les heures estimées doivent être un nombre');
-            isValid = false;
-        } else if (hours < 0 || hours > 1000) {
-            showFieldError(form.querySelector('[name="estimated_hours"]'), 'Les heures estimées doivent être comprises entre 0 et 1000');
-            isValid = false;
-        }
-    }
-
-    return isValid;
-}
-// Fonction pour mettre en évidence les champs en erreur
-function highlightError(element) {
-    if (!element) return;
-    
-    element.classList.add('error-input');
-    element.focus();
-    
-    // Supprimer le style d'erreur lors de la saisie
-    const eventType = element.tagName === 'SELECT' ? 'change' : 'input';
-    element.addEventListener(eventType, function() {
-        this.classList.remove('error-input');
-    }, { once: true });
-}
-
-// Fonction pour vérifier un email
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Fonction pour afficher les erreurs
-function showErrors(errors, form) {
-    // Supprimer les anciens messages d'erreur
-    const existingErrors = form.querySelector('.validation-errors');
-    if (existingErrors) {
-        existingErrors.remove();
-    }
-    
-    if (errors.length === 0) return;
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'validation-errors';
-    errorDiv.innerHTML = `
-        <div class="error-message">
-            <h4>Veuillez corriger les erreurs suivantes :</h4>
-            <ul>
-                ${errors.map(error => `<li>${error}</li>`).join('')}
-            </ul>
-        </div>
-    `;
-    
-    // Ajouter le message d'erreur après le titre du modal
-    const modalContent = form.closest('.modal-content');
-    if (modalContent) {
-        const title = modalContent.querySelector('.modal-title');
-        if (title) {
-            title.insertAdjacentElement('afterend', errorDiv);
-        } else {
-            modalContent.insertBefore(errorDiv, modalContent.firstChild);
-        }
-    } else {
-        form.insertBefore(errorDiv, form.firstChild);
-    }
-    
-    // Faire défiler vers les erreurs
-    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-
-
-function showFieldError(input, message) {
-    if (!input) return;
-    
-    // Mettre en évidence le champ
-    input.classList.add('error-input');
-    
-    // Créer le message d'erreur
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    errorDiv.style.color = '#dc3545';
-    errorDiv.style.fontSize = '0.8em';
-    errorDiv.style.marginTop = '5px';
-    
-    // Insérer le message après le champ
-    input.insertAdjacentElement('afterend', errorDiv);
-    
-    // Supprimer le style d'erreur lors de la saisie
-    const eventType = input.tagName === 'SELECT' ? 'change' : 'input';
-    input.addEventListener(eventType, function() {
-        this.classList.remove('error-input');
-        const errorMsg = this.nextElementSibling;
-        if (errorMsg && errorMsg.classList.contains('error-message')) {
-            errorMsg.remove();
-        }
-    }, { once: true });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </script>
 </body>
-</html>
+</html> 

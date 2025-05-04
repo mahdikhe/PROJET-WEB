@@ -1,0 +1,102 @@
+[04-May-2025 10:16:05 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:16:47 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:18:12 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:19:05 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:03 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:04 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:04 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:04 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:07 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:07 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:07 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:07 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:07 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:08 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:08 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:08 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:08 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:09 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:09 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:09 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:09 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:09 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:09 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:09 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:10 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:10 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:10 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:10 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:15 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:15 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:15 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:15 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:15 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:15 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:15 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:15 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:43 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:21:43 Europe/Berlin] PHP Warning:  mail(): SMTP server response: 553 We do not relay non-local mail, sorry. in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[04-May-2025 10:21:43 Europe/Berlin] Failed to send email to: mahdiabderrahmen8@gmail.com
+[04-May-2025 10:21:43 Europe/Berlin] Mail error: mail(): SMTP server response: 553 We do not relay non-local mail, sorry.
+[04-May-2025 10:21:57 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:22:39 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:26:58 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\platforme\views\frontoffice/config/Database.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 11
+[04-May-2025 10:26:58 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/config/Database.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:11
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 11
+[04-May-2025 10:26:59 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\platforme\views\frontoffice/config/Database.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 11
+[04-May-2025 10:26:59 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/config/Database.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:11
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 11
+[04-May-2025 10:27:09 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:44:58 Europe/Berlin] Attempting to get database connection
+[04-May-2025 10:44:59 Europe/Berlin] Email Error: SMTP Error: Could not authenticate.
+[04-May-2025 10:44:59 Europe/Berlin] Error in send_invitation.php: Erreur lors de l'envoi de l'email: SMTP Error: Could not authenticate.
+[04-May-2025 10:44:59 Europe/Berlin] Stack trace: #0 {main}
+[04-May-2025 10:45:11 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:04:36 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:10:16 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:11:38 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:12:20 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:12:36 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:13:28 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:18:50 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:23:13 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:31:20 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:31:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:31:21 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:31:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:31:21 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:31:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:31:23 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:31:23 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:32:00 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:32:00 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:32:01 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:32:01 Europe/Berlin] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\Exception" not found in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:88
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 88
+[04-May-2025 11:32:19 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:34:30 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:35:22 Europe/Berlin] Attempting to get database connection
+[04-May-2025 11:36:58 Europe/Berlin] Attempting to get database connection
+[04-May-2025 12:26:33 Europe/Berlin] Attempting to get database connection
+[04-May-2025 12:27:42 Europe/Berlin] Attempting to get database connection
