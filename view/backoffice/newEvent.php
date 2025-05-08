@@ -1,7 +1,7 @@
 <?php
 include_once dirname(dirname(__DIR__)) . "/config.php";
 include_once dirname(dirname(__DIR__)) . "/model/model.php";
-include_once dirname(dirname(__DIR__)) . "/controller/controller.php";
+include_once dirname(dirname(__DIR__)) . "/controller/conttroler.php";
 
 try {
     $eventController = new EventController();
@@ -150,11 +150,11 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="eventTitle">Event Title*</label>
-                                <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter a descriptive title" required>
+                                <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter a descriptive title">
                             </div>
                             <div class="form-group">
                                 <label for="eventType">Event Type*</label>
-                                <select id="eventType" name="eventType" class="form-control" required>
+                                <select id="eventType" name="eventType" class="form-control">
                                     <option value="">-- Select event type --</option>
                                     <option value="workshop">Workshop</option>
                                     <option value="conference">Conference</option>
@@ -167,7 +167,7 @@ try {
                         </div>
                         <div class="form-group">
                             <label for="description">Event Description*</label>
-                            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe your event in detail" required></textarea>
+                            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe your event in detail"></textarea>
                         </div>
                     </div>
 
@@ -177,19 +177,19 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="startDate">Start Date*</label>
-                                <input type="date" id="startDate" name="startDate" class="form-control" required>
+                                <input type="date" id="startDate" name="startDate" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="startTime">Start Time*</label>
-                                <input type="time" id="startTime" name="startTime" class="form-control" required>
+                                <input type="time" id="startTime" name="startTime" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="endDate">End Date*</label>
-                                <input type="date" id="endDate" name="endDate" class="form-control" required>
+                                <input type="date" id="endDate" name="endDate" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="endTime">End Time*</label>
-                                <input type="time" id="endTime" name="endTime" class="form-control" required>
+                                <input type="time" id="endTime" name="endTime" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -200,7 +200,7 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="eventFormat">Event Format*</label>
-                                <select id="eventFormat" name="eventFormat" class="form-control" required onchange="toggleLocationFields()">
+                                <select id="eventFormat" name="eventFormat" class="form-control" onchange="toggleLocationFields()">
                                     <option value="">-- Select format --</option>
                                     <option value="inPerson">In Person</option>
                                     <option value="online">Online</option>
@@ -216,7 +216,7 @@ try {
                             </div>
                             <div class="form-group">
                                 <label for="capacity">Maximum Capacity*</label>
-                                <input type="number" id="capacity" name="capacity" class="form-control" required min="1" placeholder="Number of attendees">
+                                <input type="number" id="capacity" name="capacity" class="form-control" min="1" placeholder="Number of attendees">
                             </div>
                         </div>
                     </div>
@@ -227,7 +227,7 @@ try {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="ticketType">Ticket Type*</label>
-                                <select id="ticketType" name="ticketType" class="form-control" required onchange="togglePriceField()">
+                                <select id="ticketType" name="ticketType" class="form-control" onchange="togglePriceField()">
                                     <option value="">-- Select ticket type --</option>
                                     <option value="free">Free</option>
                                     <option value="paid">Paid</option>
@@ -355,4 +355,4 @@ try {
 </body>
 </html>';
 }
-?> 
+?>

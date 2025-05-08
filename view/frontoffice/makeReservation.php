@@ -364,13 +364,13 @@ try {
                 
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name">
                     <div class="invalid-feedback">Please enter your name</div>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address">
                     <div class="invalid-feedback">Please enter a valid email address</div>
                 </div>
                 
@@ -425,6 +425,25 @@ try {
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize seat control
     setupSeatControl("seats", "decreaseSeats", "increaseSeats", ' . $availableSeats . ', ' . $event->getPrice() . ');
+    
+    // Setup form validation
+    setupFormValidation("reservationForm", {
+        "name": {
+            type: "name"
+        },
+        "email": {
+            type: "email"
+        },
+        "phone": {
+            type: "phone"
+        },
+        "seats": {
+            type: "seats",
+            options: {
+                maxSeats: ' . $availableSeats . '
+            }
+        }
+    });
 });
 </script>
 </body>
@@ -451,4 +470,4 @@ document.addEventListener("DOMContentLoaded", function() {
     </body>
     </html>';
 }
-?> 
+?>
