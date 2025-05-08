@@ -18,6 +18,8 @@ $id=$_POST['id_reclamation'];
     <link rel="stylesheet" href="style.css">
     <!-- Add Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    
 </head>
 <body>
@@ -108,7 +110,7 @@ $id=$_POST['id_reclamation'];
         </div>
 
         <div class="card">
-            <form id="new-discussion-form" class="form-section" method="post" action="conAjouterReponse.php" onsubmit="return validerDescription()">
+            <form id="new-discussion-form" class="form-section" method="post" action="conAjouterReponse.php" onsubmit="return confirmSubmit(event)">
               
 
                 <div class="form-group">
@@ -119,7 +121,7 @@ $id=$_POST['id_reclamation'];
                 <input type='hidden' name='id_reclamation' value=<?php echo ($id) ?>>
 
                 <div class="form-actions">
-                    <a href="forums.html" class="btn btn-outline">Cancel</a>
+                    <a href="TableReclamation.php" class="btn btn-outline">Annuler</a>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
@@ -136,6 +138,67 @@ $id=$_POST['id_reclamation'];
 
         
     </main>
+
+    <script>
+        function confirmSubmit(event) {
+            event.preventDefault();
+            
+            const description = document.getElementById('Description').value.trim();
+            
+            if (!description) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur',
+                    text: 'Veuillez remplir la description',
+                    confirmButtonColor: '#2ed573'
+                });
+                return false;
+            }
+
+            Swal.fire({
+                title: 'Confirmer la réponse',
+                text: "Êtes-vous sûr de vouloir enregistrer cette réponse ?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2ed573',
+                cancelButtonColor: '#ff4757',
+                confirmButtonText: 'Oui, enregistrer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Enregistrement en cours...',
+                        text: 'Veuillez patienter',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Submit the form
+                    document.getElementById('new-discussion-form').submit();
+                }
+            });
+
+            return false;
+        }
+
+        // Show success message if URL has success parameter
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: 'La réponse a été enregistrée avec succès',
+                    confirmButtonColor: '#2ed573'
+                }).then(() => {
+                    window.location.href = 'TableReponse.php';
+                });
+            }
+        }
+    </script>
 
     <script src="../frontOffice/js/ReclamationJS.js"> </script>
 

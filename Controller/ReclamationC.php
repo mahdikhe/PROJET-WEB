@@ -6,16 +6,15 @@ class ReclamationC{
 public function listeReclamation()
 {
     try {
-    $conn=config::getConnexion();
-    $requette=$conn->prepare("Select id_reclamation,description_reclamation,date_reclamation,status_reclamation,titre_reclamation,raison_reclamation from reclamation where status_reclamation='En Attente' ");
-$requette->execute();
-$result=$requette->fetchAll(PDO::FETCH_ASSOC);      
-return $result;
-} catch (PDOException $e) {
-    // Handle the exception (logging or rethrowing)
-    error_log("Database error: " . $e->getMessage());
-    throw new Exception("Unable to add reclamation. Please try again later.");
-}
+        $conn = config::getConnexion();
+        $requette = $conn->prepare("SELECT id_reclamation, description_reclamation, date_reclamation, status_reclamation, titre_reclamation, raison_reclamation FROM reclamation ORDER BY date_reclamation DESC");
+        $requette->execute();
+        $result = $requette->fetchAll(PDO::FETCH_ASSOC);      
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+        throw new Exception("Unable to get reclamations. Please try again later.");
+    }
 }
 public function listeReclamationByUser($id_user)
 {
@@ -203,6 +202,45 @@ public function getDescriptionById($id_reclamation)
 
 }
 
+public function getReclamationStats()
+{
+    try {
+        $conn = config::getConnexion();
+        $requette = $conn->prepare("SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN status_reclamation = 'En attente' THEN 1 ELSE 0 END) as en_attente,
+            SUM(CASE WHEN status_reclamation = 'Résolu' THEN 1 ELSE 0 END) as resolu,
+            SUM(CASE WHEN status_reclamation = 'Annulé' THEN 1 ELSE 0 END) as annule
+            FROM reclamation");
+        $requette->execute();
+        $result = $requette->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+        throw new Exception("Unable to get reclamation statistics. Please try again later.");
+    }
+}
+
+public function getMonthlyStats()
+{
+    try {
+        $conn = config::getConnexion();
+        $requette = $conn->prepare("SELECT 
+            DATE_FORMAT(date_reclamation, '%b') as month,
+            SUM(CASE WHEN status_reclamation = 'En attente' THEN 1 ELSE 0 END) as en_attente,
+            SUM(CASE WHEN status_reclamation = 'Résolu' THEN 1 ELSE 0 END) as resolu,
+            SUM(CASE WHEN status_reclamation = 'Annulé' THEN 1 ELSE 0 END) as annule
+            FROM reclamation
+            GROUP BY DATE_FORMAT(date_reclamation, '%Y-%m')
+            ORDER BY date_reclamation");
+        $requette->execute();
+        $result = $requette->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+        throw new Exception("Unable to get monthly statistics. Please try again later.");
+    }
+}
 
 }
 ?>
