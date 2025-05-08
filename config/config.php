@@ -1,4 +1,7 @@
 <?php
+
+
+
 // Define environment
 define('ENVIRONMENT', getenv('APP_ENV') ?: 'development');
 
@@ -40,3 +43,5 @@ define('DEFAULT_PROJECT_IMAGE', 'default-project-image.jpg');
 
 // Pagination settings
 define('ITEMS_PER_PAGE', 12);
+
+

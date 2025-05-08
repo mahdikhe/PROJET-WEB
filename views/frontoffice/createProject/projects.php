@@ -450,8 +450,8 @@ $filteredProjects = array_filter($projects, function($project) use ($searchTerm,
         <a href="#">Offre d'emploi</a>
       </nav>
       <div class="auth-buttons">
-        <a href="login.html" class="btn btn-outline">Log In</a>
-        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        <a href="../login.php" class="btn btn-outline">Log In</a>
+        <a href="../logout.php" class="btn btn-primary">Sign out</a>
       </div>
 
      
@@ -726,7 +726,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Check if user is logged in
       <?php if (!$isLoggedIn): ?>
         alert('You need to be logged in to support a project. Please log in or sign up.');
-        window.location.href = 'login.html';
+        window.location.href = '../login.php?redirect=' + encodeURIComponent(window.location.pathname);
         return;
       <?php endif; ?>
 

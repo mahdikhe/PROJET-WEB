@@ -99,6 +99,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Time spent tracking - session-based version
+let timeSpentSeconds = 0;
+let timeSpentInterval;
 
+function updateTimeSpent() {
+  timeSpentSeconds++;
+  const hours = Math.floor(timeSpentSeconds / 3600);
+  const minutes = Math.floor((timeSpentSeconds % 3600) / 60);
+  const seconds = timeSpentSeconds % 60;
+  
+  document.getElementById('timeDisplay').textContent = 
+    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  
+  // Save to sessionStorage on each update
+  sessionStorage.setItem('sessionTimeSpent', timeSpentSeconds);
+}
 
+// Initialize on page load
+window.onload = function() {
+  // Get time from sessionStorage if exists (will be null on new tab/window)
+  const savedTime = sessionStorage.getItem('sessionTimeSpent');
+  timeSpentSeconds = savedTime ? parseInt(savedTime) : 0;
+  
+  document.getElementById('timeDisplay').textContent = 
+    `${Math.floor(timeSpentSeconds / 3600).toString().padStart(2, '0')}:` +
+    `${Math.floor((timeSpentSeconds % 3600) / 60).toString().padStart(2, '0')}:` +
+    `${(timeSpentSeconds % 60).toString().padStart(2, '0')}`;
+  
+  timeSpentInterval = setInterval(updateTimeSpent, 1000);
+};
 
+// Clean up
+window.addEventListener('beforeunload', function() {
+  clearInterval(timeSpentInterval);
+});

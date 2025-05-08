@@ -5,13 +5,10 @@ ini_set('display_errors', 1);
 
 // Log errors to a file
 ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/error.log');
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+ini_set('error_log', 'error.log');
 
 try {
-    require_once __DIR__ . '/../../config/Database.php';
+    require_once __DIR__ . '/config/Database.php';
 } catch (Exception $e) {
     error_log('Failed to include Database.php: ' . $e->getMessage());
     http_response_code(500);
@@ -85,67 +82,16 @@ try {
     $stmt = $pdo->prepare("INSERT INTO invitations (task_id, email, message, token, expires_at) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$taskId, $email, $message, $token, $expiresAt]);
 
-    // Prepare invitation URL
-    $inviteUrl = "http://{$_SERVER['HTTP_HOST']}/platforme/accept_invitation.php?token=" . urlencode($token);
-
-    // Build email content
-    $emailContent = "
-        <h2>Vous avez ete invite a rejoindre une tache!</h2>
-        <p>Un ami vous a invite a participer a la tache: <strong>{$task['title']}</strong></p>
-    ";
-
-    if ($message) {
-        $emailContent .= "<p>Message de votre ami:</p><blockquote>{$message}</blockquote>";
-    }
-
-    $emailContent .= "
-        <p>Pour acceder a la tache, cliquez sur le lien ci-dessous:</p>
-     <p><a href='http://{$_SERVER['HTTP_HOST']}/views/frontoffice/manage_task.php?task_id={$taskId}'>Accéder à la tâche</a></p>
-        <p><small>Ce lien expirera dans 7 jours.</small></p>
-    ";
-
-    // Load PHPMailer
-    require '../../vendor/autoload.php';
-
-    $mail = new PHPMailer(true);
-
-    try {
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';         // Gmail SMTP server
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'abderrahmen.mehdi@esprit.tn';   // Your Gmail address
-        $mail->Password   = 'dkpr zqff vold lsed';      // App password from Google
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        $mail->CharSet    = 'UTF-8';
-
-        // Recipients
-        $mail->setFrom('abderrahmen.mehdi@esprit.tn', 'Task Manager App');
-        $mail->addReplyTo('abderrahmen.mehdi@esprit.tn', 'Task Manager App');
-        $mail->addAddress($email);  // Add recipient's email address
-
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = 'Invitation à rejoindre une tâche';
-        $mail->Body    = $emailContent;
-
-        $mail->send();
-
-        echo json_encode([
-            'success' => true, 
-            'message' => 'Invitation envoyée avec succès',
-            'debug' => [
-                'task_id' => $taskId,
-                'email' => $email,
-                'token' => $token
-            ]
-        ]);
-
-    } catch (Exception $e) {
-        error_log('Email error: ' . $mail->ErrorInfo);
-        throw new Exception("Failed to send email: " . $mail->ErrorInfo);
-    }
+    // For now, just return success without sending email
+    echo json_encode([
+        'success' => true, 
+        'message' => 'Invitation created successfully',
+        'debug' => [
+            'task_id' => $taskId,
+            'email' => $email,
+            'token' => $token
+        ]
+    ]);
 
 } catch (Exception $e) {
     error_log('Error in send_invitation.php: ' . $e->getMessage());
@@ -158,22 +104,3 @@ try {
         'debug_message' => $e->getMessage()
     ]);
 }
-
-$mail->SMTPOptions = array(
-    'ssl' => array(
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true
-    )
-);
-
-// Set UTF-8 encoding
-$mail->CharSet = 'UTF-8';
-$mail->Encoding = 'base64';
-
-// Set email content
-$mail->setFrom('abderrahmen.mehdi@esprit.tn', 'Task Manager');
-$mail->addAddress($email);
-$mail->isHTML(true);
-$mail->Subject = '=?UTF-8?B?'.base64_encode('Invitation à rejoindre une tâche').'?=';
-$mail->Body = $emailContent;

@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once(__DIR__ . '/../../config/Database.php');
+require_once(__DIR__ . '/auth_check.php');
 
 $db = Database::getInstance();
 $conn = $db->getConnection();
@@ -1037,6 +1038,102 @@ function getTaskProgress($conn, $taskId) {
         margin-bottom: 2px;
     }
     .task-tags { margin-bottom: 6px; }
+
+
+
+
+    .vote-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 25px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.vote-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.9em;
+  font-weight: 500;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.vote-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.upvote-button {
+  color: #388e3c;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, #a5d6a7, #81c784);
+}
+
+.upvote-button.active {
+  background: #388e3c;
+  color: white;
+  box-shadow: 0 0 8px rgba(56, 142, 60, 0.4);
+}
+
+.downvote-button {
+  color: #c62828;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, #ef9a9a, #e57373);
+}
+
+.downvote-button.active {
+  background: #c62828;
+  color: white;
+  box-shadow: 0 0 8px rgba(198, 40, 40, 0.4);
+}
+
+.vote-icon {
+  font-size: 1.1em;
+  transition: transform 0.3s ease;
+}
+
+.vote-button:hover .vote-icon {
+  transform: scale(1.2);
+}
+
+.vote-count {
+  font-weight: bold;
+  font-size: 0.95em;
+  min-width: 26px;
+  text-align: center;
+  color: #333;
+}
+
+/* Entry animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+.user-greeting {
+    margin-right: 15px;
+    color: white;
+    font-weight: 500;
+}
+
+
+
     </style>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
@@ -1053,9 +1150,14 @@ function getTaskProgress($conn, $taskId) {
                 <a href="#">Reports</a>
             </nav>
             <div class="auth-buttons">
-                <a href="login.html" class="btn btn-outline">Log In</a>
-                <a href="signup.html" class="btn btn-primary">Sign Up</a>
-            </div>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <span class="user-greeting">Bonjour, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
+        <a href="logout.php" class="btn btn-primary">Déconnexion</a>
+    <?php else: ?>
+        <a href="login.php" class="btn btn-outline">Connexion</a>
+        <a href="signup.php" class="btn btn-primary">Inscription</a>
+    <?php endif; ?>
+</div>
         </div>
     </header>
 
@@ -1177,8 +1279,24 @@ function getTaskProgress($conn, $taskId) {
                                 <i class="fas fa-cog"></i> Manage Task
                             </a>
                         </div>
+                        <div class="vote-container">
+    <button class="vote-button upvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'upvote')">
+        <i class="fas fa-thumbs-up vote-icon"></i>
+        <span class="vote-count" id="upvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+    <button class="vote-button downvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'downvote')">
+        <i class="fas fa-thumbs-down vote-icon"></i>
+        <span class="vote-count" id="downvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+</div>
+
+
                     </div>
+
+                   
                 <?php endforeach; ?>
+
+               
             </div>
             
             <!-- In Progress Column -->
@@ -1238,6 +1356,17 @@ function getTaskProgress($conn, $taskId) {
                                 <i class="fas fa-cog"></i> Manage Task
                             </a>
                         </div>
+                        <div class="vote-container">
+    <button class="vote-button upvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'upvote')">
+        <i class="fas fa-thumbs-up vote-icon"></i>
+        <span class="vote-count" id="upvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+    <button class="vote-button downvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'downvote')">
+        <i class="fas fa-thumbs-down vote-icon"></i>
+        <span class="vote-count" id="downvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+</div>
+
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -1299,6 +1428,16 @@ function getTaskProgress($conn, $taskId) {
                                 <i class="fas fa-cog"></i> Manage Task
                             </a>
                         </div>
+                        <div class="vote-container">
+    <button class="vote-button upvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'upvote')">
+        <i class="fas fa-thumbs-up vote-icon"></i>
+        <span class="vote-count" id="upvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+    <button class="vote-button downvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'downvote')">
+        <i class="fas fa-thumbs-down vote-icon"></i>
+        <span class="vote-count" id="downvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+</div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -1356,7 +1495,24 @@ function getTaskProgress($conn, $taskId) {
                                 <i class="fas fa-cog"></i> Manage Task
                             </a>
                         </div>
+
+                        <div class="vote-container">
+    <button class="vote-button upvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'upvote')">
+        <i class="fas fa-thumbs-up vote-icon"></i>
+        <span class="vote-count" id="upvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+    <button class="vote-button downvote-button" onclick="voteTask(event, <?php echo $task['id']; ?>, 'downvote')">
+        <i class="fas fa-thumbs-down vote-icon"></i>
+        <span class="vote-count" id="downvotes-<?php echo $task['id']; ?>">0</span>
+    </button>
+</div>
+
+
+
                     </div>
+
+                    
+                    
                 <?php endforeach; ?>
             </div>
         </div>
@@ -2088,47 +2244,74 @@ function getTaskProgress($conn, $taskId) {
             
             // Generate task suggestions based on project type
             function generateTaskSuggestions(projectType) {
-                const suggestions = {
-                    urban: [
-                        { title: 'Conduct traffic analysis', description: 'Analyze current traffic patterns at main intersections', priority: 'High' },
-                        { title: 'Create urban space design mockups', description: 'Design initial mockups for public spaces', priority: 'Medium' },
-                        { title: 'Research zoning regulations', description: 'Compile applicable zoning regulations and requirements', priority: 'High' },
-                        { title: 'Stakeholder consultation planning', description: 'Schedule and plan community consultation sessions', priority: 'Medium' },
-                        { title: 'Budget estimation', description: 'Create initial budget estimates for implementation', priority: 'High' }
-                    ],
-                    tech: [
-                        { title: 'Define technical requirements', description: 'Document detailed technical requirements and specifications', priority: 'Critical' },
-                        { title: 'Create system architecture', description: 'Design the overall system architecture diagram', priority: 'High' },
-                        { title: 'Develop UI wireframes', description: 'Create wireframes for all main user interfaces', priority: 'Medium' },
-                        { title: 'Set up development environment', description: 'Configure and document the development environment setup', priority: 'High' },
-                        { title: 'Create testing strategy', description: 'Define the testing approach and quality metrics', priority: 'Medium' }
-                    ],
-                    environment: [
-                        { title: 'Conduct environmental impact assessment', description: 'Assess potential environmental impacts of the project', priority: 'Critical' },
-                        { title: 'Research sustainable materials', description: 'Identify and evaluate sustainable material options', priority: 'High' },
-                        { title: 'Create waste management plan', description: 'Develop a comprehensive waste management strategy', priority: 'Medium' },
-                        { title: 'Schedule community garden planning', description: 'Plan layout and plant selection for community gardens', priority: 'Medium' },
-                        { title: 'Develop renewable energy options', description: 'Research and propose renewable energy solutions', priority: 'High' }
-                    ],
-                    culture: [
-                        { title: 'Document historical significance', description: 'Research and document the historical context', priority: 'High' },
-                        { title: 'Plan exhibition space', description: 'Design layout and flow for exhibition spaces', priority: 'Medium' },
-                        { title: 'Develop educational materials', description: 'Create educational content for visitors', priority: 'Medium' },
-                        { title: 'Coordinate with cultural experts', description: 'Identify and establish contact with relevant cultural experts', priority: 'High' },
-                        { title: 'Plan opening ceremony', description: 'Develop program for the opening celebration', priority: 'Low' }
-                    ],
-                    general: [
-                        { title: 'Create project timeline', description: 'Develop detailed project timeline with milestones', priority: 'High' },
-                        { title: 'Define team roles', description: 'Clearly define roles and responsibilities for team members', priority: 'Medium' },
-                        { title: 'Set up communication plan', description: 'Establish communication channels and protocols', priority: 'Medium' },
-                        { title: 'Create risk assessment', description: 'Identify potential risks and mitigation strategies', priority: 'High' },
-                        { title: 'Schedule kick-off meeting', description: 'Plan and organize project kick-off meeting', priority: 'Low' }
-                    ]
-                };
-                
-                return suggestions[projectType] || suggestions.general;
-            }
+    const allSuggestions = {
+        urban: [
+            { title: 'Conduct traffic analysis', description: 'Analyze current traffic patterns and peak hours', priority: 'High' },
+            { title: 'Design public spaces', description: 'Create layouts for community gathering areas', priority: 'Medium' },
+            { title: 'Review building codes', description: 'Ensure compliance with local building regulations', priority: 'High' },
+            { title: 'Environmental impact study', description: 'Assess project impact on local environment', priority: 'Critical' },
+            { title: 'Community feedback sessions', description: 'Organize meetings with local residents', priority: 'Medium' },
+            { title: 'Infrastructure assessment', description: 'Evaluate existing infrastructure capacity', priority: 'High' },
+            { title: 'Create 3D visualizations', description: 'Develop 3D models of proposed changes', priority: 'Medium' },
+            { title: 'Cost analysis', description: 'Prepare detailed cost estimates', priority: 'High' },
+            { title: 'Timeline planning', description: 'Develop project implementation timeline', priority: 'Medium' },
+            { title: 'Accessibility review', description: 'Ensure universal access compliance', priority: 'High' }
+        ],
+        tech: [
+            { title: 'Security audit planning', description: 'Plan comprehensive security review', priority: 'Critical' },
+            { title: 'Database optimization', description: 'Optimize database performance and structure', priority: 'High' },
+            { title: 'API documentation', description: 'Create detailed API documentation', priority: 'Medium' },
+            { title: 'User testing sessions', description: 'Conduct user testing and gather feedback', priority: 'High' },
+            { title: 'Mobile responsiveness', description: 'Ensure mobile-friendly design', priority: 'Critical' },
+            { title: 'Performance testing', description: 'Conduct load and stress testing', priority: 'High' },
+            { title: 'Code review process', description: 'Establish code review guidelines', priority: 'Medium' },
+            { title: 'Backup strategy', description: 'Develop data backup and recovery plan', priority: 'High' },
+            { title: 'Integration testing', description: 'Test third-party integrations', priority: 'High' },
+            { title: 'Analytics setup', description: 'Implement tracking and analytics', priority: 'Medium' }
+        ],
+        environment: [
+            { title: 'Carbon footprint analysis', description: 'Calculate project carbon impact', priority: 'Critical' },
+            { title: 'Recycling program', description: 'Design waste recycling system', priority: 'High' },
+            { title: 'Energy efficiency audit', description: 'Assess energy consumption patterns', priority: 'High' },
+            { title: 'Water conservation plan', description: 'Develop water saving strategies', priority: 'Critical' },
+            { title: 'Green space planning', description: 'Design sustainable green areas', priority: 'Medium' },
+            { title: 'Solar panel feasibility', description: 'Assess solar energy potential', priority: 'High' },
+            { title: 'Biodiversity survey', description: 'Study local flora and fauna', priority: 'Medium' },
+            { title: 'Air quality monitoring', description: 'Set up air quality tracking', priority: 'High' },
+            { title: 'Sustainable materials', description: 'Research eco-friendly materials', priority: 'High' },
+            { title: 'Environmental education', description: 'Create awareness programs', priority: 'Medium' }
+        ],
+        culture: [
+            { title: 'Heritage documentation', description: 'Document historical significance', priority: 'High' },
+            { title: 'Cultural events calendar', description: 'Plan cultural activities schedule', priority: 'Medium' },
+            { title: 'Artifact preservation', description: 'Develop preservation guidelines', priority: 'Critical' },
+            { title: 'Community engagement', description: 'Plan community involvement activities', priority: 'High' },
+            { title: 'Exhibition design', description: 'Create exhibition layout plans', priority: 'Medium' },
+            { title: 'Digital archive', description: 'Develop digital preservation system', priority: 'High' },
+            { title: 'Guided tour planning', description: 'Design educational tour routes', priority: 'Medium' },
+            { title: 'Workshop development', description: 'Create cultural workshop programs', priority: 'Medium' },
+            { title: 'Marketing strategy', description: 'Plan cultural promotion activities', priority: 'High' },
+            { title: 'Partnership outreach', description: 'Identify cultural partners', priority: 'Medium' }
+        ]
+    };
+
+    // Get suggestions for the project type or use general if type not found
+    const suggestions = allSuggestions[projectType] || allSuggestions.urban;
+    
+    // Randomly select 5 different tasks
+    const randomSuggestions = [];
+    const usedIndices = new Set();
+    
+    while (randomSuggestions.length < 5 && usedIndices.size < suggestions.length) {
+        const randomIndex = Math.floor(Math.random() * suggestions.length);
+        if (!usedIndices.has(randomIndex)) {
+            usedIndices.add(randomIndex);
+            randomSuggestions.push(suggestions[randomIndex]);
         }
+    }
+
+    return randomSuggestions;
+}
 
         // Load contributor locations from the server
         function loadContributorLocations(map) {
@@ -2252,5 +2435,160 @@ function getTaskProgress($conn, $taskId) {
                 map.fitBounds(bounds, { padding: [50, 50] });
             }
         }
+
+        // Function to open invite friend modal
+function openInviteFriendModal(event, taskId) {
+    event.preventDefault();
+    event.stopPropagation(); // Prevent task details from opening
+    
+    // Set the task ID in the hidden input
+    document.getElementById('invite_task_id').value = taskId;
+    
+    // Clear previous form data
+    const form = document.getElementById('inviteFriendForm');
+    if (form) {
+        form.reset();
+        document.getElementById('email-error').textContent = '';
+    }
+    
+    // Display the modal
+    const modal = document.getElementById('inviteFriendModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+    
+    // Close the actions menu if it's open
+    const menu = document.getElementById(`actions-menu-${taskId}`);
+    if (menu) {
+        menu.style.display = 'none';
+    }
+}
+
+// Function to send invitation
+function sendInvitation() {
+    const taskId = document.getElementById('invite_task_id').value;
+    const email = document.getElementById('friend_email').value;
+    const message = document.getElementById('invite_message').value;
+    const emailError = document.getElementById('email-error');
+    
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+        emailError.textContent = 'Please enter a valid email address';
+        return;
+    }
+    
+    // Clear any previous errors
+    emailError.textContent = '';
+    
+    // Send AJAX request
+    fetch('send_invitation.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `task_id=${taskId}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeModal('inviteFriendModal');
+            alert('Invitation sent successfully!');
+        } else {
+            emailError.textContent = data.message || 'Error sending invitation';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        emailError.textContent = 'Error sending invitation';
+    });
+}
+
+        }
+
+        // Add this JavaScript function to handle voting:
+function voteTask(event, taskId, voteType) {
+    event.stopPropagation(); // Prevent opening task details
+    
+    // Send AJAX request to vote
+    fetch('vote_task.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `task_id=${taskId}&vote_type=${voteType}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update vote counts
+            document.getElementById(`upvotes-${taskId}`).textContent = data.upvotes;
+            document.getElementById(`downvotes-${taskId}`).textContent = data.downvotes;
+            
+            // Update button states
+            const upButton = document.querySelector(`.upvote-button[onclick*="voteTask(event, ${taskId}, 'upvote')"]`);
+            const downButton = document.querySelector(`.downvote-button[onclick*="voteTask(event, ${taskId}, 'downvote')"]`);
+            
+            if (voteType === 'upvote') {
+                upButton.classList.add('active');
+                downButton.classList.remove('active');
+            } else {
+                downButton.classList.add('active');
+                upButton.classList.remove('active');
+            }
+            
+            // Add animation
+            const button = event.currentTarget;
+            button.classList.add('pulse');
+            setTimeout(() => button.classList.remove('pulse'), 300);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Add this to load initial vote counts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all task IDs on the page
+    const taskCards = document.querySelectorAll('.task-card');
+    const taskIds = Array.from(taskCards).map(card => card.dataset.taskId);
+    
+    // Fetch vote counts for all tasks
+    if (taskIds.length > 0) {
+        fetch('get_task_votes.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: `task_ids=${JSON.stringify(taskIds)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update each task's vote display
+                data.votes.forEach(vote => {
+                    const upvoteElement = document.getElementById(`upvotes-${vote.task_id}`);
+                    const downvoteElement = document.getElementById(`downvotes-${vote.task_id}`);
+                    
+                    if (upvoteElement) upvoteElement.textContent = vote.upvotes;
+                    if (downvoteElement) downvoteElement.textContent = vote.downvotes;
+                    
+                    // Highlight user's vote if logged in
+                    if (vote.user_vote) {
+                        const button = document.querySelector(`.${vote.user_vote}-button[onclick*="voteTask(event, ${vote.task_id}, '${vote.user_vote}')"]`);
+                        if (button) button.classList.add('active');
+                    }
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
+
+
+        
     </script>
 </body>

@@ -319,7 +319,7 @@ $subtasks = $subtasks->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </div>
         <form method="POST" class="add-subtask-form" style="margin-bottom:10px;">
-            <input type="text" name="new_subtask" placeholder="Add a new subtask..." required style="padding:8px; border-radius:6px; border:1px solid #ccc; width:70%;">
+            <input type="text" name="new_subtask" placeholder="Add a new subtask..."  style="padding:8px; border-radius:6px; border:1px solid #ccc; width:70%;">
             <button class="add-subtask-btn" type="submit"><i class="fas fa-plus"></i> Add Subtask</button>
         </form>
         <div class="section-title"><i class="fas fa-comments"></i> Comments</div>
@@ -334,7 +334,7 @@ $subtasks = $subtasks->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
             <form class="add-comment-form" method="POST">
                 <input type="hidden" name="author" value="You">
-                <textarea name="new_comment" id="new-comment" placeholder="Add a comment..." required></textarea>
+                <textarea name="new_comment" id="new-comment" placeholder="Add a comment..." ></textarea>
                 <button type="submit"><i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
@@ -342,7 +342,7 @@ $subtasks = $subtasks->fetchAll(PDO::FETCH_ASSOC);
         <div class="attachments-section">
             <form method="POST" enctype="multipart/form-data" style="margin-bottom:16px;">
                 <div class="file-upload-zone" id="file-upload-zone">
-                    <input type="file" id="file-input" name="attachment" required hidden onchange="this.form.submit()">
+                    <input type="file" id="file-input" name="attachment"  hidden onchange="this.form.submit()">
                     <label for="file-input" style="cursor:pointer;display:block;">
                         <i class="fas fa-cloud-upload-alt" style="font-size:2em;"></i><br>
                         <span>Drag & drop files here or click to upload</span>

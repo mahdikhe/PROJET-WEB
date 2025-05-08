@@ -48,8 +48,12 @@
         <a href="#">Offre d'emploi</a>
       </nav>
       <div class="auth-buttons">
-        <a href="login.html" class="btn btn-outline">Log In</a>
-        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        <a href="login.php" class="btn btn-outline">Log In</a>
+        <a href="logout.php" class="btn btn-primary">Log out</a>
+
+        <div id="timeSpentClock" class="time-spent-clock">
+          <i class="fas fa-clock"></i> <span id="timeDisplay">00:00:00</span>
+        </div>
       </div>
 
      
@@ -541,6 +545,36 @@
     .view-more-btn:hover {
         background-color: #3651d4;
     }
+
+
+    .time-spent-clock {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9999;
+  transition: all 0.3s ease-in-out;
+}
+
+.time-spent-clock:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.time-spent-clock i {
+  color: #ffeb3b; /* Yellow clock icon */
+}
+
+ 
     </style>
 
     <script>
