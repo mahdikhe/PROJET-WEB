@@ -1,0 +1,36 @@
+/* transitions.css */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    z-index: 9999;
+    transform: translateX(100%);
+    animation: slideOut 0.5s forwards;
+}
+
+.page-transition.in {
+    transform: translateX(-100%);
+    animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* Prevent scrolling during transition */
+body.transition-active {
+    overflow: hidden;
+}

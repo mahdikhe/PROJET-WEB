@@ -1,0 +1,148 @@
+3: Connection: opening to smtp.gmail.com:587, timeout=300, options=array (
+  'ssl' => 
+  array (
+    'verify_peer' => false,
+    'verify_peer_name' => false,
+    'allow_self_signed' => true,
+  ),
+)
+3: Connection: opened
+4: SMTP INBOUND: "220 smtp.gmail.com ESMTP a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+1: CLIENT -> SERVER: EHLO localhost
+
+4: SMTP INBOUND: "250-smtp.gmail.com at your service, [102.158.144.193]"
+4: SMTP INBOUND: "250-SIZE 35882577"
+4: SMTP INBOUND: "250-8BITMIME"
+4: SMTP INBOUND: "250-STARTTLS"
+4: SMTP INBOUND: "250-ENHANCEDSTATUSCODES"
+4: SMTP INBOUND: "250-PIPELINING"
+4: SMTP INBOUND: "250-CHUNKING"
+4: SMTP INBOUND: "250 SMTPUTF8"
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [102.158.144.193]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+1: CLIENT -> SERVER: STARTTLS
+
+4: SMTP INBOUND: "220 2.0.0 Ready to start TLS"
+2: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+1: CLIENT -> SERVER: EHLO localhost
+
+4: SMTP INBOUND: "250-smtp.gmail.com at your service, [102.158.144.193]"
+4: SMTP INBOUND: "250-SIZE 35882577"
+4: SMTP INBOUND: "250-8BITMIME"
+4: SMTP INBOUND: "250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH"
+4: SMTP INBOUND: "250-ENHANCEDSTATUSCODES"
+4: SMTP INBOUND: "250-PIPELINING"
+4: SMTP INBOUND: "250-CHUNKING"
+4: SMTP INBOUND: "250 SMTPUTF8"
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [102.158.144.193]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+4: Auth method requested: UNSPECIFIED
+4: Auth methods available on the server: LOGIN,PLAIN,XOAUTH2,PLAIN-CLIENTTOKEN,OAUTHBEARER,XOAUTH
+4: Requested auth method not available: 
+4: Auth method selected: LOGIN
+1: CLIENT -> SERVER: AUTH LOGIN
+
+4: SMTP INBOUND: "334 VXNlcm5hbWU6"
+2: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+1: CLIENT -> SERVER: a2hlbGlsbWFoZGk2MEBnbWFpbC5jb20=
+
+4: SMTP INBOUND: "334 UGFzc3dvcmQ6"
+2: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+1: CLIENT -> SERVER: bmx5aCB0aHFmIHRidXEgd2JieA==
+
+4: SMTP INBOUND: "235 2.7.0 Accepted"
+2: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+1: CLIENT -> SERVER: MAIL FROM:<khelilmahdi60@gmail.com>
+
+4: SMTP INBOUND: "250 2.1.0 OK a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 250 2.1.0 OK a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+1: CLIENT -> SERVER: RCPT TO:<rasiyouja7@gmail.com>
+
+4: SMTP INBOUND: "250 2.1.5 OK a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 250 2.1.5 OK a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+1: CLIENT -> SERVER: DATA
+
+4: SMTP INBOUND: "354 Go ahead a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 354 Go ahead a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+1: CLIENT -> SERVER: Date: Thu, 8 May 2025 22:23:19 +0200
+
+1: CLIENT -> SERVER: To: Recipient Name <rasiyouja7@gmail.com>
+
+1: CLIENT -> SERVER: From: Your Name <khelilmahdi60@gmail.com>
+
+1: CLIENT -> SERVER: Subject: Test Email
+
+1: CLIENT -> SERVER: Message-ID: <p38Ho80KjwLVqvi9K48ZTelmbyutGj1a4qh1zN8tLo@localhost>
+
+1: CLIENT -> SERVER: X-Mailer: PHPMailer 6.9.3 (https://github.com/PHPMailer/PHPMailer)
+
+1: CLIENT -> SERVER: MIME-Version: 1.0
+
+1: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+1: CLIENT -> SERVER:  boundary="b1=_p38Ho80KjwLVqvi9K48ZTelmbyutGj1a4qh1zN8tLo"
+
+1: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: --b1=_p38Ho80KjwLVqvi9K48ZTelmbyutGj1a4qh1zN8tLo
+
+1: CLIENT -> SERVER: Content-Type: text/plain; charset=us-ascii
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: This is a plain-text version
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: --b1=_p38Ho80KjwLVqvi9K48ZTelmbyutGj1a4qh1zN8tLo
+
+1: CLIENT -> SERVER: Content-Type: text/html; charset=us-ascii
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: This is a plain-text test email
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: --b1=_p38Ho80KjwLVqvi9K48ZTelmbyutGj1a4qh1zN8tLo--
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: .
+
+4: SMTP INBOUND: "250 2.0.0 OK  1746735801 a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 250 2.0.0 OK  1746735801 a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+1: CLIENT -> SERVER: QUIT
+
+4: SMTP INBOUND: "221 2.0.0 closing connection a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp"
+2: SERVER -> CLIENT: 221 2.0.0 closing connection a640c23a62f3a-ad21985340fsm35873566b.167 - gsmtp
+
+3: Connection: closed

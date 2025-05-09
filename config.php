@@ -1,4 +1,9 @@
 <?php
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_USER', 'khelilmahdi60@gmail.com');
+define('SMTP_PASS', 'nlyh thqf tbuq wbbx');
+define('SMTP_PORT', 587); // Typically 587 for TLS or 465 for SSL
+define('SMTP_CHARSET', 'UTF-8');
 // Database connection class
 class Config {
     private static $pdo = null;
@@ -8,7 +13,7 @@ class Config {
             $servername = "localhost";
             $username = "root";
             $password = "";
-            $dbname = "citypulse_events"; // Your database name
+            $dbname = "user"; // Your database name
             
             try {
                 self::$pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, [

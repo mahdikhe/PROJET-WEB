@@ -9,10 +9,43 @@ class User {
         $this->pdo = $pdo;
     }
 
-    public function createUser($username, $email, $password) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        return $stmt->execute([$username, $email, $hashedPassword]);
+    public function createUser($username, $email, $password, $country_code) {
+        try {
+            // Validate inputs aren't empty
+            if (empty($username) || empty($email) || empty($password) || empty($country_code)) {
+                throw new Exception("All fields are required");
+            }
+    
+            // Check if email exists
+            if ($this->getUserByEmail($email)) {
+                throw new Exception("Email already registered");
+            }
+    
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
+            $stmt = $this->pdo->prepare("
+                INSERT INTO users (username, email, password, country_code, created_at) 
+                VALUES (:username, :email, :password, :country_code, NOW())
+            ");
+            
+            $result = $stmt->execute([
+                ':username' => $username,
+                ':email' => $email,
+                ':password' => $hashedPassword,
+                ':country_code' => $country_code
+            ]);
+    
+            if (!$result) {
+                $error = $stmt->errorInfo();
+                throw new Exception("Database error: " . $error[2]);
+            }
+    
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("Registration error: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function getUserByEmail($email) {
@@ -99,17 +132,8 @@ public function findByEmail($email) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Add this method to update reset token
-public function updateResetToken($userId, $token, $expiry) {
-    $stmt = $this->pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?");
-    return $stmt->execute([$token, $expiry, $userId]);
-}
 
-// Add this method to clear reset token
-public function clearResetToken($userId) {
-    $stmt = $this->pdo->prepare("UPDATE users SET reset_token = NULL, reset_token_expiry = NULL WHERE id = ?");
-    return $stmt->execute([$userId]);
-}
+
 
 // Add this method to update password
 /*public function updatePassword($userId, $passwordHash) {
@@ -186,6 +210,44 @@ public function getAverageTimeSpent() {
     }
 }
 
+
+
+public function getUserByResetToken($token) {
+    $stmt = $this->pdo->prepare("SELECT * FROM users WHERE reset_token = ?");
+    $stmt->execute([$token]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function setResetToken($userId, $token, $expiry, $code) {
+    $stmt = $this->pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expiry = ?, reset_code = ? WHERE id = ?");
+    return $stmt->execute([$token, $expiry, $code, $userId]);
+}
+
+
+
+public function clearResetToken($userId) {
+    $stmt = $this->pdo->prepare("UPDATE users SET reset_token = NULL, reset_token_expiry = NULL, reset_code = NULL WHERE id = ?");
+    return $stmt->execute([$userId]);
+}
+
+public function getUsersByCountry() {
+    $query = "SELECT 
+                c.code as country_code,
+                c.name as country_name,
+                c.latitude,
+                c.longitude,
+                COUNT(u.id) as user_count
+              FROM countries c
+              JOIN users u ON u.country = c.code OR u.country_code = c.code
+              WHERE c.latitude IS NOT NULL 
+                AND c.longitude IS NOT NULL
+              GROUP BY c.code, c.name, c.latitude, c.longitude
+              HAVING user_count > 0";
+    
+    $stmt = $this->pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 }
 ?>

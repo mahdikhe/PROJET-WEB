@@ -141,6 +141,10 @@ body {
     opacity: 0;
 }
 
+.auth-footer p {
+    margin-bottom: 10px;
+}
+
 .auth-footer a {
     color: var(--primary);
     text-decoration: none;

@@ -72,7 +72,7 @@ $averageTimeSpent = $userModel->getAverageTimeSpent();
                 <ul>
                     <li class="active"><a href="dashboardadmin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                     <li><a href="allusers.php"><i class="fas fa-users"></i> User Management</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> System Settings</a></li>
+                    <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> User Map</a></li>
                     <li><a href="#"><i class="fas fa-file-alt"></i> Reports</a></li>
                 </ul>
             </nav>

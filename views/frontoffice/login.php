@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,12 +25,12 @@
         <form action="/projet web fr/controllers/loginController.php" method="POST">
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required placeholder="Enter your email">
+                <input type="email" id="email" name="email" placeholder="Enter your email">
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                <input type="password" id="password" name="password" placeholder="Enter your password">
             </div>
             
             <button type="submit" class="btn">Continue to Your Account</button>
@@ -35,9 +38,7 @@
         
         <div class="auth-footer">
             <p>Don't have an account? <a href="register.php">Create one now</a></p>
-        </div>
-        <div class="auth-footer2">
-            <a href="forgotPassword.php">Mot de passe oublié ?</a>
+            <p><a href="forgotPassword.php">Mot de passe oublié ?</a></p>
         </div>
     </div>
 </body>

@@ -159,3 +159,112 @@ body {
         background-attachment: scroll;
     }
 }
+
+/* Add these to your existing CSS */
+
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+    font-family: 'Poppins', sans-serif;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2323683B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 1em;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(35, 104, 59, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Update animation delays for the new form-group */
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+.btn { animation: fadeInUp 0.6s ease-out 0.6s forwards; }
+.auth-container p { animation: fadeInUp 0.6s ease-out 0.7s forwards; }
+
+/* Add these styles to your existing registerstyle.css */
+
+/* Country Dropdown Styling */
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--black);
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none; /* Removes default arrow in some browsers */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+}
+
+/* Custom dropdown arrow */
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2323683B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    padding-right: 35px; /* Make room for arrow */
+}
+
+/* Focus/Hover States */
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(35, 104, 59, 0.2);
+    transform: translateY(-2px);
+}
+
+.form-group select:hover {
+    border-color: var(--primary-light);
+}
+
+/* Dropdown Options Styling */
+.form-group select option {
+    padding: 10px 15px;
+    background-color: var(--cream);
+    color: var(--black);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* For Firefox: Style the dropdown arrow box */
+@-moz-document url-prefix() {
+    .form-group select {
+        padding-right: 35px;
+        background-image: none;
+    }
+}
+
+/* For IE11 - remove default arrow */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .form-group select {
+        padding-right: 35px;
+        background-image: none;
+    }
+}
+
+/* Error State (matches your validation style) */
+.form-group.error select {
+    border-color: #e74c3c;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}

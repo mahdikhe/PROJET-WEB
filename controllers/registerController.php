@@ -1,5 +1,4 @@
 <?php
-// Enable error reporting for development (remove in production)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -11,10 +10,11 @@ require_once __DIR__.'/../models/User.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Validate and sanitize input
-        $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
+        $username = trim(htmlspecialchars($_POST['username'] ?? ''));
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
+        $country_code = trim(htmlspecialchars($_POST['country'] ?? ''));
 
         // Validate inputs
         $errors = [];
@@ -23,8 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = "Username is required.";
         }
         
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Valid email is required.";
+        // Enhanced email validation
+        if (empty($email)) {
+            $errors[] = "Email is required.";
+        } 
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Please enter a valid email address.";
+        } 
+        elseif (strpos($email, '@') === false) {
+            $errors[] = "Email must contain '@' symbol.";
+        } 
+        elseif (strpos($email, '.') === false) {
+            $errors[] = "Email must contain a domain (e.g., example.com).";
         }
         
         if (empty($password) || strlen($password) < 8) {
@@ -33,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($password !== $confirm_password) {
             $errors[] = "Passwords do not match.";
+        }
+
+        if (empty($country_code)) {
+            $errors[] = "Please select your country.";
         }
 
         // If validation errors exist
@@ -52,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        // Create new user
-        if ($user->createUser($username, $email, $password)) {
+        // Create new user with country
+        if ($user->createUser($username, $email, $password, $country_code)) {
             $_SESSION['register_success'] = "Registration successful! Please login.";
             header("Location: ../views/frontoffice/login.php");
             exit();
