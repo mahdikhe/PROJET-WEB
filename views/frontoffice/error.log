@@ -115,3 +115,194 @@ Stack trace:
 [07-May-2025 17:09:05 Europe/Berlin] Attempting to get database connection
 [07-May-2025 17:11:18 Europe/Berlin] Attempting to get database connection
 [07-May-2025 17:11:47 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:00:39 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:00:39 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:00:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:02:20 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:02:20 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:02:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:19:47 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:19:47 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:19:47 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:21:59 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:21:59 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:21:59 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:47 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:47 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:47 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:48 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:48 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:48 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:48 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:48 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:48 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:49 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:49 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:50 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:50 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:50 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:51 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:51 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:51 Europe/Berlin] Attempting to get database connection
+[08-May-2025 22:22:51 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:22:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 22:48:51 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 22:48:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:113
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 22:51:34 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:51:34 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:110
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:51:47 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:51:47 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:110
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:52:41 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:52:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:110
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 110
+[08-May-2025 22:55:51 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 22:55:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:113
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:14:52 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:14:52 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:113
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:19:52 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:19:52 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:113
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:21:02 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:21:02 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:113
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 113
+[08-May-2025 23:29:31 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:29:31 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:34:58 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:34:58 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:35:47 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:35:47 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:37:45 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:37:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:38:06 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:38:06 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:39:52 Europe/Berlin] Attempting to get database connection
+[08-May-2025 23:39:52 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:39:52 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:40:05 Europe/Berlin] Attempting to get database connection
+[08-May-2025 23:40:05 Europe/Berlin] PHP Warning:  require(../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:40:05 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:40:42 Europe/Berlin] Attempting to get database connection
+[08-May-2025 23:40:42 Europe/Berlin] PHP Warning:  require(../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:40:42 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:41:39 Europe/Berlin] Attempting to get database connection
+[08-May-2025 23:41:39 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\platforme\views\frontoffice/../../vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:41:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/../../vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:108
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 108
+[08-May-2025 23:43:55 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:43:55 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:121
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 121
+[08-May-2025 23:45:53 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[08-May-2025 23:45:53 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:127
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[08-May-2025 23:52:24 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[08-May-2025 23:52:24 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:127
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[08-May-2025 23:52:28 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[08-May-2025 23:52:28 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\platforme\views\frontoffice/../createProject/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php:127
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\platforme\views\frontoffice\send_invitation.php on line 127
+[09-May-2025 00:26:58 Europe/Berlin] Attempting to get database connection
+[09-May-2025 00:27:01 Europe/Berlin] Attempting to get database connection
+[09-May-2025 00:27:37 Europe/Berlin] Attempting to get database connection
+[09-May-2025 00:30:56 Europe/Berlin] Attempting to get database connection

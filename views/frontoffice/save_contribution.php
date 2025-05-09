@@ -2,24 +2,22 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Database connection
 require_once(__DIR__ . '/../../config/Database.php');
 
-// Function to validate email
 function isValidEmail($email) {
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-// Get database connection
 try {
     $database = Database::getInstance();
     $pdo = $database->getConnection();
-    // Set the database to use
     $pdo->exec("USE project_creation");
+    
+    // Test connection
+    $test = $pdo->query("SELECT 1");
 } catch (Exception $e) {
     error_log("Database connection error: " . $e->getMessage());
-    header("Location: contribute.html?error=database_connection_failed");
-    exit;
+    die("Database connection error: " . $e->getMessage());
 }
 
 // Get form fields
@@ -29,10 +27,13 @@ $email = trim($_POST['email'] ?? '');
 $city = trim($_POST['city'] ?? '');
 $phone = trim($_POST['phone-number'] ?? '');
 $age = $_POST['age-group'] ?? '';
-$projectId = filter_var($_POST['project_id'] ?? null, FILTER_VALIDATE_INT);
+$projectId = (int)($_POST['project_id'] ?? 0);
+$preferredProject = $_POST['preferred-projects'] ?? '';
 $availability = $_POST['location-availability'] ?? '';
 $type = $_POST['contributionType'] ?? '';
 $message = trim($_POST['message'] ?? '');
+$latitude = null;
+$longitude = null;
 
 // Validate required fields
 $errors = [];
@@ -40,12 +41,19 @@ if (empty($firstName)) $errors[] = "First name is required";
 if (empty($lastName)) $errors[] = "Last name is required";
 if (empty($email)) $errors[] = "Email is required";
 if (!isValidEmail($email)) $errors[] = "Invalid email format";
-if (!$projectId) $errors[] = "Project ID is required";
+if ($projectId <= 0) $errors[] = "Valid Project ID is required";
 
 if (!empty($errors)) {
-    error_log("Validation errors: " . implode(", ", $errors));
-    header("Location: contribute.html?error=" . urlencode(implode(", ", $errors)));
-    exit;
+    die(implode("<br>", $errors));
+}
+
+// Check if user already contributed to this project
+$checkSql = "SELECT id FROM contributors WHERE email = ? AND project_id = ?";
+$checkStmt = $pdo->prepare($checkSql);
+$checkStmt->execute([$email, $projectId]);
+
+if ($checkStmt->fetch()) {
+    die("You have already contributed to this project. Each user can only contribute once per project.");
 }
 
 // Handle file upload
@@ -61,39 +69,44 @@ if (!empty($_FILES['fileUpload']['name'])) {
     
     if (move_uploaded_file($_FILES['fileUpload']['tmp_name'], $targetPath)) {
         $filePath = "uploads/" . $filename;
-    } else {
-        error_log("File upload failed for: " . $_FILES['fileUpload']['name']);
     }
 }
 
 try {
-    // Use prepared statement for insertion
-    $sql = "INSERT INTO project_creation.contributors (
+    // Insert contributor with project relationship
+    $sql = "INSERT INTO contributors (
         first_name, last_name, email, city, phone, 
         age_group, preferred_project, location_availability, 
-        contribution_type, message, file_path
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        contribution_type, message, file_path, latitude, longitude,
+        project_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([
         $firstName, $lastName, $email, $city, $phone,
-        $age, $projectId, $availability, $type, $message, $filePath
+        $age, $preferredProject, $availability, $type, 
+        $message, $filePath, $latitude, $longitude,
+        $projectId
     ]);
     
     if ($result) {
-        error_log("Contribution saved successfully for: $firstName $lastName");
-        header("Location: contribution-success.html");
+        // Update the contributor count for this project
+        $updateSql = "UPDATE projects 
+                     SET contributor_count = contributor_count + 1 
+                     WHERE id = ?";
+        $updateStmt = $pdo->prepare($updateSql);
+        $updateStmt->execute([$projectId]);
+        
+        header("Location: contribution-success.php");
         exit;
-    } else {
-        throw new Exception("Failed to save contribution");
     }
     
 } catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    header("Location: contribute.html?error=database_error");
-    exit;
+    // Handle unique constraint violation specifically
+    if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+        die("You have already contributed to this project.");
+    }
+    die("Database error: " . $e->getMessage());
 } catch (Exception $e) {
-    error_log("General error: " . $e->getMessage());
-    header("Location: contribute.html?error=general_error");
-    exit;
+    die("Error: " . $e->getMessage());
 }

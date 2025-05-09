@@ -105,7 +105,7 @@ try {
     ";
 
     // Load PHPMailer
-    require '../../vendor/autoload.php';
+    require __DIR__ . '/../../../vendor/autoload.php'; // Absolute path from project root
 
     $mail = new PHPMailer(true);
 

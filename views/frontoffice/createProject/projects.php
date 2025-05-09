@@ -536,6 +536,9 @@ $filteredProjects = array_filter($projects, function($project) use ($searchTerm,
     <button id="deleteSelected" class="button button-danger" disabled>
         <i class="fas fa-trash"></i> Delete Selected
     </button>
+    <a href="projects-map.php" class="button button-primary">
+        <i class="fas fa-map-marked-alt"></i> View Projects on Map
+    </a>
 </div>
         
         <div class="filter-options">

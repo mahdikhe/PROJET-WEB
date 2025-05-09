@@ -182,3 +182,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 }); 
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get project ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get('project_id');
+    
+    // Set the hidden project_id field
+    if (projectId) {
+        document.getElementById('project_id').value = projectId;
+    } else {
+        // Handle case where no project ID is provided
+        alert('No project selected. Please select a project first.');
+        window.location.href = 'projects.html'; // Redirect to projects page
+    }
+});
+
+
+function loadProjects(showAll = false, forceRefresh = false) {
+    const url = showAll ? 'createProject/get_projects.php?all=true' : 'createProject/get_projects.php';
+    
+    // Add cache-busting parameter if forcing refresh
+    const finalUrl = forceRefresh ? `${url}&t=${new Date().getTime()}` : url;
+    
+    fetch(finalUrl)
+        .then(response => response.json())
+        .then(data => {
+            // ... rest of your existing code ...
+        })
+        .catch(error => console.error('Error loading projects:', error));
+}

@@ -1,5 +1,5 @@
 <?php
-include 'C:/Users/Abderrahmen/Desktop/aa/platforme/config/Database.php';
+require_once(__DIR__ . '/../../../../config/Database.php');
 
 // Initialize the database connection
 $db = Database::getInstance();

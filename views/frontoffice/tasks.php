@@ -1746,6 +1746,73 @@ function getTaskProgress($conn, $taskId) {
             document.getElementById(modalId).style.display = 'none';
         }
         
+
+        function openInviteFriendModal(event, taskId) {
+    event.preventDefault();
+    event.stopPropagation(); // Prevent task details from opening
+    
+    // Set the task ID in the hidden input
+    document.getElementById('invite_task_id').value = taskId;
+    
+    // Clear previous form data
+    const form = document.getElementById('inviteFriendForm');
+    if (form) {
+        form.reset();
+        document.getElementById('email-error').textContent = '';
+    }
+    
+    // Display the modal
+    const modal = document.getElementById('inviteFriendModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+    
+    // Close the actions menu if it's open
+    const menu = document.getElementById(`actions-menu-${taskId}`);
+    if (menu) {
+        menu.style.display = 'none';
+    }
+}
+
+// Function to send invitation
+function sendInvitation() {
+    const taskId = document.getElementById('invite_task_id').value;
+    const email = document.getElementById('friend_email').value;
+    const message = document.getElementById('invite_message').value;
+    const emailError = document.getElementById('email-error');
+    
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+        emailError.textContent = 'Please enter a valid email address';
+        return;
+    }
+    
+    // Clear any previous errors
+    emailError.textContent = '';
+    
+    // Send AJAX request
+    fetch('send_invitation.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `task_id=${taskId}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeModal('inviteFriendModal');
+            alert('Invitation sent successfully!');
+        } else {
+            emailError.textContent = data.message || 'Error sending invitation';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        emailError.textContent = 'Error sending invitation';
+    });
+}
         // Close modal when clicking outside of it
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
@@ -2437,72 +2504,7 @@ function getTaskProgress($conn, $taskId) {
         }
 
         // Function to open invite friend modal
-function openInviteFriendModal(event, taskId) {
-    event.preventDefault();
-    event.stopPropagation(); // Prevent task details from opening
-    
-    // Set the task ID in the hidden input
-    document.getElementById('invite_task_id').value = taskId;
-    
-    // Clear previous form data
-    const form = document.getElementById('inviteFriendForm');
-    if (form) {
-        form.reset();
-        document.getElementById('email-error').textContent = '';
-    }
-    
-    // Display the modal
-    const modal = document.getElementById('inviteFriendModal');
-    if (modal) {
-        modal.style.display = 'block';
-    }
-    
-    // Close the actions menu if it's open
-    const menu = document.getElementById(`actions-menu-${taskId}`);
-    if (menu) {
-        menu.style.display = 'none';
-    }
-}
 
-// Function to send invitation
-function sendInvitation() {
-    const taskId = document.getElementById('invite_task_id').value;
-    const email = document.getElementById('friend_email').value;
-    const message = document.getElementById('invite_message').value;
-    const emailError = document.getElementById('email-error');
-    
-    // Basic email validation
-    if (!email || !email.includes('@')) {
-        emailError.textContent = 'Please enter a valid email address';
-        return;
-    }
-    
-    // Clear any previous errors
-    emailError.textContent = '';
-    
-    // Send AJAX request
-    fetch('send_invitation.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: `task_id=${taskId}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            closeModal('inviteFriendModal');
-            alert('Invitation sent successfully!');
-        } else {
-            emailError.textContent = data.message || 'Error sending invitation';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        emailError.textContent = 'Error sending invitation';
-    });
-}
 
         }
 

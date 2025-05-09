@@ -13,8 +13,12 @@ try {
     $countStmt->execute();
     $totalProjects = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Build the query
-    $sql = "SELECT id, projectName, projectLocation, projectImage, is_paid, ticket_price FROM projects ORDER BY created_at DESC";
+    // Build the query with contributor count
+    $sql = "SELECT p.id, p.projectName, p.projectLocation, p.projectImage, 
+                   p.is_paid, p.ticket_price,
+                   (SELECT COUNT(*) FROM contributors c WHERE c.project_id = p.id) AS contributor_count
+            FROM projects p
+            ORDER BY p.created_at DESC";
     
     // Check if we're getting all projects or just a limited number
     if (!isset($_GET['all']) || $_GET['all'] !== 'true') {
@@ -43,6 +47,9 @@ try {
         } else {
             $project['projectImage'] = 'default-project-image.jpg';
         }
+        
+        // Ensure contributor_count is set (default to 0 if null)
+        $project['contributor_count'] = $project['contributor_count'] ?? 0;
     }
     
     echo json_encode([

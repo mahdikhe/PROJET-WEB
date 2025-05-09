@@ -18,6 +18,28 @@ function sendJsonResponse($success, $message, $data = null) {
     exit();
 }
 
+// Function to geocode location using Nominatim (OpenStreetMap)
+function geocodeLocation($address) {
+    $address = urlencode($address);
+    $url = "https://nominatim.openstreetmap.org/search?q={$address}&format=json";
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, "CityPulse-App"); // Required by Nominatim usage policy
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $data = json_decode($response, true);
+    
+    if (!empty($data)) {
+        return [
+            'latitude' => $data[0]['lat'],
+            'longitude' => $data[0]['lon']
+        ];
+    }
+    return null;
+}
+
 // Create uploads directory if it doesn't exist
 $uploadDir = __DIR__ . '/uploads/';
 if (!file_exists($uploadDir)) {
@@ -47,64 +69,56 @@ try {
 
     $imageDestination = handleImageUpload($_FILES['projectImage'], $uploadDir);
 
+    // Geocode the project location
+    $coordinates = geocodeLocation($_POST['projectLocation']);
+    $latitude = $coordinates ? $coordinates['latitude'] : null;
+    $longitude = $coordinates ? $coordinates['longitude'] : null;
+
     // Initialize database connection
     $db = Database::getInstance()->getConnection();
     
-    // Insert project into database
-    // First fix the SQL query - number of placeholders must match values
-$sql = "INSERT INTO projects (
-    projectName, 
-    projectDescription, 
-    startDate, 
-    endDate, 
-    projectLocation, 
-    projectCategory, 
-    projectTags,
-    projectBudget,
-    fundingGoal, 
-    teamSize, 
-    projectImage, 
-    is_paid, 
-    ticket_price, 
-    projectVisibility, 
-    created_at
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+    // Insert project into database with contributor_count defaulting to 0
+    // Added latitude and longitude fields to the query
+    $sql = "INSERT INTO projects (
+        projectName, 
+        projectDescription, 
+        startDate, 
+        endDate, 
+        projectLocation, 
+        projectCategory, 
+        projectTags,
+        projectBudget,
+        fundingGoal, 
+        teamSize, 
+        projectImage, 
+        is_paid, 
+        ticket_price, 
+        projectVisibility, 
+        created_at,
+        contributor_count,
+        latitude,
+        longitude
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0, ?, ?)";
 
-$stmt = $db->prepare($sql);
-$success = $stmt->execute([
-    htmlspecialchars($_POST['projectName']),
-    htmlspecialchars($_POST['projectDescription']),
-    $_POST['startDate'],
-    $_POST['endDate'],
-    htmlspecialchars($_POST['projectLocation']),
-    $_POST['projectCategory'],
-    htmlspecialchars($_POST['projectTags']),
-    (float)$_POST['projectBudget'],    // Add budget
-    (float)$_POST['fundingGoal'],      // Add funding goal
-    $_POST['teamSize'],
-    $imageDestination,
-    (int)$_POST['isPaid'],
-    (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
-    $_POST['projectVisibility']
-]);
-
-$stmt = $db->prepare($sql);
-$success = $stmt->execute([
-    htmlspecialchars($_POST['projectName']),
-    htmlspecialchars($_POST['projectDescription']),
-    $_POST['startDate'],
-    $_POST['endDate'],
-    htmlspecialchars($_POST['projectLocation']),
-    $_POST['projectCategory'],
-    htmlspecialchars($_POST['projectTags']),
-    (float)$_POST['projectBudget'],    // Add budget
-    (float)$_POST['fundingGoal'],      // Add funding goal
-    $_POST['teamSize'],
-    $imageDestination,
-    (int)$_POST['isPaid'],
-    (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
-    $_POST['projectVisibility']
-]);
+    $stmt = $db->prepare($sql);
+    $success = $stmt->execute([
+        htmlspecialchars($_POST['projectName']),
+        htmlspecialchars($_POST['projectDescription']),
+        $_POST['startDate'],
+        $_POST['endDate'],
+        htmlspecialchars($_POST['projectLocation']),
+        $_POST['projectCategory'],
+        htmlspecialchars($_POST['projectTags']),
+        (float)$_POST['projectBudget'],
+        (float)$_POST['fundingGoal'],
+        $_POST['teamSize'],
+        $imageDestination,
+        (int)$_POST['isPaid'],
+        (float)($_POST['isPaid'] ? $_POST['ticketPrice'] : 0),
+        $_POST['projectVisibility'],
+        $latitude,
+        $longitude
+    ]);
 
     if (!$success) {
         throw new Exception('Failed to save project to database');
@@ -113,9 +127,19 @@ $success = $stmt->execute([
     // After successful project creation, get the last insert ID
     $lastInsertId = $db->lastInsertId();
     
-    // Send success response with redirect URL
+    // Get the newly created project with contributor count (will be 0)
+    $projectSql = "SELECT p.*, 
+                  (SELECT COUNT(*) FROM contributors WHERE project_id = p.id) AS contributor_count
+                  FROM projects p
+                  WHERE p.id = ?";
+    $projectStmt = $db->prepare($projectSql);
+    $projectStmt->execute([$lastInsertId]);
+    $project = $projectStmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Send success response with project data including contributor count
     sendJsonResponse(true, 'Project created successfully', [
-        'redirect' => "project_success.php?id=" . $lastInsertId
+        'redirect' => "project_success.php?id=" . $lastInsertId,
+        'project' => $project
     ]);
 
 } catch (Exception $e) {
