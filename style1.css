@@ -289,10 +289,34 @@ header {
   border: none;
   font-size: 14px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .action-button:hover {
   color: var(--primary);
+  background-color: rgba(0, 184, 169, 0.1);
+}
+
+.action-button.active {
+  color: var(--primary);
+  background-color: rgba(0, 184, 169, 0.1);
+}
+
+.action-button[value="dislike"]:hover,
+.action-button[value="dislike"].active {
+  color: #ff4757;
+  background-color: rgba(255, 71, 87, 0.1);
+}
+
+.action-button i {
+  font-size: 16px;
+}
+
+.action-button span {
+  font-size: 12px;
+  font-weight: 500;
 }
 
 /* Profile */

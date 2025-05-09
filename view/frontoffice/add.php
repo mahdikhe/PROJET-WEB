@@ -76,15 +76,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
                     $image_path = 'uploads/' . $new_filename;
                     error_log("Image uploaded successfully. Path: " . $image_path);
+                    error_log("Full upload path: " . $upload_path);
+                    error_log("Upload directory exists: " . (file_exists($upload_dir) ? 'yes' : 'no'));
+                    error_log("Upload directory permissions: " . substr(sprintf('%o', fileperms($upload_dir)), -4));
                 } else {
                     error_log("Failed to upload image. Upload path: " . $upload_path);
+                    error_log("Upload error: " . $_FILES['image']['error']);
+                    error_log("Upload directory writable: " . (is_writable($upload_dir) ? 'yes' : 'no'));
                     throw new Exception("Failed to upload image.");
                 }
             }
 
             // Create post object
             error_log("Creating Post object with image path: " . ($image_path ?? 'no image'));
-            $post = new Post($title, $content, $author, $image_path);
+            $post = new Post($title, $content, $author);
+            
+            // Add image path if available in session
+            if (isset($_SESSION['uploaded_image'])) {
+                error_log("Found uploaded image in session: " . $_SESSION['uploaded_image']);
+                $post->setImagePath($_SESSION['uploaded_image']);
+                unset($_SESSION['uploaded_image']); // Clear the session after using it
+            }
+            
             error_log("Post object created successfully");
             
             // Add post to database
@@ -222,22 +235,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="image">Post Image</label>
-                    <div class="image-upload-container">
-                        <input type="file" id="image" name="image" accept="image/*" class="form-control" style="display: none;" onchange="previewImage(this)">
-                        <button type="button" class="btn btn-outline" onclick="document.getElementById('image').click()">
-                            <i class="fas fa-image"></i> Choose Image
-                        </button>
-                        <div id="imagePreview" style="margin-top: 10px; display: none;">
-                            <img id="preview" src="#" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 4px;">
-                            <button type="button" class="btn btn-outline btn-danger" style="margin-left: 10px;" onclick="removeImage()">
-                                <i class="fas fa-times"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="form-group">
                     <label for="author">Author Name</label>
                     <input type="text" id="author" name="author" class="form-control" required

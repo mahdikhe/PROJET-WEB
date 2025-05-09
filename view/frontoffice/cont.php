@@ -1,10 +1,42 @@
 <?php
 require_once dirname(__DIR__, 2) . '/controller/Controller.php';
 require_once dirname(__DIR__, 2) . '/model/model.php';
+require_once dirname(__DIR__, 2) . '/model/translate.php';
 
 $postController = new PostController();
+$translator = new Translator();
 $posts = [];
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Handle translation requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'translate') {
+    $text = $_POST['text'] ?? '';
+    if (!empty($text)) {
+        $result = $translator->translateToFrench($text);
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        exit();
+    }
+}
+
+// Handle like/dislike actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_POST['post_id'])) {
+    $user_id = 'anonymous'; // In a real application, this would be the logged-in user's ID
+    $post_id = $_POST['post_id'];
+    
+    if ($_POST['action'] === 'like' || $_POST['action'] === 'dislike') {
+        $type = $_POST['action'];
+        if ($postController->toggleLike($post_id, $user_id, $type)) {
+            header("Location: cont.php" . (!empty($search_query) ? "?search=" . urlencode($search_query) : ""));
+            exit();
+        }
+    } elseif ($_POST['action'] === 'save') {
+        if ($postController->toggleSavePost($post_id, $user_id)) {
+            header("Location: cont.php" . (!empty($search_query) ? "?search=" . urlencode($search_query) : ""));
+            exit();
+        }
+    }
+}
 
 try {
     if (!empty($search_query)) {
@@ -37,6 +69,7 @@ try {
             </a>
             <nav class="main-nav">
                 <a href="cont.php" class="active">Posts</a>
+                <a href="saved.php"><i class="far fa-bookmark"></i> Saved</a>
                 <a href="event.html">Events</a>
                 <a href="forums.html">Forums</a>
             </nav>
@@ -132,11 +165,92 @@ try {
                                 <button class="btn btn-primary">
                                     <a href="add.php" style="color: white; text-decoration: none;">Add Post</a>
                                 </button>
-        
+                                <button class="btn btn-outline" onclick="document.getElementById('image-upload').click()">
+                                    <i class="fas fa-image"></i> Upload Image
+                                </button>
+                                <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                            </div>
+                            <div id="image-preview" style="margin-top: 10px; display: none;">
+                                <div style="position: relative; display: inline-block;">
+                                    <img id="preview" src="#" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 4px;">
+                                    <button type="button" class="btn btn-outline btn-danger" style="position: absolute; top: 5px; right: 5px;" onclick="removeImage()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <p style="margin-top: 5px; font-size: 12px; color: var(--text-light);">
+                                    Image will be attached to your next post
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                function handleImageUpload(input) {
+                    const preview = document.getElementById('preview');
+                    const imagePreview = document.getElementById('image-preview');
+                    
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                            
+                            // Upload the image
+                            const formData = new FormData();
+                            formData.append('image', input.files[0]);
+                            
+                            // Show loading state
+                            const uploadButton = document.querySelector('.btn-outline i.fa-image').parentElement;
+                            const originalText = uploadButton.innerHTML;
+                            uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+                            uploadButton.disabled = true;
+                            
+                            fetch('upload_image.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Image uploaded successfully:', data.path);
+                                    // Store the image path for later use
+                                    window.uploadedImagePath = data.path;
+                                    alert('Image uploaded successfully! It will be attached to your next post.');
+                                } else {
+                                    console.error('Upload failed:', data.error);
+                                    alert('Failed to upload image: ' + data.error);
+                                    removeImage();
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Error uploading image. Please try again.');
+                                removeImage();
+                            })
+                            .finally(() => {
+                                // Reset button state
+                                uploadButton.innerHTML = originalText;
+                                uploadButton.disabled = false;
+                            });
+                        }
+                        
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                function removeImage() {
+                    const imageInput = document.getElementById('image-upload');
+                    const imagePreview = document.getElementById('image-preview');
+                    const preview = document.getElementById('preview');
+                    
+                    imageInput.value = '';
+                    preview.src = '#';
+                    imagePreview.style.display = 'none';
+                    window.uploadedImagePath = null;
+                }
+                </script>
 
                 <!-- Feed filters -->
                 <div class="tabs" style="margin: 15px 0;">
@@ -178,22 +292,62 @@ try {
                             </div>
                             <h3 class="post-title"><?= htmlspecialchars($post['title']) ?></h3>
                             <p class="post-content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
+                            <button class="btn btn-outline translate-btn" 
+                                    data-text="<?= htmlspecialchars($post['content']) ?>"
+                                    style="font-size: 12px; padding: 4px 8px; margin-top: 5px;">
+                                <i class="fas fa-language"></i> Translate to French
+                            </button>
+                            <div class="translation-result" style="display: none; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;"></div>
                             <?php if (!empty($post['image_path'])): ?>
                                 <div class="post-image" style="margin: 15px 0;">
                                     <?php
-                                    // Debug information
-                                    error_log("Image path: " . $post['image_path']);
                                     $image_path = '../../' . $post['image_path'];
+                                    error_log("Attempting to display image:");
+                                    error_log("Image path from DB: " . $post['image_path']);
                                     error_log("Full image path: " . $image_path);
+                                    error_log("File exists: " . (file_exists($image_path) ? 'yes' : 'no'));
+                                    error_log("File readable: " . (is_readable($image_path) ? 'yes' : 'no'));
+                                    
+                                    if (file_exists($image_path)) {
+                                        echo '<img src="' . htmlspecialchars($image_path) . '" 
+                                             alt="Post image" 
+                                             style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+                                             onerror="this.onerror=null; this.src=\'../../assets/placeholder.png\'; console.log(\'Image failed to load: \' + this.src);">';
+                                    } else {
+                                        echo '<div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px;">
+                                                <i class="fas fa-image" style="font-size: 24px; color: #6c757d;"></i>
+                                                <p style="margin-top: 10px; color: #6c757d;">Image not found</p>
+                                                <p style="font-size: 12px; color: #999;">Path: ' . htmlspecialchars($image_path) . '</p>
+                                              </div>';
+                                    }
                                     ?>
-                                    <img src="<?= htmlspecialchars($image_path) ?>" 
-                                         alt="Post image" 
-                                         style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
-                                         onerror="this.onerror=null; console.log('Image failed to load:', this.src);">
                                 </div>
                             <?php endif; ?>
                             <div class="post-actions">
                                 <div class="action-buttons">
+                                    <?php
+                                    $reactions = $postController->getPostReactions($post['post_id']);
+                                    $userReaction = $postController->getUserReaction($post['post_id'], 'anonymous');
+                                    $isSaved = $postController->isPostSaved($post['post_id'], 'anonymous');
+                                    ?>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="<?= htmlspecialchars($post['post_id']) ?>">
+                                        <button type="submit" name="action" value="like" 
+                                                class="action-button <?= $userReaction === 'like' ? 'active' : '' ?>"
+                                                style="color: <?= $userReaction === 'like' ? 'var(--primary)' : 'var(--text-light)' ?>">
+                                            <i class="fas fa-thumbs-up"></i> 
+                                            <span><?= $reactions['likes'] ?? 0 ?></span>
+                                        </button>
+                                    </form>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="<?= htmlspecialchars($post['post_id']) ?>">
+                                        <button type="submit" name="action" value="dislike"
+                                                class="action-button <?= $userReaction === 'dislike' ? 'active' : '' ?>"
+                                                style="color: <?= $userReaction === 'dislike' ? '#ff4757' : 'var(--text-light)' ?>">
+                                            <i class="fas fa-thumbs-down"></i>
+                                            <span><?= $reactions['dislikes'] ?? 0 ?></span>
+                                        </button>
+                                    </form>
                                     <a href="commentaire.php?id=<?= htmlspecialchars($post['post_id']) ?>" class="action-button">
                                         <i class="far fa-comment"></i> 
                                         <?php 
@@ -201,7 +355,14 @@ try {
                                             echo count($comments);
                                         ?>
                                     </a>
-                                    <button class="action-button"><i class="far fa-bookmark"></i></button>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="<?= htmlspecialchars($post['post_id']) ?>">
+                                        <button type="submit" name="action" value="save" 
+                                                class="action-button <?= $isSaved ? 'active' : '' ?>"
+                                                style="color: <?= $isSaved ? 'var(--primary)' : 'var(--text-light)' ?>">
+                                            <i class="far fa-bookmark"></i>
+                                        </button>
+                                    </form>
                                     <button class="action-button">Share</button>
                                 </div>
                             </div>
@@ -330,5 +491,49 @@ try {
             </div>
         </div>
     </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const translateButtons = document.querySelectorAll('.translate-btn');
+        
+        translateButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const text = this.dataset.text;
+                const resultDiv = this.nextElementSibling;
+                
+                // Show loading state
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
+                
+                try {
+                    const response = await fetch('cont.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `action=translate&text=${encodeURIComponent(text)}`
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        resultDiv.innerHTML = `<p><strong>French Translation:</strong><br>${result.translated_text}</p>`;
+                        resultDiv.style.display = 'block';
+                    } else {
+                        resultDiv.innerHTML = `<p style="color: red;">Translation failed: ${result.error}</p>`;
+                        resultDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = '<p style="color: red;">Error occurred while translating</p>';
+                    resultDiv.style.display = 'block';
+                } finally {
+                    // Reset button state
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-language"></i> Translate to French';
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html> 

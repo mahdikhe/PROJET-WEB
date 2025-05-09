@@ -30,13 +30,25 @@ class PostManager {
             content TEXT NOT NULL,
             author VARCHAR(100) NOT NULL,
             created_at DATETIME NOT NULL,
-            updated_at DATETIME NOT NULL
+            updated_at DATETIME NOT NULL,
+            image_path VARCHAR(255)
         )";
         
         try {
             $this->pdo->exec($sql);
+            
+            // Check if image_path column exists, if not add it
+            $checkColumn = "SHOW COLUMNS FROM posts LIKE 'image_path'";
+            $columnExists = $this->pdo->query($checkColumn)->rowCount() > 0;
+            
+            if (!$columnExists) {
+                error_log("Adding image_path column to posts table...");
+                $alterSql = "ALTER TABLE posts ADD COLUMN image_path VARCHAR(255)";
+                $this->pdo->exec($alterSql);
+                error_log("image_path column added successfully");
+            }
         } catch (PDOException $e) {
-            error_log("Error creating posts table: " . $e->getMessage());
+            error_log("Error creating/updating posts table: " . $e->getMessage());
         }
     }
     
@@ -112,6 +124,7 @@ class Post {
     private string $author;
     private string $created_at;
     private string $updated_at;
+    private ?string $image_path;
 
     public function __construct(
         string $title,
@@ -119,7 +132,8 @@ class Post {
         string $author,
         string $created_at = '',
         string $updated_at = '',
-        ?int $post_id = null
+        ?int $post_id = null,
+        ?string $image_path = null
     ) {
         $this->post_id = $post_id;
         $this->title = $title;
@@ -127,6 +141,7 @@ class Post {
         $this->author = $author;
         $this->created_at = $created_at ?: date('Y-m-d H:i:s');
         $this->updated_at = $updated_at ?: date('Y-m-d H:i:s');
+        $this->image_path = $image_path;
     }
 
     // Getters
@@ -136,6 +151,7 @@ class Post {
     public function getAuthor(): string { return $this->author; }
     public function getCreatedAt(): string { return $this->created_at; }
     public function getUpdatedAt(): string { return $this->updated_at; }
+    public function getImagePath(): ?string { return $this->image_path; }
 
     // Setters
     public function setPostId(?int $post_id): self { 
@@ -161,6 +177,10 @@ class Post {
     public function setUpdatedAt(string $updated_at): self { 
         $this->updated_at = $updated_at; 
         return $this; 
+    }
+    public function setImagePath(?string $image_path): self {
+        $this->image_path = $image_path;
+        return $this;
     }
 
     /**

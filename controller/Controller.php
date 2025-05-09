@@ -7,31 +7,38 @@ class PostController {
 
     public function __construct() {
         error_log("Initializing PostController...");
-        $this->pdo = Config::getConnexion();
-        error_log("Database connection obtained in PostController");
-        $this->createTableIfNotExists();
+        try {
+            $this->pdo = Config::getConnexion();
+            $this->createTables();
+        } catch (PDOException $e) {
+            error_log("Error connecting to database: " . $e->getMessage());
+            throw new Exception("Database connection failed");
+        }
     }
 
-    private function createTableIfNotExists() {
+    private function createTables() {
         try {
-            error_log("Checking if posts table exists...");
-            $checkTable = "SHOW TABLES LIKE 'posts'";
-            $tableExists = $this->pdo->query($checkTable)->rowCount() > 0;
+            // Create posts table
+            $sql = "CREATE TABLE IF NOT EXISTS posts (
+                post_id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                author VARCHAR(100) NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                image_path VARCHAR(255)
+            )";
+            $this->pdo->exec($sql);
+
+            // Check if image_path column exists, if not add it
+            $checkColumn = "SHOW COLUMNS FROM posts LIKE 'image_path'";
+            $columnExists = $this->pdo->query($checkColumn)->rowCount() > 0;
             
-            if (!$tableExists) {
-                error_log("Posts table does not exist. Creating it...");
-                $sql = "CREATE TABLE IF NOT EXISTS posts (
-                    post_id INT AUTO_INCREMENT PRIMARY KEY,
-                    title VARCHAR(255) NOT NULL,
-                    content TEXT NOT NULL,
-                    author VARCHAR(100) NOT NULL,
-                    created_at DATETIME NOT NULL,
-                    updated_at DATETIME NOT NULL
-                )";
-                $this->pdo->exec($sql);
-                error_log("Posts table created successfully");
-            } else {
-                error_log("Posts table already exists");
+            if (!$columnExists) {
+                error_log("Adding image_path column to posts table...");
+                $alterSql = "ALTER TABLE posts ADD COLUMN image_path VARCHAR(255)";
+                $this->pdo->exec($alterSql);
+                error_log("image_path column added successfully");
             }
 
             // Create comments table
@@ -48,6 +55,43 @@ class PostController {
                 )";
                 $this->pdo->exec($sql);
                 error_log("Comments table created successfully");
+            }
+
+            // Create likes table
+            $checkLikesTable = "SHOW TABLES LIKE 'post_likes'";
+            $likesTableExists = $this->pdo->query($checkLikesTable)->rowCount() > 0;
+            
+            if (!$likesTableExists) {
+                error_log("Likes table does not exist. Creating it...");
+                $sql = "CREATE TABLE IF NOT EXISTS post_likes (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    post_id INT NOT NULL,
+                    user_id VARCHAR(100) NOT NULL,
+                    type ENUM('like', 'dislike') NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+                    UNIQUE KEY unique_user_post (post_id, user_id)
+                )";
+                $this->pdo->exec($sql);
+                error_log("Likes table created successfully");
+            }
+
+            // Create saved posts table
+            $checkSavedTable = "SHOW TABLES LIKE 'saved_posts'";
+            $savedTableExists = $this->pdo->query($checkSavedTable)->rowCount() > 0;
+            
+            if (!$savedTableExists) {
+                error_log("Saved posts table does not exist. Creating it...");
+                $sql = "CREATE TABLE IF NOT EXISTS saved_posts (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    post_id INT NOT NULL,
+                    user_id VARCHAR(100) NOT NULL,
+                    saved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+                    UNIQUE KEY unique_user_post (post_id, user_id)
+                )";
+                $this->pdo->exec($sql);
+                error_log("Saved posts table created successfully");
             }
         } catch (PDOException $e) {
             error_log("Error creating tables: " . $e->getMessage());
@@ -114,9 +158,9 @@ class PostController {
             error_log("Post data validation successful");
 
             $sql = "INSERT INTO posts (
-                title, content, author, created_at, updated_at
+                title, content, author, created_at, updated_at, image_path
             ) VALUES (
-                :title, :content, :author, :created_at, :updated_at
+                :title, :content, :author, :created_at, :updated_at, :image_path
             )";
 
             error_log("Preparing SQL statement: " . $sql);
@@ -129,13 +173,15 @@ class PostController {
             error_log("Author: " . $post->getAuthor());
             error_log("Created at: " . $post->getCreatedAt());
             error_log("Updated at: " . $post->getUpdatedAt());
+            error_log("Image path: " . $post->getImagePath());
 
             $params = [
                 'title' => $post->getTitle(),
                 'content' => $post->getContent(),
                 'author' => $post->getAuthor(),
                 'created_at' => $post->getCreatedAt(),
-                'updated_at' => $post->getUpdatedAt()
+                'updated_at' => $post->getUpdatedAt(),
+                'image_path' => $post->getImagePath()
             ];
             
             error_log("Executing SQL statement with parameters: " . print_r($params, true));
@@ -166,7 +212,8 @@ class PostController {
             title = :title,
             content = :content,
             author = :author,
-            updated_at = :updated_at
+            updated_at = :updated_at,
+            image_path = :image_path
         WHERE post_id = :post_id";
 
         try {
@@ -176,7 +223,8 @@ class PostController {
                 'title' => $post->getTitle(),
                 'content' => $post->getContent(),
                 'author' => $post->getAuthor(),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
+                'image_path' => $post->getImagePath()
             ]);
         } catch (PDOException $e) {
             error_log("Error updating post: " . $e->getMessage());
@@ -313,6 +361,121 @@ class PostController {
         } catch (PDOException $e) {
             error_log("Error deleting comment: " . $e->getMessage());
             return false;
+        }
+    }
+
+    // Like/Dislike methods
+    public function toggleLike($post_id, $user_id, $type) {
+        try {
+            // First check if user already has a reaction
+            $sql = "SELECT type FROM post_likes WHERE post_id = :post_id AND user_id = :user_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existing) {
+                if ($existing['type'] === $type) {
+                    // If same type, remove the reaction
+                    $sql = "DELETE FROM post_likes WHERE post_id = :post_id AND user_id = :user_id";
+                    $stmt = $this->pdo->prepare($sql);
+                    return $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+                } else {
+                    // If different type, update the reaction
+                    $sql = "UPDATE post_likes SET type = :type WHERE post_id = :post_id AND user_id = :user_id";
+                    $stmt = $this->pdo->prepare($sql);
+                    return $stmt->execute(['type' => $type, 'post_id' => $post_id, 'user_id' => $user_id]);
+                }
+            } else {
+                // If no existing reaction, add new one
+                $sql = "INSERT INTO post_likes (post_id, user_id, type) VALUES (:post_id, :user_id, :type)";
+                $stmt = $this->pdo->prepare($sql);
+                return $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id, 'type' => $type]);
+            }
+        } catch (PDOException $e) {
+            error_log("Error toggling like: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getPostReactions($post_id) {
+        try {
+            $sql = "SELECT 
+                    SUM(CASE WHEN type = 'like' THEN 1 ELSE 0 END) as likes,
+                    SUM(CASE WHEN type = 'dislike' THEN 1 ELSE 0 END) as dislikes
+                    FROM post_likes 
+                    WHERE post_id = :post_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['post_id' => $post_id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting post reactions: " . $e->getMessage());
+            return ['likes' => 0, 'dislikes' => 0];
+        }
+    }
+
+    public function getUserReaction($post_id, $user_id) {
+        try {
+            $sql = "SELECT type FROM post_likes WHERE post_id = :post_id AND user_id = :user_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['type'] : null;
+        } catch (PDOException $e) {
+            error_log("Error getting user reaction: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    // Save post methods
+    public function toggleSavePost($post_id, $user_id) {
+        try {
+            // Check if post is already saved
+            $sql = "SELECT id FROM saved_posts WHERE post_id = :post_id AND user_id = :user_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existing) {
+                // If already saved, unsave it
+                $sql = "DELETE FROM saved_posts WHERE post_id = :post_id AND user_id = :user_id";
+                $stmt = $this->pdo->prepare($sql);
+                return $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            } else {
+                // If not saved, save it
+                $sql = "INSERT INTO saved_posts (post_id, user_id) VALUES (:post_id, :user_id)";
+                $stmt = $this->pdo->prepare($sql);
+                return $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            }
+        } catch (PDOException $e) {
+            error_log("Error toggling save post: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function isPostSaved($post_id, $user_id) {
+        try {
+            $sql = "SELECT id FROM saved_posts WHERE post_id = :post_id AND user_id = :user_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['post_id' => $post_id, 'user_id' => $user_id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+        } catch (PDOException $e) {
+            error_log("Error checking if post is saved: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getSavedPosts($user_id) {
+        try {
+            $sql = "SELECT p.* FROM posts p 
+                    INNER JOIN saved_posts sp ON p.post_id = sp.post_id 
+                    WHERE sp.user_id = :user_id 
+                    ORDER BY sp.saved_at DESC";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['user_id' => $user_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting saved posts: " . $e->getMessage());
+            return [];
         }
     }
 }
