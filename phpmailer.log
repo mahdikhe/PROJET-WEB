@@ -1,0 +1,134 @@
+3: Connection: opening to smtp.gmail.com:587, timeout=300, options=array()
+3: Connection: opened
+2: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP ffacd0b85a97d-3a099ae3356sm1977985f8f.29 - gsmtp
+
+1: CLIENT -> SERVER: EHLO localhost
+
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [196.203.207.178]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+1: CLIENT -> SERVER: STARTTLS
+
+2: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+1: CLIENT -> SERVER: EHLO localhost
+
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [196.203.207.178]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+1: CLIENT -> SERVER: AUTH LOGIN
+
+2: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+1: CLIENT -> SERVER: [credentials hidden]
+2: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+1: CLIENT -> SERVER: [credentials hidden]
+2: SERVER -> CLIENT: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-3a099ae3356sm1977985f8f.29 - gsmtp
+
+1: SMTP ERROR: Password command failed: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-3a099ae3356sm1977985f8f.29 - gsmtp
+
+3: SMTP Error: Could not authenticate.
+1: CLIENT -> SERVER: QUIT
+
+2: SERVER -> CLIENT: 221 2.0.0 closing connection ffacd0b85a97d-3a099ae3356sm1977985f8f.29 - gsmtp
+
+3: Connection: closed
+3: SMTP Error: Could not authenticate.
+3: Connection: opening to smtp.gmail.com:587, timeout=300, options=array()
+3: Connection: opened
+2: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+1: CLIENT -> SERVER: EHLO localhost
+
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [196.203.207.178]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+1: CLIENT -> SERVER: STARTTLS
+
+2: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+1: CLIENT -> SERVER: EHLO localhost
+
+2: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [196.203.207.178]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+1: CLIENT -> SERVER: AUTH LOGIN
+
+2: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+1: CLIENT -> SERVER: [credentials hidden]
+2: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+1: CLIENT -> SERVER: [credentials hidden]
+2: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+1: CLIENT -> SERVER: MAIL FROM:<noreply@yourdomain.com>
+
+2: SERVER -> CLIENT: 250 2.1.0 OK 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+1: CLIENT -> SERVER: RCPT TO:<khelilmahdi60@gmail.com>
+
+2: SERVER -> CLIENT: 250 2.1.5 OK 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+1: CLIENT -> SERVER: DATA
+
+2: SERVER -> CLIENT: 354 Go ahead 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+1: CLIENT -> SERVER: Date: Fri, 2 May 2025 14:47:03 +0200
+
+1: CLIENT -> SERVER: To: Test Recipient <khelilmahdi60@gmail.com>
+
+1: CLIENT -> SERVER: From: Test Sender <noreply@yourdomain.com>
+
+1: CLIENT -> SERVER: Subject: PHPMailer Test
+
+1: CLIENT -> SERVER: Message-ID: <MmPDVPwj8e9Jx1seaKMsq3DaJboXYaqxtb3MHDYGk@localhost>
+
+1: CLIENT -> SERVER: X-Mailer: PHPMailer 6.9.3 (https://github.com/PHPMailer/PHPMailer)
+
+1: CLIENT -> SERVER: MIME-Version: 1.0
+
+1: CLIENT -> SERVER: Content-Type: text/html; charset=iso-8859-1
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: <b>This is a test email sent via PHPMailer.</b>
+
+1: CLIENT -> SERVER: 
+
+1: CLIENT -> SERVER: .
+
+2: SERVER -> CLIENT: 250 2.0.0 OK  1746190026 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+1: CLIENT -> SERVER: QUIT
+
+2: SERVER -> CLIENT: 221 2.0.0 closing connection 5b1f17b1804b1-441b2aed5e8sm89000115e9.16 - gsmtp
+
+3: Connection: closed
