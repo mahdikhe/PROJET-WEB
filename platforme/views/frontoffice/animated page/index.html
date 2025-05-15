@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CityPulse - Project Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated Split Background -->
+  <div class="split-background">
+    <div class="split-left"></div>
+    <div class="split-right"></div>
+  </div>
+
+  <!-- Animated Particles -->
+  <div class="particles-container" id="particles-js"></div>
+
+  <header class="navbar">
+    <div class="logo">CityPulse</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Projects</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-text">
+      <div class="badge">INNOVATION</div>
+      <h1><span>GÉREZ VOS PROJETS </span> <br>AVEC PRÉCISION<br> EFFICACITÉ <br>ET VISION.</h1>
+      <p>
+        Notre plateforme intègre des outils avancés de planification, de suivi et de coordination, spécifiquement conçus pour les secteurs de l'urbanisme, de la mobilité et de l'aménagement. Automatisez les tâches, visualisez l'avancement en temps réel et structurez vos workflows pour maximiser l'impact de vos projets.
+      </p>
+      <div class="buttons">
+        <a class="btn btn-docs" href="https://github.com/mahdikhe/PROJET-WEB/blob/gestion_projets/README.md" target="_blank">Documentation ></a>
+        <a class="btn btn-started" href="../project.php">Get Started ></a>
+      </div>
+    </div>
+    
+    <div class="hero-image">
+      <div class="image-container">
+        
+    </div>
+  </main>
+
+  <div class="hero-keywords">
+   
+    
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Initialize particles.js
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#ffffff' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.5, random: false },
+            size: { value: 3, random: true },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: '#ffffff',
+              opacity: 0.4,
+              width: 1
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: 'none',
+              random: false,
+              straight: false,
+              out_mode: 'out',
+              bounce: false
+            }
+          },
+          interactivity: {
+            detect_on: 'canvas',
+            events: {
+              onhover: { enable: true, mode: 'grab' },
+              onclick: { enable: true, mode: 'push' },
+              resize: true
+            },
+            modes: {
+              grab: { distance: 140, line_linked: { opacity: 1 } },
+              push: { particles_nb: 4 }
+            }
+          },
+          retina_detect: true
+        });
+      } catch (error) {
+        console.error('Error initializing particles.js:', error);
+      }
+
+      // Fetch data from the backend - wrapped in try/catch to prevent page from disappearing
+      try {
+        fetch('fetchData.php')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              console.log('Data fetched from database:', data.data);
+              // Use the fetched data (e.g., display it on the page)
+              const heroText = document.querySelector('.hero-text');
+              if (heroText && data.data && data.data.length > 0) {
+                heroText.innerHTML += `<p>Database Example: ${data.data[0].column_name || 'Data loaded'}</p>`; // Replace 'column_name' with your actual column name
+              }
+            } else {
+              console.error('Error fetching data:', data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Fetch error:', error);
+            // Don't let the error break the page
+          });
+      } catch (error) {
+        console.error('Error in fetch operation:', error);
+      }
+    });
+  </script>
+</body>
+</html>

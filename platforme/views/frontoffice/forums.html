@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityPulse - Forums</title>
+    <link rel="stylesheet" href="../../assets/css/style_page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="front/landingPage.html" class="logo">
+                <img src="assets/logo.png" alt="CityPulse Logo" style="height: 35px; margin-right: 10px;">
+                
+            </a>
+            <nav class="main-nav">
+                <a href="cont.html">Post</a>                
+                <a href="event.html">Events</a>
+                <a href="forums.html" class="active">Forums</a>
+                <a href="project.html">Project</a>
+                <a href="#">Offre d'emploi</a>
+
+                
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" style="text-decoration: none; color: var(--text-medium); margin-right: 10px;">Log In</a>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0;">
+            <h1>Community Forums</h1>
+            <a href="new-discussion.html" class="btn btn-primary"><i class="fas fa-plus"></i> New Discussion</a>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active">All Discussions</div>
+            <div class="tab">Popular</div>
+            <div class="tab">Recent</div>
+            <div class="tab">My Discussions</div>
+        </div>
+
+        <div class="card">
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">
+                        <img src="/api/placeholder/42/42" alt="User avatar">
+                    </div>
+                    <div class="post-meta">
+                        <h3 class="post-author">Sarah Johnson</h3>
+                        <div class="post-time">2 hours ago</div>
+                    </div>
+                </div>
+                <h2 class="post-title">Sustainable Urban Development in European Cities</h2>
+                <p class="post-content">Let's discuss the latest trends and challenges in sustainable urban development across European cities. What are your thoughts on the new green infrastructure initiatives?</p>
+                <div class="post-tags">
+                    <span class="tag">Urban Planning</span>
+                    <span class="tag">Sustainability</span>
+                    <span class="tag">Europe</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="action-button">
+                            <i class="far fa-comment"></i> 24 Comments
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-heart"></i> 156 Likes
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-bookmark"></i> Save
+                        </button>
+                    </div>
+                    <button class="btn btn-outline btn-sm">Join Discussion</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">
+                        <img src="/api/placeholder/42/42" alt="User avatar">
+                    </div>
+                    <div class="post-meta">
+                        <h3 class="post-author">Michael Chen</h3>
+                        <div class="post-time">5 hours ago</div>
+                    </div>
+                </div>
+                <h2 class="post-title">Smart City Technologies: Implementation Challenges</h2>
+                <p class="post-content">What are the main challenges cities face when implementing smart city technologies? Share your experiences and solutions.</p>
+                <div class="post-tags">
+                    <span class="tag">Smart Cities</span>
+                    <span class="tag">Technology</span>
+                    <span class="tag">Innovation</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="action-button">
+                            <i class="far fa-comment"></i> 18 Comments
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-heart"></i> 89 Likes
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-bookmark"></i> Save
+                        </button>
+                    </div>
+                    <button class="btn btn-outline btn-sm">Join Discussion</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">
+                        <img src="/api/placeholder/42/42" alt="User avatar">
+                    </div>
+                    <div class="post-meta">
+                        <h3 class="post-author">Emma Rodriguez</h3>
+                        <div class="post-time">1 day ago</div>
+                    </div>
+                </div>
+                <h2 class="post-title">Public Transportation: Future of Urban Mobility</h2>
+                <p class="post-content">How can we improve public transportation systems to better serve our communities? Let's discuss innovative solutions and best practices.</p>
+                <div class="post-tags">
+                    <span class="tag">Transportation</span>
+                    <span class="tag">Mobility</span>
+                    <span class="tag">Public Transit</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="action-button">
+                            <i class="far fa-comment"></i> 32 Comments
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-heart"></i> 112 Likes
+                        </button>
+                        <button class="action-button">
+                            <i class="far fa-bookmark"></i> Save
+                        </button>
+                    </div>
+                    <button class="btn btn-outline btn-sm">Join Discussion</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--text-dark); color: white; padding: 48px 0; margin-top: 48px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+                <div>
+                    <h3>CityPulse</h3>
+                    <p>Connect with urban planners, architects, and citizens to collaborate on innovative projects.</p>
+                </div>
+                <div>
+                    <h4>Resources</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">Urban Planning Guide</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Sustainable City Toolkit</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Community Engagement</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <a href="#" style="color: white;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: white;"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p>&copy; 2025 CityPulse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

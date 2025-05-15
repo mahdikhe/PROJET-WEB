@@ -1,0 +1,61 @@
+<!-- contribution-success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contribution Successful - CityPulse</title>
+  <link rel="stylesheet" href="style1.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    .success-container {
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .success-icon {
+      font-size: 60px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    .success-message {
+      margin-bottom: 30px;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    body {
+      background-color: #f5f8fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h1>Thank You for Your Contribution!</h1>
+    <div class="success-message">
+      <p>Your contribution has been successfully submitted. Our team will review it shortly.</p>
+      <p>You've helped make your city a better place!</p>
+    </div>
+    <div class="action-buttons">
+      <a href="project.html" class="btn btn-primary">Return to Projects</a>
+      <a href="contribute.php" class="btn btn-outline">Make Another Contribution</a>
+    </div>
+    <p style="margin-top: 30px; font-size: 0.9em; color: #666;">
+      You will receive a confirmation email shortly with details of your contribution.
+    </p>
+  </div>
+</body>
+</html>
