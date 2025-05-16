@@ -1,25 +1,24 @@
 # Event Module
 
-This module manages reclamation for the CityPulse platform.
+This module manages user for the CityPulse platform.
 
 ## Structure
-- **model/**: reclamation data and database logic
-- **controller/**: reclamation  business logic and request handling
-- **view/frontoffice/**: User-facing reclamation pages (list, reserve, etc.)
-- **view/backoffice/**: Admin reclamation management (create, edit, delete)
+- **model/**: user data and database logic
+- **controller/**: user  business logic and request handling
+- **view/frontoffice/**: User-facing user pages (list, reserve, etc.)
+- **view/backoffice/**: Admin user management (create, edit, delete)
 - **config.php**: Database connection (deprecated, use user/config.php)
 
 ## Usage
-- **Frontoffice**: Users can browse events, make reservations, and view their bookings.
-- **Backoffice**: Admins can create, edit, and delete events, and manage reservations.
+- **Frontoffice**: Users can browse user, make reservations, and view their bookings.
+- **Backoffice**: Admins can create, edit, and delete utilusateur, and manage reservations.
 
 ## Features
-- List and view reclamation
-- List and view reponse
-- Admin reclamation  management
-- statistique reclamation
-- statistique reponse
--bad Words 
+- List and view utilisateur
+- Admin user  management
+- statistique user
+- maiiling
+   
 
 
 
